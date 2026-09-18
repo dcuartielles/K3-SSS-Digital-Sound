@@ -4,7 +4,7 @@ An interactive lecture on digital sound, built for **KD343A — Situated and spe
 sensing: multisensory exploration of environments** at K3, the School of Arts and
 Communication, Malmö University.
 
-**→ [Open the lecture](https://GITHUB-USER.github.io/K3-SSS-Digital-Sound/)**
+**→ [Open the lecture](https://dcuartielles.github.io/K3-SSS-Digital-Sound/)**
 
 The whole thing is one self-contained HTML file. No build step, no dependencies, no
 tracking. Everything it draws and every sound it makes is generated in the browser
@@ -69,7 +69,13 @@ recording three contrasting sites three ways each, an analysis block, and a choi
 three making stations — Sonic Pi, a browser sound map, or an Arduino Nano 33 BLE Sense
 logging sound level alongside temperature, humidity and light.
 
-Speaker notes are in the deck itself, under `N`.
+### The teaching notes are part of the material
+
+Press **`N`** on any slide for the notes. They are written for whoever is *running* the
+lecture, not for the audience: what to say out loud, what to hold back, which demo to let
+sit in silence, where a colleague takes over. They are published on purpose. If you teach
+this, they are the half that usually stays private, and they are more useful to you than
+the slides are.
 
 ## Sources and further reading
 
@@ -89,6 +95,13 @@ Typefaces: Familjen Grotesk and IBM Plex Mono, via Google Fonts.
 
 ## License
 
-TODO — pick one before making the repository public. For teaching material,
-[CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) is a common
-choice; MIT if you would rather people reuse the code freely.
+[![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-A8431A.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
+
+This work is licensed under a
+[Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](https://creativecommons.org/licenses/by-nc-sa/4.0/) (`CC-BY-NC-SA-4.0`).
+
+You are free to share and adapt it for non-commercial purposes, as long as you credit the
+source and license your adaptations the same way. Teach with it, fork it, translate it,
+rewrite the slides for your own course — that is what it is for.
+
+See [LICENSE](LICENSE).
