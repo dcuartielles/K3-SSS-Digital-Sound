@@ -1,0 +1,1298 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+:root{color-scheme:light dark;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;font:14px/1.5 system-ui,-apple-system,sans-serif;background:#fafaf9}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<title>Digital Sound Lab</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ground:#F6F5F3; --surface:#FCFBFA; --sunk:#EFEDEA;
+  --ink:#1A1520; --muted:#5E5766; --faint:#8C8497;
+  --line:#DFDCE2; --line-strong:#C7C2CE;
+  --accent:#B4245C; --accent-soft:#F6E4EC; --warm:#C2591A;
+  --ok:#1F6B4F; --stage-pad:clamp(20px,4.2vw,72px);
+  --t-hero:clamp(2.4rem,6.6vw,5rem);
+  --t-h1:clamp(1.9rem,4.6vw,3.4rem);
+  --t-h2:clamp(1.35rem,3vw,2.3rem);
+  --t-lead:clamp(1.02rem,1.85vw,1.55rem);
+  --t-body:clamp(0.92rem,1.35vw,1.12rem);
+  --t-label:clamp(0.66rem,0.95vw,0.78rem);
+  --display:'Familjen Grotesk',"Helvetica Neue",Helvetica,Arial,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#14101A; --surface:#1D1826; --sunk:#100D16;
+  --ink:#EDE9F2; --muted:#A49CB2; --faint:#7C7389;
+  --line:#322B3E; --line-strong:#463D54;
+  --accent:#FF5C93; --accent-soft:#2A1826; --warm:#FFA24D;
+  --ok:#5FD3A3;
+}}
+:root[data-theme="dark"]{
+  --ground:#14101A; --surface:#1D1826; --sunk:#100D16;
+  --ink:#EDE9F2; --muted:#A49CB2; --faint:#7C7389;
+  --line:#322B3E; --line-strong:#463D54;
+  --accent:#FF5C93; --accent-soft:#2A1826; --warm:#FFA24D;
+  --ok:#5FD3A3;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;display:flex;flex-direction:column;background:var(--ground);color:var(--ink);font-family:var(--display);
+  font-size:var(--t-body);line-height:1.5;-webkit-font-smoothing:antialiased;overflow:hidden}
+h1,h2,h3{margin:0;text-wrap:balance;font-weight:600;letter-spacing:-0.02em}
+p,ul,ol{margin:0}
+a{color:var(--accent)}
+button{font:inherit;color:inherit}
+
+/* ---------- shell ---------- */
+.app{flex:1 1 auto;min-height:0;display:flex;flex-direction:column}
+.rail{height:3px;background:var(--line);flex:none}
+.rail>i{display:block;height:100%;background:var(--accent);width:0;transition:width .25s ease}
+.stage{flex:1;position:relative;overflow:hidden}
+.slide{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;
+  padding:var(--stage-pad) var(--stage-pad) calc(var(--stage-pad) + 8px);
+  display:flex;flex-direction:column;gap:clamp(10px,1.5vw,20px);justify-content:center}
+.slide.top{justify-content:flex-start}
+.slide>*{max-width:1180px;width:100%}
+.slide[data-demo]{justify-content:flex-start;--stage-pad:clamp(14px,2.2vw,36px)}
+.slide[data-demo] .h1{font-size:clamp(1.2rem,2.4vw,1.85rem)}
+.slide[data-demo] .pull{font-size:calc(var(--t-body)*1.15)}
+.slide[data-demo] .note{font-size:calc(var(--t-label)*0.98)}
+.slide[hidden]{display:none!important}
+
+.bar{flex:none;display:flex;align-items:center;gap:10px;padding:8px 14px;
+  padding-bottom:calc(8px + env(safe-area-inset-bottom,0px));
+  background:var(--surface);border-top:1px solid var(--line);flex-wrap:wrap}
+.bar button{background:none;border:1px solid var(--line-strong);border-radius:3px;
+  padding:5px 11px;cursor:pointer;font-size:var(--t-label);letter-spacing:.06em;
+  text-transform:uppercase;font-family:var(--mono)}
+.bar button:hover{border-color:var(--accent);color:var(--accent)}
+.bar .where{font-family:var(--mono);font-size:var(--t-label);color:var(--muted);
+  margin-left:auto;text-align:right;letter-spacing:.04em}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* ---------- type roles ---------- */
+.eyebrow{font-family:var(--mono);font-size:var(--t-label);letter-spacing:.16em;
+  text-transform:uppercase;color:var(--accent)}
+.hero{font-size:var(--t-hero);line-height:.98;font-weight:700;letter-spacing:-0.035em}
+.h1{font-size:var(--t-h1);line-height:1.06}
+.h2{font-size:var(--t-h2);line-height:1.12}
+.lead{font-size:var(--t-lead);line-height:1.34;max-width:26ch}
+.body{font-size:var(--t-body);color:var(--muted);max-width:62ch;line-height:1.55}
+.body.wide{max-width:76ch}
+.pull{font-size:var(--t-h2);line-height:1.2;color:var(--accent);max-width:22ch;font-weight:500}
+.tiny{font-family:var(--mono);font-size:var(--t-label);color:var(--faint);letter-spacing:.04em}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+/* ---------- statement slides ---------- */
+.slide.stmt{background:var(--accent);color:#FFF8FA}
+.slide.stmt .body,.slide.stmt .tiny{color:#FBE7EE}
+.slide.stmt .eyebrow{color:#FFD9E5}
+.slide.dark{background:var(--sunk)}
+
+/* ---------- blocks ---------- */
+.cols{display:flex;gap:clamp(12px,1.8vw,22px);flex-wrap:wrap}
+.cols>*{flex:1 1 230px;min-width:0}
+.card{background:var(--surface);border:1px solid var(--line);padding:clamp(14px,1.8vw,22px);
+  display:flex;flex-direction:column;gap:8px}
+.card h3{font-size:calc(var(--t-body) * 1.12);color:var(--accent)}
+.card p{font-size:var(--t-body);color:var(--muted);line-height:1.5}
+
+table{border-collapse:collapse;width:100%;font-size:var(--t-body)}
+.scroll{overflow-x:auto;width:100%;-webkit-overflow-scrolling:touch}
+th{text-align:left;font-family:var(--mono);font-size:var(--t-label);letter-spacing:.1em;
+  text-transform:uppercase;color:var(--faint);font-weight:500;padding:0 14px 8px 0;
+  border-bottom:1px solid var(--line-strong);white-space:nowrap}
+td{padding:9px 14px 9px 0;border-bottom:1px solid var(--line);vertical-align:top;color:var(--muted)}
+td:first-child{color:var(--ink);font-weight:500}
+
+ul.plain{list-style:none;padding:0;display:flex;flex-direction:column;gap:9px}
+ul.plain li{padding-left:22px;position:relative;font-size:var(--t-lead);line-height:1.3}
+ul.plain li::before{content:"";position:absolute;left:0;top:.55em;width:11px;height:2px;background:var(--accent)}
+ol.steps{padding-left:0;list-style:none;counter-reset:s;display:flex;flex-direction:column;gap:10px}
+ol.steps li{counter-increment:s;padding-left:38px;position:relative;color:var(--muted)}
+ol.steps li::before{content:counter(s);position:absolute;left:0;top:0;font-family:var(--mono);
+  font-size:var(--t-label);color:var(--accent);border:1px solid var(--line-strong);
+  width:24px;height:24px;display:grid;place-items:center}
+
+.linkrow{display:flex;gap:8px;flex-wrap:wrap}
+.linkout{display:inline-flex;align-items:center;gap:7px;text-decoration:none;color:var(--ink);
+  border:1px solid var(--line-strong);padding:7px 13px;font-family:var(--mono);
+  font-size:var(--t-label);letter-spacing:.04em}
+.linkout:hover{border-color:var(--accent);color:var(--accent)}
+.linkout::after{content:"↗";color:var(--accent)}
+
+.slot{margin:0;border:1px dashed var(--line-strong);background:var(--sunk);
+  min-height:150px;display:grid;place-items:center;padding:18px;text-align:center;gap:6px}
+.slot figcaption{font-family:var(--mono);font-size:var(--t-label);color:var(--faint);
+  letter-spacing:.04em;line-height:1.6;max-width:46ch}
+
+canvas.fig{width:100%;display:block;background:var(--sunk);border:1px solid var(--line);height:clamp(96px,17vh,200px)}
+
+/* ---------- instruments ---------- */
+.rig{border:1px solid var(--line-strong);background:var(--surface);display:flex;flex-direction:column}
+.rig-head{display:flex;align-items:center;gap:10px;padding:7px 12px;border-bottom:1px solid var(--line);
+  background:var(--sunk);flex-wrap:wrap}
+.rig-head .eyebrow{margin-right:auto}
+.rig-body{padding:clamp(10px,1.3vw,16px);display:flex;flex-direction:column;gap:10px}
+.viz{width:100%;display:block;background:#0B0710;border:1px solid var(--line);height:clamp(112px,21vh,240px)}
+.knobs{display:flex;gap:clamp(10px,1.6vw,20px);flex-wrap:wrap;align-items:flex-end}
+.knob{display:flex;flex-direction:column;gap:5px;flex:1 1 180px;min-width:150px}
+.knob label{font-family:var(--mono);font-size:var(--t-label);letter-spacing:.09em;
+  text-transform:uppercase;color:var(--faint);display:flex;justify-content:space-between;gap:10px}
+.knob label b{color:var(--accent);font-weight:500}
+input[type=range]{width:100%;accent-color:var(--accent);height:22px}
+.tog{display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);
+  font-size:var(--t-label);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);cursor:pointer}
+.tog input{accent-color:var(--accent);width:15px;height:15px}
+.btn{background:var(--accent);color:#FFF8FA;border:1px solid var(--accent);padding:8px 16px;
+  cursor:pointer;font-family:var(--mono);font-size:var(--t-label);letter-spacing:.08em;text-transform:uppercase}
+.btn.ghost{background:none;color:var(--ink);border-color:var(--line-strong)}
+.btn.ghost:hover{border-color:var(--accent);color:var(--accent)}
+.btn[disabled]{opacity:.4;cursor:not-allowed}
+.readout{font-family:var(--mono);font-variant-numeric:tabular-nums;display:flex;gap:18px;flex-wrap:wrap}
+.readout div{display:flex;flex-direction:column;gap:1px}
+.readout span{font-size:var(--t-label);color:var(--faint);letter-spacing:.09em;text-transform:uppercase}
+.readout b{font-size:calc(var(--t-body)*1.5);font-weight:500;color:var(--accent)}
+.note{font-family:var(--mono);font-size:var(--t-label);color:var(--faint);line-height:1.6}
+.warn{border-left:2px solid var(--warm);padding-left:11px;color:var(--warm)}
+.src{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.src button{background:none;border:1px solid var(--line-strong);padding:5px 11px;cursor:pointer;
+  font-family:var(--mono);font-size:var(--t-label);letter-spacing:.06em;text-transform:uppercase}
+.src button[aria-pressed="true"]{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.src input[type=file]{font-family:var(--mono);font-size:var(--t-label);max-width:210px}
+
+/* ---------- overlays ---------- */
+.sheet{position:absolute;inset:0;background:var(--ground);z-index:20;overflow-y:auto;
+  padding:var(--stage-pad);display:flex;flex-direction:column;gap:18px}
+.sheet[hidden]{display:none!important}
+.idx{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:7px}
+.idx button{text-align:left;background:none;border:1px solid var(--line);padding:9px 11px;
+  cursor:pointer;display:flex;gap:9px;align-items:baseline}
+.idx button:hover{border-color:var(--accent)}
+.idx button b{font-family:var(--mono);font-size:var(--t-label);color:var(--faint);font-weight:400}
+.idx button.demo b{color:var(--accent)}
+.notes{position:absolute;left:0;right:0;bottom:0;z-index:15;background:var(--surface);
+  border-top:2px solid var(--accent);padding:14px var(--stage-pad);max-height:42%;overflow-y:auto}
+.notes[hidden]{display:none!important}
+.notes p{font-size:var(--t-body);color:var(--muted);max-width:80ch;line-height:1.55}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media (max-width:640px){.slide{justify-content:flex-start}.bar .where{width:100%;text-align:left;margin-left:0}}
+</style>
+<div class="app">
+<div class="rail"><i id="rail"></i></div>
+<div class="stage" id="stage">
+
+<section class="slide dark" id="cover" data-sec="Opening">
+  <p class="eyebrow">KD343A · Situated and speculative sensing · K3</p>
+  <h1 class="hero">Digital<br>Sound Lab</h1>
+  <p class="lead">A microphone is a proposition, not a witness.</p>
+  <p class="tiny">Two hours · six live instruments · arrow keys to move · press D for the instruments, I for the index, N for notes</p>
+  <template class="nt">Say the subtitle out loud before moving on. It is the whole lecture in seven words. Then tell them the deck is theirs afterwards and every demo runs on their own recordings.</template>
+</section>
+
+<section class="slide stmt" id="thesis" data-sec="Opening">
+  <h2 class="hero" style="font-size:var(--t-h1);max-width:20ch">Every digitisation is a decision about what is allowed to count as environment.</h2>
+  <template class="nt">This is the claim the whole lecture argues. Everything technical that follows is evidence for it. Come back to this sentence at least three times.</template>
+</section>
+
+<section class="slide top" id="map" data-sec="Opening">
+  <p class="eyebrow">Where we are going</p>
+  <div class="scroll"><table>
+    <tr><th>Minutes</th><th>Segment</th><th>Instrument</th></tr>
+    <tr><td class="num">0–10</td><td>Two minutes of listening</td><td>Live spectrogram</td></tr>
+    <tr><td class="num">10–40</td><td>From air to numbers</td><td>Decimation · bit depth · aliasing</td></tr>
+    <tr><td class="num">40–55</td><td>The spectrogram as a way of seeing</td><td>FFT window</td></tr>
+    <tr><td class="num">55–65</td><td>Break</td><td>—</td></tr>
+    <tr><td class="num">65–85</td><td>Measuring versus listening</td><td>A-weighting and L(A)eq</td></tr>
+    <tr><td class="num">85–100</td><td>Sound maps, and how to build one</td><td>—</td></tr>
+    <tr><td class="num">100–115</td><td>When the machine generates</td><td>—</td></tr>
+    <tr><td class="num">115–120</td><td>Workshop brief</td><td>—</td></tr>
+  </table></div>
+  <template class="nt">Keep this short. Students do not need the map explained, only shown.</template>
+</section>
+
+<section class="slide top" id="listen" data-sec="Opening" data-demo="Live spectrogram">
+  <h2 class="h1">Two minutes. Listen. Write down what you hear.</h2>
+  <p class="body">No talking. No phones. Meanwhile this is listening too.</p>
+  <div class="rig" data-rig="spectro">
+    <div class="rig-head"><span class="eyebrow">Instrument 01 · Live spectrogram</span>
+      <button class="btn" data-act="mic">Start microphone</button>
+      <button class="btn ghost" data-act="stop">Stop</button></div>
+    <div class="rig-body">
+      <canvas class="viz" data-canvas="spectro" height="260"></canvas>
+      <p class="note">Frequency runs bottom to top, 0 to 12 kHz. Time scrolls left. Colour is energy, on the magma ramp that most analysis software uses.</p>
+      <p class="note warn" data-slot="micerr" hidden></p>
+    </div>
+  </div>
+  <template class="nt">Start the microphone, then hold two full minutes of silence. It feels very long in a lecture hall. Hold it anyway — the discomfort is part of the exercise. The screen fills with things nobody is writing down.</template>
+</section>
+
+<section class="slide top" id="gap" data-sec="Opening">
+  <h2 class="h1">Two lists, one room</h2>
+  <div class="cols">
+    <div class="card"><h3>What you wrote</h3><p>A cough. Someone's chair. The corridor. A phone on a desk. Rain, maybe.</p></div>
+    <div class="card"><h3>What the machine caught</h3><p>Mains hum at 50 Hz. Ventilation. A projector fan. A screen whine near 15 kHz that nobody mentioned.</p></div>
+  </div>
+  <p class="pull">Neither list is wrong. Neither list is the room.</p>
+  <template class="nt">Scroll the spectrogram back if you can. The point is not that the machine is better — it is that the two are different instruments with different blind spots.</template>
+</section>
+
+<section class="slide dark" id="s-air" data-sec="From air to numbers">
+  <p class="eyebrow">Segment one · 10 to 40</p>
+  <h2 class="hero" style="font-size:var(--t-h1)">From air to numbers</h2>
+  <p class="body">Sampling · quantisation · aliasing · formats</p>
+  <template class="nt">Three live instruments carry this segment. Do not lecture the maths.</template>
+</section>
+
+<section class="slide top" id="chain" data-sec="From air to numbers">
+  <h2 class="h1">Four conversions</h2>
+  <div class="cols">
+    <div class="card"><h3>Pressure wave</h3><p>Air moving. Continuous in time and in value.</p></div>
+    <div class="card"><h3>Transducer</h3><p>Already has a frequency response, a polar pattern, a noise floor.</p></div>
+    <div class="card"><h3>Voltage</h3><p>Continuous still, but now a proxy with a gain stage in front of it.</p></div>
+    <div class="card"><h3>Numbers</h3><p>Discrete in time, discrete in value. Both by choice.</p></div>
+  </div>
+  <p class="pull">Every step throws something away. The question is never whether — it is who decided what, and when.</p>
+  <template class="nt">The decisions start before the ADC. The microphone is already an argument about what matters.</template>
+</section>
+
+<section class="slide top" id="sampling" data-sec="From air to numbers">
+  <p class="eyebrow">Sampling — how often you look</p>
+  <h2 class="h1">44 100 times a second</h2>
+  <canvas class="fig" data-fig="stems" height="230"></canvas>
+  <p class="body wide">Nyquist: you can only represent frequencies below half the sample rate. Above that line, sound does not become inaudible. It becomes something else — which is the next instrument but one.</p>
+  <template class="nt">Resist deriving the theorem. The figure shows a wave and the moments we look at it. Everything between the stems is inference.</template>
+</section>
+
+<section class="slide top" id="demo-decimate" data-sec="From air to numbers" data-demo="Decimation ladder">
+  <h2 class="h1">Instrument 02 · The decimation ladder</h2>
+  <div class="rig" data-rig="decimate">
+    <div class="rig-head"><span class="eyebrow">Drag the rate. Listen to who disappears.</span>
+      <span class="src" data-src="decimate"></span></div>
+    <div class="rig-body">
+      <div class="knobs">
+        <div class="knob"><label for="dec-rate">Sample rate <b data-out="dec-rate">44 100 Hz</b></label>
+          <input type="range" id="dec-rate" min="0" max="7" step="1" value="7"></div>
+        <label class="tog"><input type="checkbox" id="dec-aa"> Anti-alias filter first</label>
+        <button class="btn" data-act="play">Play</button>
+        <button class="btn ghost" data-act="stop">Stop</button>
+      </div>
+      <canvas class="viz" data-canvas="decimate" height="220"></canvas>
+      <p class="note">Ceiling <b class="num" data-out="dec-ceiling">22 050 Hz</b>. Without the anti-alias filter you hear both losses at once: what falls off the top, and what folds back down in its place.</p>
+    </div>
+  </div>
+  <p class="body">The test signal is a synthesised soundscape — traffic rumble, wind, birdsong, keys. Load your own field recording with the file picker and the ladder runs on that instead.</p>
+  <template class="nt">Go down the ladder slowly and say nothing. Birds die first, traffic rumble survives everything. Then toggle the anti-alias filter at 8 kHz and let them hear the difference between losing a sound and replacing it.</template>
+</section>
+
+<section class="slide stmt" id="who-exists" data-sec="From air to numbers">
+  <h2 class="h1">If the city's monitoring network ran at 8 kHz, which species officially does not live here?</h2>
+  <p class="body wide" style="max-width:52ch">Nobody lied. Somebody chose a number, years ago, for reasons of storage.</p>
+  <template class="nt">Let the question sit. Do not answer it. It returns in the workshop when the Nano board forces the same choice with only two options.</template>
+</section>
+
+<section class="slide top" id="bitdepth" data-sec="From air to numbers">
+  <p class="eyebrow">Quantisation — how finely you look</p>
+  <h2 class="h1">Between the steps there is nothing</h2>
+  <canvas class="fig" data-fig="stairs" height="230"></canvas>
+  <p class="body wide">Sixteen bits gives 65 536 steps, eight gives 256, four gives 16. The error is not silence. It is distortion that follows the signal, so it sounds like a fault in the world rather than in the recording.</p>
+  <template class="nt">The staircase figure is the whole idea. Correlated error is the key phrase — it sets up dither.</template>
+</section>
+
+<section class="slide top" id="demo-crush" data-sec="From air to numbers" data-demo="Bit depth and dither">
+  <h2 class="h1">Instrument 03 · Bit depth, and why we add noise</h2>
+  <div class="rig" data-rig="crush">
+    <div class="rig-head"><span class="eyebrow">Take it down to four bits, then switch dither on</span>
+      <span class="src" data-src="crush"></span></div>
+    <div class="rig-body">
+      <div class="knobs">
+        <div class="knob"><label for="cr-bits">Bit depth <b data-out="cr-bits">16 bit</b></label>
+          <input type="range" id="cr-bits" min="2" max="16" step="1" value="16"></div>
+        <label class="tog"><input type="checkbox" id="cr-dither"> Dither</label>
+        <button class="btn" data-act="play">Play</button>
+        <button class="btn ghost" data-act="stop">Stop</button>
+      </div>
+      <canvas class="viz" data-canvas="crush" height="220"></canvas>
+      <p class="note"><b class="num" data-out="cr-levels">65 536</b> levels. Dither adds triangular noise of about one step before quantising.</p>
+    </div>
+  </div>
+  <p class="pull">We add noise on purpose, so the error becomes weather instead of lies.</p>
+  <template class="nt">Run it at 4 bit with dither off, then on, on the fading tail of the signal. This is the most counter-intuitive demo of the hour: adding noise makes you hear more.</template>
+</section>
+
+<section class="slide top" id="demo-alias" data-sec="From air to numbers" data-demo="Aliasing">
+  <h2 class="h1">Instrument 04 · The tone that rises by falling</h2>
+  <div class="rig" data-rig="alias">
+    <div class="rig-head"><span class="eyebrow">A sweep from 20 Hz to 20 kHz, sampled too slowly</span>
+      <button class="btn" data-act="play">Play sweep</button>
+      <button class="btn ghost" data-act="stop">Stop</button></div>
+    <div class="rig-body">
+      <div class="knobs">
+        <div class="knob"><label for="al-rate">Sample rate <b data-out="al-rate">8 000 Hz</b></label>
+          <input type="range" id="al-rate" min="0" max="5" step="1" value="2"></div>
+        <div class="readout"><div><span>Playing</span><b class="num" data-out="al-f">—</b></div>
+          <div><span>You hear</span><b class="num" data-out="al-a">—</b></div></div>
+      </div>
+      <canvas class="viz" data-canvas="alias" height="250"></canvas>
+      <p class="note">The straight line is the frequency being generated. The folded line is the frequency that survives sampling. Where they part company, the sound goes down while the sweep goes up.</p>
+    </div>
+  </div>
+  <template class="nt">Nothing convinces a room like a tone that goes up by going down. Point at the fold as it happens rather than explaining it first.</template>
+</section>
+
+<section class="slide top" id="formats" data-sec="From air to numbers">
+  <h2 class="h1">What the file keeps</h2>
+  <div class="scroll"><table>
+    <tr><th>Format</th><th>Keeps</th><th>Throws away</th></tr>
+    <tr><td>WAV</td><td>Every sample</td><td>Nothing</td></tr>
+    <tr><td>FLAC</td><td>Every sample</td><td>Redundancy only — lossless</td></tr>
+    <tr><td>MP3, AAC</td><td>What a model of you can hear</td><td>What it predicts you will mask</td></tr>
+    <tr><td>Opus</td><td>The same, tuned for low bitrate</td><td>More of it, more cleverly</td></tr>
+  </table></div>
+  <p class="pull">MP3 does not model sound. It models a listener.</p>
+  <template class="nt">A normative pair of ears is baked into every compressed file in the world. Ask whose ears they were, and when they were measured.</template>
+</section>
+
+<section class="slide dark" id="s-spectro" data-sec="The spectrogram">
+  <p class="eyebrow">Segment two · 40 to 55</p>
+  <h2 class="hero" style="font-size:var(--t-h1)">The spectrogram as a way of seeing</h2>
+  <p class="body">Time, frequency, and the choice between them</p>
+  <template class="nt">This segment grounds the course's temporal dimensions of place theme in something they can push back and forth with a slider.</template>
+</section>
+
+<section class="slide top" id="fft" data-sec="The spectrogram">
+  <h2 class="h1">You cannot have both</h2>
+  <canvas class="fig" data-fig="tradeoff" height="220"></canvas>
+  <div class="cols">
+    <div class="card"><h3>Time resolution</h3><p>When did it happen? Short windows answer this and blur the pitch.</p></div>
+    <div class="card"><h3>Frequency resolution</h3><p>What was it? Long windows answer this and smear the moment.</p></div>
+  </div>
+  <template class="nt">Do not say uncertainty principle unless someone asks. It is true and it is a distraction.</template>
+</section>
+
+<section class="slide top" id="demo-window" data-sec="The spectrogram" data-demo="FFT window">
+  <h2 class="h1">Instrument 05 · The window is the question</h2>
+  <div class="rig" data-rig="window">
+    <div class="rig-head"><span class="eyebrow">Same signal, different window</span>
+      <span class="src" data-src="window"></span></div>
+    <div class="rig-body">
+      <div class="knobs">
+        <div class="knob"><label for="wn-size">FFT size <b data-out="wn-size">2 048</b></label>
+          <input type="range" id="wn-size" min="0" max="6" step="1" value="3"></div>
+        <button class="btn" data-act="play">Play test signal</button>
+        <button class="btn ghost" data-act="mic">Use microphone</button>
+        <button class="btn ghost" data-act="stop">Stop</button>
+      </div>
+      <canvas class="viz" data-canvas="window" height="260"></canvas>
+      <p class="note">Window <b class="num" data-out="wn-ms">46 ms</b> · frequency resolution <b class="num" data-out="wn-hz">21 Hz</b>. Clap, whistle, or play the test signal and watch the same event become a smear, a shape, or a line.</p>
+    </div>
+  </div>
+  <p class="pull">The window decides whether this place is a state or an event.</p>
+  <template class="nt">Get someone to clap at 256 and again at 16 384. The clap is a vertical stripe at one end and a horizontal smear at the other. Same clap.</template>
+</section>
+
+<section class="slide dark" id="s-measure" data-sec="Measuring vs listening">
+  <p class="eyebrow">Segment three · 65 to 85</p>
+  <h2 class="hero" style="font-size:var(--t-h1)">Measuring versus listening</h2>
+  <p class="body">Decibels, weighting, standards, indices</p>
+  <template class="nt">David K.'s five minutes on acoustic indices in practice sits at the end of this segment.</template>
+</section>
+
+<section class="slide top" id="weighting" data-sec="Measuring vs listening">
+  <h2 class="h1">Three steps away from the event</h2>
+  <div class="cols">
+    <div class="card"><h3>dB</h3><p>A ratio, never a quantity. Always relative to a reference somebody picked.</p></div>
+    <div class="card"><h3>A-weighting</h3><p>A curve derived from 1930s experiments with quiet pure tones. Still the legal standard.</p></div>
+    <div class="card"><h3>L(A)eq</h3><p>One number for an hour. The average of everything that happened.</p></div>
+  </div>
+  <p class="body wide">Each step discards more of the event and keeps more of the administration. By the third one, a scream and a fridge can produce the same figure.</p>
+  <template class="nt">A-weighting comes from the 40-phon equal-loudness contour — quiet, pure tones — and is now applied to loud, complex, real environments. Say that plainly.</template>
+</section>
+
+<section class="slide top" id="demo-weight" data-sec="Measuring vs listening" data-demo="A-weighting and L(A)eq">
+  <h2 class="h1">Instrument 06 · One number for the room</h2>
+  <div class="rig" data-rig="weight">
+    <div class="rig-head"><span class="eyebrow">Live level, with and without the curve</span>
+      <button class="btn" data-act="mic">Start microphone</button>
+      <button class="btn ghost" data-act="reset">Reset L(A)eq</button>
+      <button class="btn ghost" data-act="stop">Stop</button></div>
+    <div class="rig-body">
+      <div class="knobs">
+        <label class="tog"><input type="checkbox" id="wt-a" checked> A-weighting</label>
+        <div class="knob"><label for="wt-cal">Calibration offset <b data-out="wt-cal">+94 dB</b></label>
+          <input type="range" id="wt-cal" min="60" max="120" step="1" value="94"></div>
+        <div class="readout">
+          <div><span>Now</span><b class="num" data-out="wt-now">—</b></div>
+          <div><span>L(A)eq</span><b class="num" data-out="wt-eq">—</b></div>
+          <div><span>Elapsed</span><b class="num" data-out="wt-t">0:00</b></div>
+        </div>
+      </div>
+      <canvas class="viz" data-canvas="weight" height="230"></canvas>
+      <p class="note">The curve on the left is the A-weighting response; the strip on the right is level over time. The readout is <b>relative</b> — the offset slider is a stand-in for a calibrator, exactly as it will be on the Nano board in the workshop.</p>
+    </div>
+  </div>
+  <template class="nt">Toggle A-weighting while someone holds a low hum or scrapes a chair. Low frequencies lose several decibels instantly. Then ask whether the room got quieter.</template>
+</section>
+
+<section class="slide top" id="iso" data-sec="Measuring vs listening">
+  <h2 class="h1">Soundscape is not noise</h2>
+  <p class="pull" style="max-width:32ch">ISO 12913-1 defines soundscape as the acoustic environment as perceived or experienced, in context.</p>
+  <p class="body wide">The standard exists because measurement alone kept giving the wrong answer. A quiet street can be unpleasant. A loud market can be loved. Context is not a softening word here — it is the object of study.</p>
+  <template class="nt">Worth noting that it took until 2014 for an international standard to say this.</template>
+</section>
+
+<section class="slide top" id="networks" data-sec="Measuring vs listening">
+  <h2 class="h1">Who is listening to the city</h2>
+  <div class="scroll"><table>
+    <tr><th>Project</th><th>What it is</th><th>What it decides for you</th></tr>
+    <tr><td>SONYC, NYU</td><td>Sensor network plus machine listening across New York</td><td>Which sound classes exist at all</td></tr>
+    <tr><td>NoiseCapture</td><td>Open, crowd-sourced noise mapping from phones</td><td>Where measurement happens, and where it does not</td></tr>
+    <tr><td>Hush City</td><td>Citizens map the quiet places they value</td><td>That quiet is an asset, not an absence</td></tr>
+  </table></div>
+  <div class="linkrow">
+    <a class="linkout" href="https://wp.nyu.edu/sonyc/" target="_blank" rel="noopener">SONYC</a>
+    <a class="linkout" href="https://noise-planet.org/noisecapture.html" target="_blank" rel="noopener">NoiseCapture</a>
+    <a class="linkout" href="https://opensourcesoundscapes.org/hush-city" target="_blank" rel="noopener">Hush City</a>
+  </div>
+  <template class="nt">Three answers to the same question, with three different politics built in before a single measurement is taken. SONYC's classifier has a fixed taxonomy — anything outside it is, institutionally, not a sound.</template>
+</section>
+
+<section class="slide top" id="indices" data-sec="Measuring vs listening">
+  <h2 class="h1">One number for a forest</h2>
+  <div class="cols">
+    <div class="card"><h3>ACI</h3><p>Acoustic complexity — how much the spectrum keeps changing.</p></div>
+    <div class="card"><h3>NDSI</h3><p>Biophony against anthropophony, as a ratio of two bands.</p></div>
+    <div class="card"><h3>BI</h3><p>Bioacoustic index — energy in the band where birds usually sing.</p></div>
+  </div>
+  <p class="body wide">scikit-maad computes all of these in a line of Python. Each one compresses a habitat to a scalar, and each one hides a decision about which band is life and which band is machine.</p>
+  <div class="linkrow"><a class="linkout" href="https://scikit-maad.github.io/" target="_blank" rel="noopener">scikit-maad</a>
+    <a class="linkout" href="https://www.openacousticdevices.info/audiomoth" target="_blank" rel="noopener">AudioMoth</a></div>
+  <template class="nt">Hand over to David K. here if he is taking the five minutes on indices in practice.</template>
+</section>
+<section class="slide dark" id="s-maps" data-sec="Sound maps">
+  <p class="eyebrow">Segment four · 85 to 100</p>
+  <h2 class="hero" style="font-size:var(--t-h1)">Sound maps, and how to build one</h2>
+  <p class="body">The collections, the critique, the stack</p>
+  <template class="nt">This is the segment that feeds Station B of the workshop directly.</template>
+</section>
+
+<section class="slide top" id="collections" data-sec="Sound maps">
+  <h2 class="h1">Three collections, three tenses</h2>
+  <div class="scroll"><table>
+    <tr><th>Project</th><th>Tense</th><th>What it is</th></tr>
+    <tr><td>radio aporee ::: maps</td><td>Past</td><td>An open archive of field recordings pinned worldwide</td></tr>
+    <tr><td>Cities and Memory</td><td>Past and imagined</td><td>Every recording paired with a reimagined version</td></tr>
+    <tr><td>Locus Sonus Locustream</td><td>Present</td><td>Live open microphone streams, always on</td></tr>
+  </table></div>
+  <div class="linkrow">
+    <a class="linkout" href="https://aporee.org/maps/" target="_blank" rel="noopener">Open aporee live</a>
+    <a class="linkout" href="https://citiesandmemory.com/sound-map/" target="_blank" rel="noopener">Cities and Memory</a>
+    <a class="linkout" href="https://locusonus.org/soundmap/" target="_blank" rel="noopener">Locustream</a>
+  </div>
+  <p class="pull">Locustream is the interesting one: a map in the present tense.</p>
+  <template class="nt">Open Locustream live in a second tab and leave a stream playing under the next slide. It never fails to land. Do not screenshot these — show them running.</template>
+</section>
+
+<section class="slide top" id="chatty" data-sec="Sound maps">
+  <h2 class="h1">The same method, both senses</h2>
+  <div class="cols">
+    <div class="card"><h3>Chatty Maps</h3><p>Urban sound maps built from what people wrote about streets on social media. Aiello, Schifanella and Quercia, 2016.</p></div>
+    <div class="card"><h3>Smelly Maps</h3><p>The same pipeline, pointed at smell. Same team, same city data, a different sense.</p></div>
+  </div>
+  <div class="linkrow">
+    <a class="linkout" href="https://royalsocietypublishing.org/doi/10.1098/rsos.150690" target="_blank" rel="noopener">Chatty Maps paper</a>
+    <a class="linkout" href="https://goodcitylife.org/chattymaps/project.php" target="_blank" rel="noopener">Project site</a>
+  </div>
+  <p class="pull">This is the hinge between the sound half of this course and the scent half.</p>
+  <template class="nt">Neither map involved a microphone or a nose. Both are maps of language about sensation. Worth asking whether that is a cheat or a method.</template>
+</section>
+
+<section class="slide top" id="pin" data-sec="Sound maps">
+  <h2 class="h1">A pin asserts that a place has a sound</h2>
+  <canvas class="fig" data-fig="mics" height="230"></canvas>
+  <p class="body wide">Three microphone positions at one spot, each capturing a different proportion of the same place. In the workshop you will record one site three ways, and your own files will disagree with each other by lunchtime.</p>
+  <div class="linkrow">
+    <a class="linkout" href="https://journals.sagepub.com/doi/full/10.1177/2057047317719469" target="_blank" rel="noopener">Droumeva, critical cartography</a>
+    <a class="linkout" href="https://eprints.lancs.ac.uk/id/eprint/83502/1/Sound_Maps_Matter_AAM.pdf" target="_blank" rel="noopener">Thulin, Sound Maps Matter</a>
+  </div>
+  <template class="nt">The figure is schematic on purpose. The real version arrives in the workshop when they hear their own three takes back to back.</template>
+</section>
+
+<section class="slide top" id="sonic-city" data-sec="Sound maps">
+  <p class="eyebrow">Two thousand and three</p>
+  <h2 class="h1">Sonic City — Gaye, Mazé and Holmquist, Viktoria Institute</h2>
+  <figure class="slot"><figcaption>Media slot — drop a still or a clip of Sonic City here if you can clear it with the authors, or a photo of your own wearable prototypes. Replace this figure in the HTML.</figcaption></figure>
+  <p class="body wide">A wearable that turned walking through the city into the act of playing it. Sensors on the body, the street as the score. The newest idea in this field is twenty-three years old, and it was Swedish.</p>
+  <div class="linkrow"><a class="linkout" href="https://www.nime.org/proceedings/2003/nime2003_109.pdf" target="_blank" rel="noopener">NIME 2003 paper</a></div>
+  <template class="nt">Useful corrective to the assumption that anything involving sensors and cities is new. Read the old papers.</template>
+</section>
+
+<section class="slide top" id="build-one" data-sec="Sound maps">
+  <h2 class="h1">Building one in the browser</h2>
+  <div class="scroll"><table>
+    <tr><th>Layer</th><th>What you use</th></tr>
+    <tr><td>Audio</td><td>Web Audio API, or Tone.js, p5.sound, Howler over it</td></tr>
+    <tr><td>Without code</td><td>WebAudioXML — declarative XML over Web Audio, built for teaching</td></tr>
+    <tr><td>Map</td><td>Leaflet or MapLibre</td></tr>
+    <tr><td>Input</td><td>getUserMedia and geolocation, already in every phone</td></tr>
+  </table></div>
+  <p class="body wide">Everything you have been watching in this lecture is Web Audio and a canvas, in one file, with no libraries. You can read the whole thing.</p>
+  <div class="linkrow">
+    <a class="linkout" href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API" target="_blank" rel="noopener">Web Audio API</a>
+    <a class="linkout" href="https://github.com/hanslindetorp/WebAudioXML/wiki" target="_blank" rel="noopener">WebAudioXML</a>
+    <a class="linkout" href="https://tonejs.github.io/" target="_blank" rel="noopener">Tone.js</a>
+  </div>
+  <template class="nt">Say the second paragraph out loud. The fact that the instruments they just watched are a readable single file is the most motivating thing in the lecture for Station B.</template>
+</section>
+
+<section class="slide dark" id="s-gen" data-sec="When the machine generates">
+  <p class="eyebrow">Segment five · 100 to 115</p>
+  <h2 class="hero" style="font-size:var(--t-h1)">When the machine generates instead of records</h2>
+  <p class="body">Koray Tahiroğlu and the SOPI group, Aalto University</p>
+  <template class="nt">Show the AI-terity video early in this segment rather than describing it. Two minutes of footage does more than five of explanation.</template>
+</section>
+
+<section class="slide top" id="ganspace" data-sec="When the machine generates">
+  <h2 class="h1">From sampling a space to navigating one</h2>
+  <canvas class="fig" data-fig="latent" height="240"></canvas>
+  <div class="cols">
+    <div class="card"><h3>GANSynth</h3><p>Learns timbre as vectors in a 512-dimensional latent space. On its own you can only roll dice in it.</p></div>
+    <div class="card"><h3>GANSpaceSynth</h3><p>Runs PCA over that space so the axes mean something. Now a musician can steer instead of sample.</p></div>
+  </div>
+  <p class="body">Tahiroğlu, Kastemaa and Koli, AIMC 2021. Open source — but it needs training and a GPU, so this is a demo, not a workshop task.</p>
+  <div class="linkrow">
+    <a class="linkout" href="https://aimc2021.iem.at/wp-content/uploads/2021/06/AIMC_2021_Tahiroglu_Kastemaa_Coli.pdf" target="_blank" rel="noopener">GANSpaceSynth paper</a>
+    <a class="linkout" href="https://github.com/SopiMlab/GANSpaceSynth" target="_blank" rel="noopener">Code</a>
+    <a class="linkout" href="https://sopi.aalto.fi/" target="_blank" rel="noopener">SOPI group</a>
+  </div>
+  <template class="nt">Be explicit that this is not on the workshop menu, or three students will try to install it on the day. The figure is a schematic of random sampling versus a PCA axis you can walk along.</template>
+</section>
+
+<section class="slide top" id="alterity" data-sec="When the machine generates">
+  <h2 class="h1">An instrument designed against mastery</h2>
+  <figure class="slot"><figcaption>Video slot — embed or link your clip of AI-terity in performance. Ask SOPI for a shareable file rather than lifting one; they are generous about teaching use.</figcaption></figure>
+  <p class="body wide">Al-terity is deformable and 3D-printed, with pressure and bend sensors driving that latent space in real time. When AI-terity 2.0 notices you have settled, it jumps to a new point in the space. The performer is held in continuous uncertainty.</p>
+  <div class="linkrow">
+    <a class="linkout" href="https://www.nime.org/proceedings/2020/nime2020_paper65.pdf" target="_blank" rel="noopener">Al-terity, NIME 2020</a>
+    <a class="linkout" href="https://nime.pubpub.org/pub/9zu49nu5/release/1" target="_blank" rel="noopener">AI-terity 2.0, NIME 2021</a>
+  </div>
+  <template class="nt">Tie this back to the opening: the microphone was already a proposition. This instrument is a proposition that argues back. The tool has an agenda.</template>
+</section>
+
+<section class="slide stmt" id="axes" data-sec="When the machine generates">
+  <h2 class="h1">A latent space is a map you can walk. Who drew its axes?</h2>
+  <p class="body wide" style="max-width:52ch">PCA takes them from the training set. The training set is the cartographer — and nobody asked it for a legend.</p>
+  <template class="nt">The strongest transferable idea in the lecture. It applies just as hard to the ecoacoustic indices from segment three, and to the SONYC taxonomy.</template>
+</section>
+
+<section class="slide top dark" id="five" data-sec="Close">
+  <h2 class="h1">The same move, five times</h2>
+  <ul class="plain">
+    <li>Sample rate decides who exists.</li>
+    <li>Weighting decides whose discomfort counts.</li>
+    <li>Window length decides whether a place is a state or an event.</li>
+    <li>The pin decides a site has one sound.</li>
+    <li>The training set decides what can be imagined.</li>
+  </ul>
+  <p class="body">None of these are technical details. All of them were settled before anyone listened.</p>
+  <template class="nt">If they remember one slide, it should be this one. Leave it up while you take questions.</template>
+</section>
+
+<section class="slide top" id="reading" data-sec="Close">
+  <h2 class="h1">Read three things before the workshop</h2>
+  <div class="scroll"><table>
+    <tr><th>Text</th><th>Why this one</th></tr>
+    <tr><td>Droumeva, Soundmapping as critical cartography (2017)</td><td>What a sound map does, and what it hides. Open access</td></tr>
+    <tr><td>Shaw and Bowers, Ambulation (NIME 2020)</td><td>Field recording as live performance, not documentation</td></tr>
+    <tr><td>Scurto and Postel, Soundwalking Deep Latent Spaces (NIME 2023)</td><td>Walking a latent space instead of a street</td></tr>
+  </table></div>
+  <div class="linkrow">
+    <a class="linkout" href="https://journals.sagepub.com/doi/full/10.1177/2057047317719469" target="_blank" rel="noopener">Droumeva</a>
+    <a class="linkout" href="https://nime.org/proc/nime20_4/index.html" target="_blank" rel="noopener">Ambulation</a>
+    <a class="linkout" href="https://nime.org/proc/nime2023_33/" target="_blank" rel="noopener">Soundwalking Deep Latent Spaces</a>
+  </div>
+  <p class="tiny">Three, deliberately. The course caps additional reading at 100 pages and you will need some of that budget later.</p>
+  <template class="nt">Links are live on this slide, so students can open them from their own copy of the deck.</template>
+</section>
+
+<section class="slide top" id="next" data-sec="Close">
+  <p class="eyebrow">Next session</p>
+  <h2 class="h1">Four hours in the field</h2>
+  <ul class="plain">
+    <li>Bring headphones and a charged phone.</li>
+    <li>Wear shoes you can walk three sites in.</li>
+    <li>Come in pairs, or be paired.</li>
+  </ul>
+  <p class="body wide">This deck stays online. Every instrument in it takes your own recordings through the file picker — use them on your field material before the workshop if you want a head start.</p>
+  <template class="nt">Say the weather plan out loud. Three outdoor sites in Malmö in autumn needs a wet-weather version.</template>
+</section>
+
+</div>
+
+<div class="sheet" id="index" hidden>
+  <p class="eyebrow">Index — press I or Escape to close</p>
+  <div class="idx" id="idxlist"></div>
+</div>
+
+<div class="notes" id="notes" hidden><p id="notetext"></p></div>
+
+<div class="bar">
+  <button data-nav="prev">◀ Prev</button>
+  <button data-nav="next">Next ▶</button>
+  <button data-nav="index">Index</button>
+  <button data-nav="demos">Instruments</button>
+  <button data-nav="notes">Notes</button>
+  <button data-nav="theme">Theme</button>
+  <span class="where"><b id="where-sec">Opening</b> · <span class="num" id="where-n">1/32</span></span>
+</div>
+</div>
+<script>
+(function(){
+"use strict";
+var $=function(s,r){return (r||document).querySelector(s)};
+var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+function V(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim()||"#888"}
+
+/* ============ NAVIGATION ============ */
+var slides=$$(".slide"), cur=0, booted=false;
+var idxList=$("#idxlist"), sheet=$("#index"), notes=$("#notes"), noteText=$("#notetext");
+
+slides.forEach(function(s,i){
+  var b=document.createElement("button");
+  if(s.dataset.demo) b.className="demo";
+  var t=s.querySelector(".h1,.hero");
+  b.innerHTML='<b>'+String(i+1).padStart(2,"0")+'</b><span>'+(s.dataset.demo||(t?t.textContent:s.id))+'</span>';
+  b.addEventListener("click",function(){go(i);sheet.hidden=true});
+  idxList.appendChild(b);
+});
+
+function go(n){
+  n=Math.max(0,Math.min(slides.length-1,n));
+  if(booted && n===cur) return;
+  stopAll();
+  slides[cur].hidden=true; cur=n; slides[cur].hidden=false; booted=true;
+  slides[cur].scrollTop=0;
+  $("#rail").style.width=((cur+1)/slides.length*100)+"%";
+  $("#where-sec").textContent=slides[cur].dataset.sec||"";
+  $("#where-n").textContent=(cur+1)+"/"+slides.length;
+  var nt=slides[cur].querySelector(".nt");
+  noteText.textContent=nt?nt.innerHTML.trim():"No notes on this slide.";
+  if(location.hash.slice(1)!==slides[cur].id) history.replaceState(null,"","#"+slides[cur].id);
+  drawFigs();
+}
+slides.forEach(function(s,i){if(i>0)s.hidden=true});
+
+document.addEventListener("keydown",function(e){
+  if(/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
+  var k=e.key;
+  if(k==="ArrowRight"||k==="PageDown"||k===" "){e.preventDefault();go(cur+1)}
+  else if(k==="ArrowLeft"||k==="PageUp"){e.preventDefault();go(cur-1)}
+  else if(k==="Home"){go(0)} else if(k==="End"){go(slides.length-1)}
+  else if(k==="i"||k==="I"){sheet.hidden=!sheet.hidden}
+  else if(k==="n"||k==="N"){notes.hidden=!notes.hidden}
+  else if(k==="d"||k==="D"){jumpDemo()}
+  else if(k==="Escape"){sheet.hidden=true;notes.hidden=true}
+});
+$$("[data-nav]").forEach(function(b){b.addEventListener("click",function(){
+  var a=b.dataset.nav;
+  if(a==="prev")go(cur-1); else if(a==="next")go(cur+1);
+  else if(a==="index")sheet.hidden=!sheet.hidden;
+  else if(a==="notes")notes.hidden=!notes.hidden;
+  else if(a==="demos")jumpDemo();
+  else if(a==="theme"){
+    var r=document.documentElement;
+    var dark=r.getAttribute("data-theme")==="dark"||(!r.getAttribute("data-theme")&&matchMedia("(prefers-color-scheme:dark)").matches);
+    r.setAttribute("data-theme",dark?"light":"dark"); drawFigs();
+  }
+})});
+function jumpDemo(){
+  for(var i=1;i<=slides.length;i++){var j=(cur+i)%slides.length; if(slides[j].dataset.demo){go(j);return}}
+}
+matchMedia("(prefers-color-scheme:dark)").addEventListener("change",drawFigs);
+
+/* ============ CANVAS HELPERS ============ */
+function fit(cv){
+  var dpr=Math.min(2,window.devicePixelRatio||1);
+  var w=cv.clientWidth||600;
+  var h=cv.clientHeight||parseInt(cv.getAttribute("height"),10)||220;
+  cv.width=Math.round(w*dpr); cv.height=Math.round(h*dpr);
+  var c=cv.getContext("2d"); c.setTransform(dpr,0,0,dpr,0,0);
+  return {c:c,w:w,h:h,dpr:dpr};
+}
+var MAGMA=[[0,0,4],[28,16,68],[79,18,123],[129,37,129],[181,54,122],[229,80,100],[251,135,97],[254,194,135],[252,253,191]];
+function magma(t){
+  t=Math.max(0,Math.min(1,t))*(MAGMA.length-1);
+  var i=Math.floor(t), f=t-i, a=MAGMA[i], b=MAGMA[Math.min(MAGMA.length-1,i+1)];
+  return "rgb("+Math.round(a[0]+(b[0]-a[0])*f)+","+Math.round(a[1]+(b[1]-a[1])*f)+","+Math.round(a[2]+(b[2]-a[2])*f)+")";
+}
+function label(c,x,y,txt,col){c.fillStyle=col;c.font="11px 'IBM Plex Mono',monospace";c.fillText(txt,x,y)}
+
+/* ============ STATIC FIGURES ============ */
+var FIGS={};
+FIGS.stems=function(cv){
+  var g=fit(cv),c=g.c,w=g.w,h=g.h,pad=26,ink=V("--ink"),ac=V("--accent"),fa=V("--faint");
+  c.clearRect(0,0,w,h);
+  c.strokeStyle=fa;c.globalAlpha=.5;c.beginPath();c.moveTo(pad,h/2);c.lineTo(w-pad,h/2);c.stroke();c.globalAlpha=1;
+  c.strokeStyle=ink;c.globalAlpha=.45;c.lineWidth=1.5;c.beginPath();
+  for(var x=pad;x<=w-pad;x++){var t=(x-pad)/(w-2*pad);var y=h/2-Math.sin(t*Math.PI*5.5)*(h/2-pad)*.82;x===pad?c.moveTo(x,y):c.lineTo(x,y)}
+  c.stroke();c.globalAlpha=1;
+  var N=22;
+  for(var i=0;i<=N;i++){
+    var t2=i/N, px=pad+t2*(w-2*pad), py=h/2-Math.sin(t2*Math.PI*5.5)*(h/2-pad)*.82;
+    c.strokeStyle=ac;c.lineWidth=1.5;c.beginPath();c.moveTo(px,h/2);c.lineTo(px,py);c.stroke();
+    c.fillStyle=ac;c.beginPath();c.arc(px,py,3,0,7);c.fill();
+  }
+  label(c,pad,h-6,"the wave is continuous — the samples are all we keep",fa);
+};
+FIGS.stairs=function(cv){
+  var g=fit(cv),c=g.c,w=g.w,h=g.h,pad=26,ac=V("--accent"),fa=V("--faint"),ink=V("--ink");
+  c.clearRect(0,0,w,h);
+  var levels=8, span=h-2*pad;
+  c.strokeStyle=fa;c.globalAlpha=.25;
+  for(var i=0;i<=levels;i++){var y=pad+i*span/levels;c.beginPath();c.moveTo(pad,y);c.lineTo(w-pad,y);c.stroke()}
+  c.globalAlpha=1;
+  c.strokeStyle=ink;c.globalAlpha=.4;c.lineWidth=1.5;c.beginPath();
+  for(var x=pad;x<=w-pad;x++){var t=(x-pad)/(w-2*pad);var y2=pad+span/2-Math.sin(t*Math.PI*3)*span*.42;x===pad?c.moveTo(x,y2):c.lineTo(x,y2)}
+  c.stroke();c.globalAlpha=1;
+  c.strokeStyle=ac;c.lineWidth=2;c.beginPath();
+  for(var x2=pad;x2<=w-pad;x2++){
+    var t3=(x2-pad)/(w-2*pad), yv=pad+span/2-Math.sin(t3*Math.PI*3)*span*.42;
+    var q=pad+Math.round((yv-pad)/(span/levels))*(span/levels);
+    x2===pad?c.moveTo(x2,q):c.lineTo(x2,q);
+  }
+  c.stroke();
+  label(c,pad,h-6,"8 levels shown. Real 16-bit audio has 65 536 — the staircase is still there",fa);
+};
+FIGS.tradeoff=function(cv){
+  var g=fit(cv),c=g.c,w=g.w,h=g.h,pad=34,ac=V("--accent"),fa=V("--faint"),ink=V("--ink");
+  c.clearRect(0,0,w,h);
+  var boxes=[[256,"6 ms","a sequence of events"],[2048,"46 ms","a texture"],[16384,"370 ms","a steady state"]];
+  var bw=(w-2*pad-24)/3;
+  boxes.forEach(function(b,i){
+    var x=pad+i*(bw+12);
+    c.strokeStyle=fa;c.globalAlpha=.4;c.strokeRect(x,pad,bw,h-2*pad-24);c.globalAlpha=1;
+    var n=[26,7,2][i];
+    c.fillStyle=ac;
+    for(var k=0;k<n;k++){var sx=x+4+k*((bw-8)/n);c.globalAlpha=.25+.55*(1-i/3);c.fillRect(sx,pad+4,Math.max(1.5,(bw-8)/n-2),h-2*pad-32)}
+    c.globalAlpha=1;
+    c.fillStyle=ink;c.font="600 13px 'Familjen Grotesk',sans-serif";c.fillText(b[0]+" samples",x,pad-10);
+    label(c,x,h-24,b[1]+" window",fa); label(c,x,h-8,b[2],ac);
+  });
+};
+FIGS.mics=function(cv){
+  var g=fit(cv),c=g.c,w=g.w,h=g.h,ac=V("--accent"),fa=V("--faint"),ink=V("--ink");
+  c.clearRect(0,0,w,h);
+  var cx=w*0.5, cy=h*0.62;
+  [[110,"the street"],[70,"the doorway"],[34,"the drain"]].forEach(function(r,i){
+    c.strokeStyle=fa;c.globalAlpha=.3+i*.12;c.beginPath();c.arc(cx,cy,r[0],Math.PI,0);c.stroke();c.globalAlpha=1;
+    label(c,cx+r[0]-8,cy+14,r[1],fa);
+  });
+  [[cx-150,cy-10,"ground · close"],[cx+30,cy-60,"waist · mid"],[cx+160,cy-120,"overhead · far"]].forEach(function(p){
+    c.fillStyle=ac;c.beginPath();c.arc(p[0],p[1],6,0,7);c.fill();
+    c.strokeStyle=ac;c.globalAlpha=.45;c.beginPath();c.moveTo(p[0],p[1]);c.lineTo(cx,cy);c.stroke();c.globalAlpha=1;
+    label(c,p[0]-10,p[1]-12,p[2],ink);
+  });
+  c.fillStyle=ink;c.globalAlpha=.6;c.beginPath();c.arc(cx,cy,5,0,7);c.fill();c.globalAlpha=1;
+  label(c,8,h-6,"one place, three microphones, three claims about what is here",fa);
+};
+FIGS.latent=function(cv){
+  var g=fit(cv),c=g.c,w=g.w,h=g.h,ac=V("--accent"),fa=V("--faint"),ink=V("--ink"),wm=V("--warm");
+  c.clearRect(0,0,w,h);
+  var half=w/2-16;
+  function frame(ox,title,sub){
+    c.strokeStyle=fa;c.globalAlpha=.4;c.strokeRect(ox,26,half,h-62);c.globalAlpha=1;
+    c.fillStyle=ink;c.font="600 13px 'Familjen Grotesk',sans-serif";c.fillText(title,ox,18);
+    label(c,ox,h-8,sub,fa);
+  }
+  frame(0,"GANSynth — random sampling","every point a dice roll");
+  var seed=7;function rnd(){seed=(seed*1103515245+12345)%2147483648;return seed/2147483648}
+  for(var i=0;i<26;i++){var x=8+rnd()*(half-16),y=34+rnd()*(h-78);c.fillStyle=fa;c.globalAlpha=.75;c.beginPath();c.arc(x,y,3,0,7);c.fill()}
+  c.globalAlpha=1;
+  var ox2=w/2+16; frame(ox2,"GANSpaceSynth — PCA axes","a direction you can walk");
+  c.strokeStyle=ac;c.lineWidth=2;c.beginPath();c.moveTo(ox2+14,h-52);c.lineTo(ox2+half-14,38);c.stroke();
+  c.strokeStyle=wm;c.globalAlpha=.7;c.beginPath();c.moveTo(ox2+14,44);c.lineTo(ox2+half-14,h-56);c.stroke();c.globalAlpha=1;
+  for(var k=0;k<7;k++){var t=k/6,px=ox2+14+t*(half-28),py=(h-52)+t*(38-(h-52));
+    c.fillStyle=ac;c.beginPath();c.arc(px,py,4,0,7);c.fill()}
+  label(c,ox2+half-96,h-42,"PC1 — brightness",ac); label(c,ox2+16,52,"PC2",wm);
+};
+function drawFigs(){$$("canvas.fig").forEach(function(cv){var f=FIGS[cv.dataset.fig];if(f&&cv.clientWidth)f(cv)})}
+
+/* ============ AUDIO CORE ============ */
+var AC=null;
+function ctx(){
+  if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){return null}}
+  if(AC.state!=="running")AC.resume();
+  return AC;
+}
+function scene(a){ /* synthesised soundscape: rumble, wind, birds, keys */
+  var sr=a.sampleRate,n=Math.floor(sr*8),b=a.createBuffer(1,n,sr),d=b.getChannelData(0);
+  var lp=0,lp2=0,bp=0,bp2=0;
+  for(var i=0;i<n;i++){
+    var wn=Math.random()*2-1;
+    lp=lp*0.9965+wn*0.0035; lp2=lp2*0.995+lp*0.005;          /* traffic rumble */
+    bp=bp*0.97+wn*0.03; bp2=bp2*0.86+bp*0.14;                 /* wind band */
+    d[i]=lp2*9.5+(bp-bp2)*0.10;
+  }
+  var t,j,k,env,f;
+  for(k=0;k<16;k++){ /* birdsong: glides 2.8k -> 6.2k with a harmonic */
+    var st=Math.floor((0.3+k*0.46+Math.random()*0.18)*sr), dur=Math.floor(sr*(0.05+Math.random()*0.05));
+    var f0=2600+Math.random()*900, f1=f0*(1.7+Math.random()*0.9), ph=0;
+    for(j=0;j<dur&&st+j<n;j++){
+      t=j/dur; f=f0+(f1-f0)*t; ph+=2*Math.PI*f/sr; env=Math.sin(Math.PI*t);env*=env;
+      d[st+j]+=(Math.sin(ph)*0.5+Math.sin(ph*2)*0.16)*env*0.34;
+    }
+  }
+  var hp=0,prev=0;
+  for(k=0;k<5;k++){ /* keys / metal: bright noise bursts */
+    var st2=Math.floor((1.1+k*1.5)*sr), dur2=Math.floor(sr*0.16);
+    for(j=0;j<dur2&&st2+j<n;j++){
+      var x=Math.random()*2-1; hp=0.93*(hp+x-prev); prev=x;
+      d[st2+j]+=hp*Math.exp(-j/(sr*0.028))*0.30;
+    }
+  }
+  var pk=0; for(i=0;i<n;i++)pk=Math.max(pk,Math.abs(d[i]));
+  for(i=0;i<n;i++)d[i]=d[i]/pk*0.82;
+  return b;
+}
+function tone(a){ /* decaying two-tone: the classic dither test */
+  var sr=a.sampleRate,n=Math.floor(sr*6),b=a.createBuffer(1,n,sr),d=b.getChannelData(0);
+  for(var i=0;i<n;i++){var t=i/sr,g=Math.pow(10,(-2-58*(t/6))/20);
+    d[i]=(Math.sin(2*Math.PI*440*t)*0.7+Math.sin(2*Math.PI*660*t)*0.3)*g}
+  return b;
+}
+function sweepBuf(a){ /* log sweep 40 Hz -> 20 kHz over 10 s */
+  var sr=a.sampleRate,dur=10,n=Math.floor(sr*dur),b=a.createBuffer(1,n,sr),d=b.getChannelData(0),ph=0;
+  for(var i=0;i<n;i++){var t=i/sr,f=40*Math.pow(500,t/dur);ph+=2*Math.PI*f/sr;
+    d[i]=Math.sin(ph)*0.5*Math.min(1,t*6)*Math.min(1,(dur-t)*4)}
+  return b;
+}
+function zoh(inp,srcRate,target){
+  var out=new Float32Array(inp.length),step=srcRate/target;
+  for(var i=0;i<inp.length;i++){var j=Math.min(inp.length-1,Math.round(Math.floor(i/step)*step));out[i]=inp[j]}
+  return out;
+}
+function quant(inp,bits,dither){
+  var out=new Float32Array(inp.length),q=2/Math.pow(2,bits),x;
+  for(var i=0;i<inp.length;i++){
+    x=inp[i]; if(dither)x+=(Math.random()+Math.random()-1)*q*0.5;
+    out[i]=Math.max(-1,Math.min(1,Math.round(x/q)*q));
+  }
+  return out;
+}
+function fromFloat(a,f,sr){var b=a.createBuffer(1,f.length,sr);b.copyToChannel?b.copyToChannel(f,0):b.getChannelData(0).set(f);return b}
+function antialias(a,buf,freq){
+  var off=new OfflineAudioContext(1,buf.length,buf.sampleRate);
+  var s=off.createBufferSource();s.buffer=buf;var node=s;
+  for(var i=0;i<4;i++){var fl=off.createBiquadFilter();fl.type="lowpass";fl.frequency.value=freq;fl.Q.value=0.7;node.connect(fl);node=fl}
+  node.connect(off.destination);s.start();
+  return off.startRendering();
+}
+function aChain(a){ /* A-weighting approximation, IEC 61672 pole positions */
+  var specs=[["highpass",20.6],["highpass",20.6],["highpass",107.7],["highpass",737.9],["lowpass",12194],["lowpass",12194]],nodes=[];
+  specs.forEach(function(s){var f=a.createBiquadFilter();f.type=s[0];f.frequency.value=s[1];f.Q.value=0.5;nodes.push(f)});
+  for(var i=0;i<nodes.length-1;i++)nodes[i].connect(nodes[i+1]);
+  return {input:nodes[0],output:nodes[nodes.length-1]};
+}
+
+/* ============ RIG PLUMBING ============ */
+var rigs={};
+function Rig(name,el){
+  this.name=name; this.el=el; this.src=null; this.stream=null; this.raf=0;
+  this.userBuf=null; this.anim=null;
+  rigs[name]=this;
+}
+Rig.prototype.stop=function(){
+  if(this.src){try{this.src.stop()}catch(e){} try{this.src.disconnect()}catch(e){} this.src=null}
+  if(this.stream){this.stream.getTracks().forEach(function(t){t.stop()});this.stream=null}
+  if(this.raf){cancelAnimationFrame(this.raf);this.raf=0}
+  this.mic=false;
+  if(this.onstop)this.onstop();
+};
+function stopAll(){for(var k in rigs)rigs[k].stop()}
+function micNode(rig,a,cb){
+  if(!micOK()){return micFail(rig,insecureMsg())}
+  navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false}})
+  .then(function(st){rig.stream=st;cb(a.createMediaStreamSource(st))})
+  .catch(function(err){micFail(rig,"The microphone did not start ("+(err&&err.name?err.name:"blocked")+"). Allow microphone access for this page, check that no other app is holding the device, then press the button again."+localHint())});
+}
+function micFail(rig,msg){
+  var s=rig.el.querySelector('[data-slot="micerr"]');
+  if(!s){s=document.createElement("p");s.className="note warn";s.setAttribute("data-slot","micerr");
+    (rig.el.querySelector(".rig-body")||rig.el).appendChild(s)}
+  s.textContent=msg;s.hidden=false;
+}
+function micOK(){return !!(window.isSecureContext&&navigator.mediaDevices&&navigator.mediaDevices.getUserMedia)}
+function isFile(){return location.protocol==="file:"}
+function localHint(){
+  return isFile()?"  If it keeps failing, run   python -m http.server 8000   in this folder and open http://localhost:8000/ instead.":"";
+}
+function insecureMsg(){
+  return "Microphone unavailable in this browser: it needs https or localhost."+localHint();
+}
+function flagInsecure(){
+  var hard=!micOK();
+  if(!hard)return;
+  var bar=document.createElement("div");
+  bar.setAttribute("role","status");
+  bar.style.cssText="flex:none;background:"+V("--warm")+
+    ";color:#fff;font-family:var(--mono);font-size:12px;line-height:1.5;padding:9px 14px;display:flex;gap:14px;align-items:flex-start";
+  var txt=document.createElement("span"); txt.textContent=insecureMsg(); bar.appendChild(txt);
+  var x=document.createElement("button"); x.textContent="Dismiss";
+  x.style.cssText="margin-left:auto;background:none;border:1px solid rgba(255,255,255,.6);color:#fff;padding:3px 10px;cursor:pointer;font:inherit;flex:none";
+  x.addEventListener("click",function(){bar.remove()});
+  bar.appendChild(x);
+  document.body.insertBefore(bar,document.body.firstChild);
+  $$('[data-act="mic"]').forEach(function(b){b.disabled=true;b.textContent="Mic needs localhost";b.title=insecureMsg()});
+  $$('.rig').forEach(function(r){ if(r.querySelector('[data-act="mic"]')){
+     var p=r.querySelector('[data-slot="micerr"]');
+     if(!p){p=document.createElement("p");p.className="note warn";p.setAttribute("data-slot","micerr");(r.querySelector(".rig-body")||r).appendChild(p)}
+     p.textContent=insecureMsg(); p.hidden=false; }});
+}
+function out(rig,key,val){var e=rig.el.querySelector('[data-out="'+key+'"]');if(e)e.textContent=val}
+function fmt(n){return n.toLocaleString("en-US").replace(/,/g," ")}
+
+/* ============ SOURCE PICKER ============ */
+function sourcePicker(rig,defaultLabel){
+  var host=rig.el.querySelector("[data-src]"); if(!host)return;
+  host.innerHTML='<button data-s="built" aria-pressed="true">'+defaultLabel+'</button>'+
+    '<input type="file" accept="audio/*" aria-label="Load your own recording">';
+  var btn=host.querySelector("button"), fileIn=host.querySelector("input");
+  btn.addEventListener("click",function(){rig.userBuf=null;btn.setAttribute("aria-pressed","true");fileIn.value="";if(rig.refresh)rig.refresh()});
+  fileIn.addEventListener("change",function(){
+    var f=fileIn.files&&fileIn.files[0]; if(!f)return;
+    var a=ctx(); if(!a)return;
+    f.arrayBuffer().then(function(ab){return a.decodeAudioData(ab)}).then(function(buf){
+      var mono=buf.getChannelData(0), keep=Math.min(mono.length,buf.sampleRate*12);
+      var f32=new Float32Array(keep); f32.set(mono.subarray(0,keep));
+      rig.userBuf=fromFloat(a,f32,buf.sampleRate);
+      btn.setAttribute("aria-pressed","false");
+      if(rig.refresh)rig.refresh();
+    }).catch(function(){alert("Could not decode that file. Try a WAV, MP3 or M4A.")});
+  });
+}
+
+/* ============ SPECTROGRAM VIEW ============ */
+function spectroLoop(rig,cv,analyser,maxHz){
+  var g=fit(cv),c=g.c,w=g.w,h=g.h,dpr=g.dpr,STEP=2;
+  var scratch=document.createElement("canvas"), sc=scratch.getContext("2d");
+  function sync(){scratch.width=cv.width;scratch.height=cv.height}
+  sync(); c.fillStyle="#0B0710";c.fillRect(0,0,w,h);
+  var bins=analyser.frequencyBinCount, data=new Uint8Array(bins);
+  var nyq=analyser.context.sampleRate/2, top=Math.max(8,Math.min(bins,Math.floor(bins*maxHz/nyq)));
+  var quiet=0, warned=false;
+  function frame(){
+    rig.raf=requestAnimationFrame(frame);
+    if(cv.clientWidth!==w||cv.clientHeight!==h){
+      var g2=fit(cv);c=g2.c;w=g2.w;h=g2.h;dpr=g2.dpr;sync();c.fillStyle="#0B0710";c.fillRect(0,0,w,h);
+    }
+    analyser.getByteFrequencyData(data);
+    /* scroll left by STEP css px, in DEVICE pixels so it stays exact at any zoom or DPR */
+    sc.clearRect(0,0,scratch.width,scratch.height);
+    sc.drawImage(cv,0,0);
+    c.save(); c.setTransform(1,0,0,1,0,0);
+    c.clearRect(0,0,cv.width,cv.height);
+    c.drawImage(scratch,-Math.round(STEP*dpr),0);
+    c.restore();
+    var peak=0;
+    c.fillStyle="#0B0710"; c.fillRect(w-STEP,0,STEP,h);
+    for(var y=0;y<h;y++){
+      var idx=Math.floor((1-y/h)*top), v=data[idx];
+      if(v>peak)peak=v;
+      c.fillStyle=magma(v/255);
+      c.fillRect(w-STEP,y,STEP,1);
+    }
+    c.fillStyle="rgba(11,7,16,0.82)";c.fillRect(0,0,64,h);
+    for(var m=0;m<=4;m++){
+      var hz=maxHz*m/4, yy=h-(m/4)*h;
+      c.strokeStyle="rgba(255,255,255,0.13)";c.beginPath();c.moveTo(64,yy);c.lineTo(w,yy);c.stroke();
+      label(c,6,Math.min(h-3,yy+10),(hz/1000).toFixed(hz>=1000?0:1)+" kHz","rgba(255,255,255,0.55)");
+    }
+    /* live level bar: silence now looks different from a dead demo */
+    c.fillStyle="rgba(255,255,255,0.18)";c.fillRect(64,h-5,w-64,4);
+    c.fillStyle=magma(Math.min(1,peak/220));c.fillRect(64,h-5,(w-64)*(peak/255),4);
+    if(rig.mic){
+      if(peak<3){quiet++}else{quiet=0;if(warned){warned=false;var q=rig.el.querySelector(String.fromCharCode(91)+"data-slot='micerr'"+String.fromCharCode(93));if(q)q.hidden=true}}
+      if(quiet>180&&!warned){
+        warned=true;
+        micFail(rig,"The microphone is connected but reading silence. Check which input Chrome is using (padlock icon in the address bar) and that the device is not muted.");
+      }
+    }
+  }
+  frame();
+}
+function pull(a,node){var z=a.createGain();z.gain.value=0;node.connect(z);z.connect(a.destination);return node}
+function idleCanvas(cv,msg){
+  var g=fit(cv),c=g.c,w=g.w,h=g.h;
+  c.fillStyle="#0B0710";c.fillRect(0,0,w,h);
+  c.fillStyle="rgba(255,255,255,0.4)";c.font="12px 'IBM Plex Mono',monospace";
+  c.fillText(msg,14,h/2);
+}
+
+/* ============ 01 · LIVE SPECTROGRAM ============ */
+(function(){
+  var el=$('[data-rig="spectro"]'); if(!el)return;
+  var rig=new Rig("spectro",el), cv=el.querySelector('[data-canvas="spectro"]');
+  idleCanvas(cv,"microphone idle — press Start microphone");
+  rig.onstop=function(){idleCanvas(cv,"microphone stopped")};
+  el.querySelector('[data-act="mic"]').addEventListener("click",function(){
+    var a=ctx(); if(!a)return; rig.stop();
+    micNode(rig,a,function(node){
+      var an=a.createAnalyser(); an.fftSize=2048; an.smoothingTimeConstant=0.55;
+      node.connect(an); pull(a,an); rig.mic=true; spectroLoop(rig,cv,an,12000);
+    });
+  });
+  el.querySelector('[data-act="stop"]').addEventListener("click",function(){rig.stop()});
+})();
+
+/* ============ 02 · DECIMATION LADDER ============ */
+(function(){
+  var el=$('[data-rig="decimate"]'); if(!el)return;
+  var rig=new Rig("decimate",el), cv=el.querySelector('[data-canvas="decimate"]');
+  var RATES=[2000,4000,8000,11025,16000,22050,32000,44100];
+  var slider=$("#dec-rate"), aa=$("#dec-aa"), sceneBuf=null;
+  sourcePicker(rig,"Test soundscape");
+  function readout(){
+    var r=RATES[+slider.value];
+    out(rig,"dec-rate",fmt(r)+" Hz"); out(rig,"dec-ceiling",fmt(Math.round(r/2))+" Hz");
+  }
+  slider.addEventListener("input",readout); readout();
+  idleCanvas(cv,"press Play — the spectrogram shows what survives the rate you chose");
+  rig.onstop=function(){idleCanvas(cv,"stopped")};
+  rig.refresh=function(){};
+  el.querySelector('[data-act="play"]').addEventListener("click",function(){
+    var a=ctx(); if(!a)return; rig.stop();
+    if(!sceneBuf)sceneBuf=scene(a);
+    var base=rig.userBuf||sceneBuf, rate=RATES[+slider.value];
+    var prep=aa.checked?antialias(a,base,rate*0.45):Promise.resolve(base);
+    prep.then(function(b){
+      var f=zoh(b.getChannelData(0),b.sampleRate,rate);
+      var s=a.createBufferSource(); s.buffer=fromFloat(a,f,b.sampleRate); s.loop=true;
+      var an=a.createAnalyser(); an.fftSize=2048; an.smoothingTimeConstant=0.5;
+      var gain=a.createGain(); gain.gain.value=0.85;
+      s.connect(gain); gain.connect(an); gain.connect(a.destination);
+      s.start(); rig.src=s; spectroLoop(rig,cv,an,22050);
+    });
+  });
+  el.querySelector('[data-act="stop"]').addEventListener("click",function(){rig.stop()});
+})();
+
+/* ============ 03 · BIT DEPTH AND DITHER ============ */
+(function(){
+  var el=$('[data-rig="crush"]'); if(!el)return;
+  var rig=new Rig("crush",el), cv=el.querySelector('[data-canvas="crush"]');
+  var bits=$("#cr-bits"), dith=$("#cr-dither"), toneBuf=null;
+  sourcePicker(rig,"Fading two-tone");
+  function base(){var a=ctx();if(!a)return null;if(!toneBuf)toneBuf=tone(a);return rig.userBuf||toneBuf}
+  function draw(){
+    var a=ctx(); if(!a)return; var b=base(); if(!b)return;
+    var n=+bits.value, src=b.getChannelData(0);
+    var startS=Math.floor(src.length*0.72), len=Math.floor(b.sampleRate*0.008);
+    var slice=new Float32Array(len); slice.set(src.subarray(startS,startS+len));
+    var q=quant(slice,n,dith.checked);
+    var g=fit(cv),c=g.c,w=g.w,h=g.h,pad=14;
+    c.fillStyle="#0B0710";c.fillRect(0,0,w,h);
+    var peak=0.0001,i; for(i=0;i<len;i++)peak=Math.max(peak,Math.abs(slice[i]),Math.abs(q[i]));
+    var sc=(h/2-pad)/peak;
+    var step=2/Math.pow(2,n)*sc;
+    if(step>2){c.strokeStyle="rgba(255,255,255,0.10)";
+      for(var y=h/2%step;y<h;y+=step){c.beginPath();c.moveTo(0,y);c.lineTo(w,y);c.stroke()}}
+    function path(arr,col,lw){c.strokeStyle=col;c.lineWidth=lw;c.beginPath();
+      for(var k=0;k<len;k++){var x=k/(len-1)*w,y=h/2-arr[k]*sc;k?c.lineTo(x,y):c.moveTo(x,y)}c.stroke()}
+    path(slice,"rgba(255,255,255,0.35)",1.5);
+    path(q,V("--accent"),2);
+    label(c,10,16,"8 ms from the quiet tail · grey = original, colour = quantised","rgba(255,255,255,0.5)");
+    out(rig,"cr-bits",n+" bit"); out(rig,"cr-levels",fmt(Math.pow(2,n)));
+  }
+  rig.refresh=draw;
+  bits.addEventListener("input",draw); dith.addEventListener("change",draw);
+  out(rig,"cr-bits","16 bit"); out(rig,"cr-levels","65 536");
+  idleCanvas(cv,"move the bit-depth slider to draw the staircase");
+  el.querySelector('[data-act="play"]').addEventListener("click",function(){
+    var a=ctx(); if(!a)return; rig.stop(); var b=base(); if(!b)return;
+    var f=quant(b.getChannelData(0),+bits.value,dith.checked);
+    var s=a.createBufferSource(); s.buffer=fromFloat(a,f,b.sampleRate);
+    var gn=a.createGain(); gn.gain.value=0.9; s.connect(gn); gn.connect(a.destination);
+    s.start(); rig.src=s; draw();
+  });
+  el.querySelector('[data-act="stop"]').addEventListener("click",function(){rig.stop()});
+})();
+
+/* ============ 04 · ALIASING ============ */
+(function(){
+  var el=$('[data-rig="alias"]'); if(!el)return;
+  var rig=new Rig("alias",el), cv=el.querySelector('[data-canvas="alias"]');
+  var RATES=[4000,6000,8000,11025,16000,22050], slider=$("#al-rate"), sw=null, t0=0;
+  var DUR=10, FMAX=20000;
+  function srcFreq(t){return 40*Math.pow(500,t/DUR)}
+  function fold(f,fs){var m=f%fs;if(m>fs/2)m=fs-m;return m}
+  function draw(playT){
+    var g=fit(cv),c=g.c,w=g.w,h=g.h,padL=52,padB=26,padT=14;
+    var fs=RATES[+slider.value];
+    c.fillStyle="#0B0710";c.fillRect(0,0,w,h);
+    var X=function(t){return padL+t/DUR*(w-padL-10)}, Y=function(f){return h-padB-f/FMAX*(h-padB-padT)};
+    c.strokeStyle="rgba(255,255,255,0.12)";
+    for(var m=0;m<=4;m++){var f=FMAX*m/4;c.beginPath();c.moveTo(padL,Y(f));c.lineTo(w-10,Y(f));c.stroke();
+      label(c,6,Y(f)+4,(f/1000)+" kHz","rgba(255,255,255,0.5)")}
+    c.strokeStyle="rgba(255,255,255,0.45)";c.setLineDash([4,4]);c.beginPath();
+    c.moveTo(padL,Y(fs/2));c.lineTo(w-10,Y(fs/2));c.stroke();c.setLineDash([]);
+    label(c,padL+6,Y(fs/2)-6,"Nyquist ceiling "+fmt(Math.round(fs/2))+" Hz","rgba(255,255,255,0.7)");
+    c.strokeStyle="rgba(255,255,255,0.40)";c.lineWidth=1.5;c.beginPath();
+    for(var i=0;i<=400;i++){var t=i/400*DUR,x=X(t),y=Y(Math.min(FMAX,srcFreq(t)));i?c.lineTo(x,y):c.moveTo(x,y)}c.stroke();
+    c.strokeStyle=V("--accent");c.lineWidth=2.4;c.beginPath();
+    for(var j=0;j<=800;j++){var t2=j/800*DUR,x2=X(t2),y2=Y(fold(srcFreq(t2),fs));j?c.lineTo(x2,y2):c.moveTo(x2,y2)}c.stroke();
+    label(c,padL+6,padT+12,"grey = frequency generated","rgba(255,255,255,0.55)");
+    label(c,padL+6,padT+28,"colour = frequency you actually hear",V("--accent"));
+    if(playT!=null&&playT>=0&&playT<=DUR){
+      var f1=srcFreq(playT),f2=fold(f1,fs);
+      c.strokeStyle="rgba(255,255,255,0.8)";c.lineWidth=1;c.beginPath();c.moveTo(X(playT),padT);c.lineTo(X(playT),h-padB);c.stroke();
+      c.fillStyle=V("--accent");c.beginPath();c.arc(X(playT),Y(f2),5,0,7);c.fill();
+      out(rig,"al-f",fmt(Math.round(f1))+" Hz"); out(rig,"al-a",fmt(Math.round(f2))+" Hz");
+    }
+  }
+  function readout(){out(rig,"al-rate",fmt(RATES[+slider.value])+" Hz");draw(null)}
+  slider.addEventListener("input",readout); readout();
+  rig.onstop=function(){out(rig,"al-f","—");out(rig,"al-a","—");draw(null)};
+  el.querySelector('[data-act="play"]').addEventListener("click",function(){
+    var a=ctx(); if(!a)return; rig.stop();
+    if(!sw)sw=sweepBuf(a);
+    var fs=RATES[+slider.value];
+    var f=zoh(sw.getChannelData(0),sw.sampleRate,fs);
+    var s=a.createBufferSource(); s.buffer=fromFloat(a,f,sw.sampleRate);
+    var gn=a.createGain(); gn.gain.value=0.5; s.connect(gn); gn.connect(a.destination);
+    t0=a.currentTime; s.start(); rig.src=s;
+    (function tick(){rig.raf=requestAnimationFrame(tick);draw(a.currentTime-t0)})();
+  });
+  el.querySelector('[data-act="stop"]').addEventListener("click",function(){rig.stop()});
+})();
+
+/* ============ 05 · FFT WINDOW ============ */
+(function(){
+  var el=$('[data-rig="window"]'); if(!el)return;
+  var rig=new Rig("window",el), cv=el.querySelector('[data-canvas="window"]');
+  var SIZES=[256,512,1024,2048,4096,8192,16384], slider=$("#wn-size"), an=null, sceneBuf=null;
+  sourcePicker(rig,"Test soundscape");
+  function readout(){
+    var a=AC, sr=a?a.sampleRate:48000, n=SIZES[+slider.value];
+    out(rig,"wn-size",fmt(n));
+    out(rig,"wn-ms",(n/sr*1000).toFixed(n/sr*1000<10?1:0)+" ms");
+    out(rig,"wn-hz",(sr/n).toFixed(sr/n<10?1:0)+" Hz");
+    if(an)try{an.fftSize=n}catch(e){}
+  }
+  slider.addEventListener("input",readout); readout();
+  idleCanvas(cv,"play the test signal or use the microphone, then move the window slider");
+  rig.onstop=function(){an=null;idleCanvas(cv,"stopped")};
+  function start(node,a){
+    an=a.createAnalyser(); an.fftSize=SIZES[+slider.value]; an.smoothingTimeConstant=0.35;
+    node.connect(an); pull(a,an); spectroLoop(rig,cv,an,12000); readout();
+  }
+  el.querySelector('[data-act="play"]').addEventListener("click",function(){
+    var a=ctx(); if(!a)return; rig.stop();
+    if(!sceneBuf)sceneBuf=scene(a);
+    var b=rig.userBuf||sceneBuf;
+    var s=a.createBufferSource(); s.buffer=b; s.loop=true;
+    var gn=a.createGain(); gn.gain.value=0.8; s.connect(gn); gn.connect(a.destination);
+    s.start(); rig.src=s; start(gn,a);
+  });
+  el.querySelector('[data-act="mic"]').addEventListener("click",function(){
+    var a=ctx(); if(!a)return; rig.stop();
+    micNode(rig,a,function(node){start(node,a)});
+  });
+  el.querySelector('[data-act="stop"]').addEventListener("click",function(){rig.stop()});
+})();
+
+/* ============ 06 · A-WEIGHTING AND L(A)eq ============ */
+(function(){
+  var el=$('[data-rig="weight"]'); if(!el)return;
+  var rig=new Rig("weight",el), cv=el.querySelector('[data-canvas="weight"]');
+  var useA=$("#wt-a"), cal=$("#wt-cal"), hist=[], sumSq=0, nAcc=0, tStart=0;
+  function aResp(f){
+    var f2=f*f, num=Math.pow(12194,2)*f2*f2;
+    var den=(f2+Math.pow(20.6,2))*Math.sqrt((f2+Math.pow(107.7,2))*(f2+Math.pow(737.9,2)))*(f2+Math.pow(12194,2));
+    return 20*Math.log10(num/den)+2.0;
+  }
+  cal.addEventListener("input",function(){out(rig,"wt-cal","+"+cal.value+" dB")});
+  function reset(){hist=[];sumSq=0;nAcc=0;tStart=AC?AC.currentTime:0;out(rig,"wt-eq","—");out(rig,"wt-t","0:00")}
+  el.querySelector('[data-act="reset"]').addEventListener("click",reset);
+  function paint(now,leq){
+    var g=fit(cv),c=g.c,w=g.w,h=g.h,split=Math.min(230,w*0.36),padB=22,padT=12;
+    c.fillStyle="#0B0710";c.fillRect(0,0,w,h);
+    /* left: the A-weighting response curve */
+    c.strokeStyle="rgba(255,255,255,0.12)";c.beginPath();c.moveTo(split,0);c.lineTo(split,h);c.stroke();
+    var lo=Math.log10(20), hi=Math.log10(20000);
+    c.strokeStyle=useA.checked?V("--accent"):"rgba(255,255,255,0.28)";c.lineWidth=2;c.beginPath();
+    for(var i=0;i<=120;i++){
+      var f=Math.pow(10,lo+(hi-lo)*i/120), db=useA.checked?aResp(f):0;
+      var x=8+i/120*(split-20), y=padT+(10-db)/60*(h-padT-padB);
+      i?c.lineTo(x,y):c.moveTo(x,y);
+    }
+    c.stroke();
+    label(c,8,h-6,useA.checked?"A-weighting response, 20 Hz to 20 kHz":"flat — no weighting","rgba(255,255,255,0.55)");
+    label(c,8,padT+10,"0 dB","rgba(255,255,255,0.35)");
+    /* right: level history */
+    var x0=split+8, ww=w-x0-8, top=30, bot=130;
+    hist.forEach(function(v,k){
+      var x=x0+k/Math.max(1,hist.length-1)*ww;
+      var y=h-padB-Math.max(0,Math.min(1,(v-top)/(bot-top)))*(h-padB-padT);
+      c.fillStyle=magma(Math.max(0,Math.min(1,(v-top)/(bot-top))));
+      c.fillRect(x,y,2,h-padB-y);
+    });
+    if(leq!=null&&isFinite(leq)){
+      var ly=h-padB-Math.max(0,Math.min(1,(leq-top)/(bot-top)))*(h-padB-padT);
+      c.strokeStyle="rgba(255,255,255,0.85)";c.setLineDash([5,4]);c.beginPath();
+      c.moveTo(x0,ly);c.lineTo(w-8,ly);c.stroke();c.setLineDash([]);
+      label(c,x0+4,ly-6,"L(A)eq "+leq.toFixed(1)+" dB","rgba(255,255,255,0.85)");
+    }
+    label(c,x0,h-6,"level over time · "+top+" to "+bot+" dB","rgba(255,255,255,0.5)");
+  }
+  paint(null,null);
+  rig.onstop=function(){out(rig,"wt-now","—")};
+  el.querySelector('[data-act="mic"]').addEventListener("click",function(){
+    var a=ctx(); if(!a)return; rig.stop(); reset();
+    micNode(rig,a,function(node){
+      var chain=aChain(a), an=a.createAnalyser(); an.fftSize=2048;
+      var flat=a.createAnalyser(); flat.fftSize=2048;
+      node.connect(chain.input); chain.output.connect(an); node.connect(flat); pull(a,an); pull(a,flat);
+      var buf=new Float32Array(an.fftSize);
+      tStart=a.currentTime;
+      (function tick(){
+        rig.raf=requestAnimationFrame(tick);
+        var src=useA.checked?an:flat;
+        if(src.getFloatTimeDomainData) src.getFloatTimeDomainData(buf);
+        var s=0; for(var i=0;i<buf.length;i++)s+=buf[i]*buf[i];
+        var ms=s/buf.length, db=10*Math.log10(ms+1e-12)+(+cal.value);
+        sumSq+=ms; nAcc++;
+        var leq=10*Math.log10(sumSq/nAcc+1e-12)+(+cal.value);
+        hist.push(db); if(hist.length>420)hist.shift();
+        out(rig,"wt-now",db.toFixed(1)+" dB"); out(rig,"wt-eq",leq.toFixed(1)+" dB");
+        var el2=Math.max(0,a.currentTime-tStart);
+        out(rig,"wt-t",Math.floor(el2/60)+":"+String(Math.floor(el2%60)).padStart(2,"0"));
+        paint(db,leq);
+      })();
+    });
+  });
+  useA.addEventListener("change",function(){paint(null,null)});
+  el.querySelector('[data-act="stop"]').addEventListener("click",function(){rig.stop()});
+})();
+
+/* ============ BOOT ============ */
+window.addEventListener("hashchange",function(){var i=slides.findIndex(function(x){return x.id===location.hash.slice(1)});if(i>-1&&i!==cur)go(i)});
+var byHash=slides.findIndex(function(s){return s.id===location.hash.slice(1)});
+window.addEventListener("resize",function(){clearTimeout(window.__rz);window.__rz=setTimeout(drawFigs,160)});
+flagInsecure();
+go(byHash>-1?byHash:0);
+drawFigs();
+})();
+</script>
+
+</body>
+</html>
