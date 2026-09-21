@@ -16,8 +16,8 @@ with the Web Audio API and a canvas.
 
 Sample rate decides which creatures exist in your data. A-weighting decides whose
 discomfort is measurable. FFT window length decides whether a place is a state or an
-event. A map pin decides a site has one sound. None of these are neutral, and all of
-them are set before anybody listens.
+event. A map pin decides a site has one sound. A training set decides what a machine can
+imagine. None of these are neutral, and all of them are set before anybody listens.
 
 ## Six live instruments
 
@@ -27,11 +27,14 @@ them are set before anybody listens.
 | 02 | Decimation ladder | Drag the sample rate from 44.1 kHz to 2 kHz and hear who disappears |
 | 03 | Bit depth and dither | 16 down to 2 bits, with dither on or off, on the quiet tail of a tone |
 | 04 | Aliasing | A sweep sampled too slowly, with the fold-back plotted against the Nyquist ceiling |
-| 05 | FFT window | 256 to 16 384 samples on a live spectrogram — the time/frequency trade-off by hand |
+| 05 | Window, spectrum, spectrogram | A cursor carries the analysis window across the wave while the window's spectrum and the spectrogram are drawn beneath it, column by column, at 256 to 16 384 samples |
 | 06 | A-weighting and L(A)eq | Live level with the weighting curve on or off, and a running equivalent level |
 
 Instruments 02, 03, 05 and 06 take **your own field recordings** through the file
 picker, so the deck works as a tool after the lecture is over, not just during it.
+Every slider is live while a sound is playing: changing the sample rate, the bit depth
+or the window size re-renders under the playhead rather than waiting for the next press
+of Play.
 
 ## Using it
 
@@ -43,6 +46,12 @@ Open the link above, or clone and open `index.html`.
 - **`N`** shows the speaker notes
 - **`Theme`** switches light and dark
 - Every slide has its own `#anchor`, so you can link straight to a demo
+
+### Putting your own institution on it
+
+Drop a logotype beside `index.html` as `mau-logo.png` and the cover and the bottom bar
+pick it up. With no such file, both fall back to a plain typographic lockup, so nothing
+breaks if you would rather not brand it at all.
 
 ### Running it locally
 
@@ -64,10 +73,16 @@ Safari. The microphone instruments require permission; the rest run without one.
 
 ## Teaching with it
 
-The deck is one half of a pair. The other is a four-hour field workshop: a soundwalk
-recording three contrasting sites three ways each, an analysis block, and a choice of
-three making stations — Sonic Pi, a browser sound map, or an Arduino Nano 33 BLE Sense
-logging sound level alongside temperature, humidity and light.
+The deck is one half of a pair. The other is a four-hour workshop, held indoors.
+Students arrive with recordings they made beforehand — one site, three microphone
+positions — and spend the first hour putting their own takes through the instruments
+from this deck. Then Strudel, taught from zero, and a choice of two tracks: compose
+sixty seconds out of your own recordings, or sonify a sensor log from an Arduino Nano
+33 BLE Sense, which offers exactly two sample rates and so forces the choice instrument
+02 is about.
+
+Because there is no fieldwork on the day, the recording brief has to land in the
+lecture. The closing slides carry it.
 
 ### The teaching notes are part of the material
 
@@ -85,6 +100,9 @@ the slides are.
 - Gaye, Mazé & Holmquist, *Sonic City* (NIME 2003)
 - Tahiroğlu, Kastemaa & Koli, *GANSpaceSynth* (AIMC 2021)
 - Aiello, Schifanella & Quercia, *Chatty Maps* (2016)
+- Engel et al., *GANSynth* (ICLR 2019)
+- Pieretti, Farina & Morri, *Acoustic Complexity Index* (2011)
+- ISO 12913-1:2014, *Acoustics — Soundscape — Part 1: Definition and conceptual framework*
 
 Live links to all of these are on the relevant slides.
 
