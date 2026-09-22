@@ -304,8 +304,8 @@ canvas.fig.mid{height:calc(clamp(120px,23vh,260px)*var(--fit))}
     <tr><td class="num">12–46</td><td>From air to numbers</td><td>02 Decimation · 03 Bit depth · 04 Aliasing</td></tr>
     <tr><td class="num">46–62</td><td>The spectrogram as a way of seeing</td><td>07 Two domains · 08 Fourier · 05 The window</td></tr>
     <tr><td class="num">62–72</td><td>Break</td><td>—</td></tr>
-    <tr><td class="num">72–92</td><td>Measuring versus listening</td><td>06 A-weighting and L(A)eq</td></tr>
-    <tr><td class="num">92–108</td><td>Sound maps — six of them, one at a time</td><td>—</td></tr>
+    <tr><td class="num">72–94</td><td>Measuring versus listening</td><td>06 A-weighting and L(A)eq</td></tr>
+    <tr><td class="num">94–108</td><td>Sound maps — six of them, one at a time</td><td>—</td></tr>
     <tr><td class="num">108–117</td><td>When the machine generates</td><td>—</td></tr>
     <tr><td class="num">117–120</td><td>Workshop brief</td><td>—</td></tr>
   </table></div>
@@ -554,7 +554,7 @@ canvas.fig.mid{height:calc(clamp(120px,23vh,260px)*var(--fit))}
     <figure class="plate" style="flex:1 1 380px">
       <img data-img src="assets/basilar-membrane.png" alt="The cochlea drawn uncoiled: the basilar membrane tapers from the narrow, stiff base to the wide, slack apex over 30 mm, labelled with the frequency that peaks at each position, from 1600 Hz near the base down to 25 Hz at the apex.">
       <div class="missing" hidden><p><span class="tagref">image missing</span><br>Expected at <b>assets/basilar-membrane.png</b></p></div>
-      <figcaption>“Uncoiled cochlea with basilar membrane”, Wikimedia Commons · <span data-credit>credit and licence to be completed from the file page</span></figcaption>
+      <figcaption>“Uncoiled cochlea with basilar membrane”, Wikimedia Commons · <span data-credit>CC BY 2.5</span></figcaption>
     </figure>
     <div class="how" style="flex:1 1 320px">
       <span><b>The shape —</b> the cochlea is a coiled tube. Drawn uncoiled it is a tapered strip: narrow and stiff at the base where sound enters, wide and slack at the far end.</span>
@@ -699,10 +699,36 @@ canvas.fig.mid{height:calc(clamp(120px,23vh,260px)*var(--fit))}
 </section>
 
 <section class="slide dark" id="s-measure" data-sec="Measuring vs listening">
-  <p class="eyebrow">Segment three · 72 to 92</p>
+  <p class="eyebrow">Segment three · 72 to 94</p>
   <h2 class="hero" style="font-size:var(--t-h1)">Measuring versus listening</h2>
   <p class="body">Decibels, weighting, standards, indices</p>
   <template class="nt">David K.'s five minutes on acoustic indices in practice sits at the end of this segment.</template>
+</section>
+
+<section class="slide top dense" id="measuring" data-sec="Measuring vs listening">
+  <p class="eyebrow">What the next hour is about</p>
+  <h2 class="h1">Measuring is a trade, with tools and rules</h2>
+  <p class="body wide">Somewhere behind every noise limit there is a person standing in a street with an instrument, following a written procedure. Before we argue about what the numbers leave out, it is worth knowing what actually happens.</p>
+  <div class="pair">
+    <div class="kv">
+      <div><b>the instrument</b><span>A sound level meter is a chain, not a gadget: a precision microphone, a preamplifier, a filter, a detector with a defined time constant, and a display that logs. The expensive part is the capsule, because its sensitivity is <i>known</i> — so many millivolts per pascal, certified.</span></div>
+      <div><b>two grades</b><span>Same architecture, different tolerance. Class 1 is within about ±1.1 dB at 1 kHz, class 2 about ±1.4 dB. Environmental work legally requires class 1; workplace measurement accepts class 2. Several countries additionally require the model to be type-approved by a national metrology lab — the certificate is part of the product.</span></div>
+      <div><b>worn, not held</b><span>For workplaces there are dosimeters: a matchbox clipped to the shoulder that logs a whole shift while the person gets on with their job.</span></div>
+    </div>
+    <div class="kv">
+      <div><b>calibration</b><span>A calibrator clamps over the microphone and makes a known tone — 94 dB at 1 kHz. You check before the session <i>and</i> after it, and if the two disagree by more than half a decibel the data is thrown away. Without that step the meter only knows volts; calibration is what turns volts into pascals.</span></div>
+      <div><b>the procedure</b><span>Outdoors a windshield is mandatory, always — wind on the diaphragm invents sound that was never in the air. You measure the background separately. Wind speed and direction can disqualify a session. Microphone height is prescribed. Duration is set by how often the thing you are measuring happens, not by how long you can stand there.</span></div>
+      <div><b>your phone is not this</b><span>A MEMS capsule designed for voice, automatic gain control you cannot switch off, and nowhere to attach a calibrator. The honest exception is NIOSH's app, and even that reaches class 2 only with an external calibrated microphone.</span></div>
+    </div>
+  </div>
+  <div class="linkrow">
+    <a class="linkout" href="https://www.hbkworld.com/en/products/instruments/handheld/sound-level-meters/type-2245" target="_blank" rel="noopener">B&amp;K 2245 · class 1</a>
+    <a class="linkout" href="https://www.norsonic.com/products/sound-level-meters/nor145-sound-level-meter/" target="_blank" rel="noopener">Norsonic Nor145</a>
+    <a class="linkout" href="https://www.bksv.com/media/doc/bp1311.pdf" target="_blank" rel="noopener">Calibrator 4231</a>
+    <a class="linkout" href="https://noise-planet.org" target="_blank" rel="noopener">NoiseCapture · free, open source</a>
+    <a class="linkout" href="https://www.cdc.gov/niosh/noise/about/app.html" target="_blank" rel="noopener">NIOSH meter app</a>
+  </div>
+  <template class="nt">Pass something round if you have it — even a cheap handheld makes the point that this is an object with a certificate rather than a feature in an app. The line that sets up the whole segment: a phone tells you <i>about</i> the sound, a calibrated meter tells you <i>how much</i> sound, because somebody can point at the paperwork connecting its reading to a physical unit. Everything after this slide is about what that paperwork costs you.</template>
 </section>
 
 <section class="slide top" id="db" data-sec="Measuring vs listening">
@@ -841,6 +867,29 @@ canvas.fig.mid{height:calc(clamp(120px,23vh,260px)*var(--fit))}
   <template class="nt">Three answers to the same question, with three different politics built in before a single measurement is taken. SONYC's classifier has a fixed taxonomy — anything outside it is, institutionally, not a sound.</template>
 </section>
 
+<section class="slide top" id="bullerkarta" data-sec="Measuring vs listening">
+  <p class="eyebrow">Malmö already has a sound map</p>
+  <h2 class="h1">And it maps exactly one thing</h2>
+  <div class="assetrow">
+    <figure class="plate photo" style="flex:1 1 420px">
+      <img data-img src="assets/malmo-bullerkarta.jpg" alt="Malmö stad's environmental web map showing the city in green, yellow, orange and red bands of modelled noise, with the motorway and rail corridors drawn as thick red lines, and a layer panel listing combined rail, road and harbour noise, road traffic noise and rail traffic noise.">
+      <div class="missing" hidden><p><span class="tagref">image missing</span><br>Expected at <b>assets/malmo-bullerkarta.jpg</b></p></div>
+      <figcaption>Malmö stad · Miljöövervakning på karta · CC0</figcaption>
+    </figure>
+    <div class="how" style="flex:1 1 300px">
+      <span><b>Why it exists —</b> not art, not research. The EU Environmental Noise Directive obliges every city over 100 000 people to remap its noise every five years.</span>
+      <span><b>What is on it —</b> combined rail, road and harbour noise, and road and rail separately. Mostly modelled from traffic counts, speeds and building geometry rather than measured street by street.</span>
+      <span><b>What is not on it —</b> the birds in Pildammsparken. The buskers on Södergatan. The bells. The sea. Children in a schoolyard. Not one of them is missing by accident.</span>
+    </div>
+  </div>
+  <p class="pull" style="max-width:46ch">A map made to find what should be removed is not a map of what is there.</p>
+  <div class="linkrow">
+    <a class="linkout" href="https://malmo.se/Bo-och-leva/Stadsmiljo-och-trafik/Laget-i-staden/Miljoovervakning-pa-karta.html" target="_blank" rel="noopener">The map</a>
+    <a class="linkout" href="https://malmo.se/Bo-och-leva/Stadsmiljo-och-trafik/Laget-i-staden/Buller.html" target="_blank" rel="noopener">Malmö on buller</a>
+  </div>
+  <template class="nt">This is the slide where the argument stops being about other cities. Open it live, zoom to where the students live, and let them find their own street. The colour scale runs green to red — quiet to loud — and that scale is itself the claim: sound is a quantity with a bad end. Then the question worth sitting with: the artists' sound maps in the next segment were all made in response to something like this, and none of them replaced it. The city's map is the one with legal force. What would it take for a map of what a place sounds like to matter as much as a map of what should be taken away?</template>
+</section>
+
 <section class="slide top" id="indices" data-sec="Measuring vs listening">
   <h2 class="h1">One number for a forest</h2>
   <p class="body wide">Ecoacoustics needs to compare ten thousand hours of recording, so it compresses each one to a scalar. Three indices do most of the work. Every one of them starts by drawing lines across the spectrum and naming the regions.</p>
@@ -936,7 +985,7 @@ canvas.fig.mid{height:calc(clamp(120px,23vh,260px)*var(--fit))}
   <template class="nt">The correlation heatmap in the scikit-maad notebook is the figure to show if you have a projector and thirty spare seconds: forty-odd indices, and great blocks of them almost perfectly correlated with each other. Forty numbers, perhaps four independent facts.</template>
 </section>
 <section class="slide dark" id="s-maps" data-sec="Sound maps">
-  <p class="eyebrow">Segment four · 92 to 108</p>
+  <p class="eyebrow">Segment four · 94 to 108</p>
   <h2 class="hero" style="font-size:var(--t-h1)">Sound maps, and how to build one</h2>
   <p class="body">Six projects, one at a time — then the critique and the stack</p>
   <template class="nt">This is the segment that feeds the compose track of the workshop directly — sixty seconds in Strudel, built only from their own recordings.</template>
@@ -1084,15 +1133,19 @@ canvas.fig.mid{height:calc(clamp(120px,23vh,260px)*var(--fit))}
   <p class="eyebrow">Two thousand and three</p>
   <h2 class="h1">Sonic City — Gaye, Mazé and Holmquist, Viktoria Institute</h2>
   <div class="assetrow">
-    <figure class="plate photo" style="flex:1 1 320px">
+    <figure class="plate photo" style="flex:1 1 300px">
+      <img data-img src="assets/sonic-city-street.jpg" alt="A still from a Sonic City test: a person in a white jacket walking down a street in Gothenburg wearing the prototype, captioned sonic city TEST 7 : OUTAKE.">
+      <div class="missing" hidden><p><span class="tagref">image missing</span><br>Expected at <b>assets/sonic-city-street.jpg</b></p></div>
+      <figcaption>Sonic City, test walk · courtesy of Ramia Mazé</figcaption>
+    </figure>
+    <figure class="plate photo" style="flex:1 1 300px">
       <img data-img src="assets/sonic-city-parts.jpg" alt="The Sonic City hardware laid out on a table: a microcontroller with sensor wires, a USB-MIDI converter, a subnotebook laptop, headphones and a microphone, each labelled with an arrow.">
       <div class="missing" hidden><p><span class="tagref">image missing</span><br>Expected at <b>assets/sonic-city-parts.jpg</b></p></div>
-      <figcaption>Gaye, Mazé &amp; Holmquist, <i>Sonic City</i>, NIME 2003 — CC BY 4.0 via Zenodo</figcaption>
+      <figcaption>The 2003 hardware · Gaye, Mazé &amp; Holmquist, NIME 2003, CC BY 4.0</figcaption>
     </figure>
-    <div class="how" style="flex:1 1 320px">
-      <span><b>What it took in 2003 —</b> a microcontroller, a bag of sensors, a USB-MIDI converter and a subnotebook, worn on the body. Everything in that photograph is now one phone, which is the point: the idea was not waiting on the hardware.</span>
-      <span><b>The body is the cursor.</b> Light, sound, metal, pollution and the wearer's own movement drove the processing. Walking a particular route produced a particular piece, and walking it differently produced a different one.</span>
-      <span>More images, if you want them: ramiamaze.com/02_sonic-city.html has the wearable in use; lalyagaye.com/sonic-city/ has video, All Rights Reserved — ask Lalya Gaye via Attaya Projects.</span>
+    <div class="how" style="flex:1 1 280px">
+      <span><b>The body is the cursor.</b> Light, sound, metal, pollution and the wearer's own movement drove the processing. Walking a particular route produced a particular piece; walking it differently produced a different one.</span>
+      <span><b>And look at the kit.</b> A microcontroller, a bag of sensors, a USB-MIDI converter and a subnotebook — all of it worn. Everything in that second photograph is now one phone, which is the point: the idea was never waiting on the hardware.</span>
     </div>
   </div>
   <p class="body wide">A wearable that turned walking through the city into the act of playing it. Sensors on the body, the street as the score. The newest idea in this field is twenty-three years old, and it was Swedish.</p>
@@ -1243,34 +1296,41 @@ canvas.fig.mid{height:calc(clamp(120px,23vh,260px)*var(--fit))}
   <template class="nt">If they remember one slide, it should be this one. Leave it up while you take questions.</template>
 </section>
 
-<section class="slide top" id="reading" data-sec="Close">
-  <h2 class="h1">Read three things before the workshop</h2>
+<section class="slide top dense" id="reading" data-sec="Close">
+  <h2 class="h1">Read three. Listen to two.</h2>
   <div class="scroll"><table>
-    <tr><th>Text</th><th>Why this one</th></tr>
-    <tr><td>Droumeva, Soundmapping as critical cartography (2017)</td><td>What a sound map does, and what it hides. Open access</td></tr>
-    <tr><td>Shaw and Bowers, Ambulation (NIME 2020)</td><td>Field recording as live performance, not documentation</td></tr>
-    <tr><td>Scurto and Postel, Soundwalking Deep Latent Spaces (NIME 2023)</td><td>Walking a latent space instead of a street</td></tr>
+    <tr><th>Read</th><th>Why this one, for what you are about to make</th></tr>
+    <tr><td>Shaw &amp; Bowers, <i>Ambulation</i> (NIME 2020)</td><td>Field recording treated as performance rather than documentation — the exact shift the workshop asks you to make</td></tr>
+    <tr><td>Westerkamp, <i>Linking Soundscape Composition and Acoustic Ecology</i> (2002)</td><td>The standard argument for composing <i>with</i> recordings rather than merely presenting them, by someone who has done it for forty years</td></tr>
+    <tr><td>Droumeva, <i>Soundmapping as critical cartography</i> (2017)</td><td>What a sound map does and what it hides. Open access, and the backbone of the middle of this lecture</td></tr>
+  </table></div>
+  <div class="scroll"><table>
+    <tr><th>Listen</th><th>Because this is what the day is trying to get to</th></tr>
+    <tr><td>Freeform — <i>Audio Tourism: Vietnam and China</i></td><td>Two months of MiniDisc field recordings turned into eight tracks. One person, one trip, one set of decisions</td></tr>
+    <tr><td>The reinterpretations of it</td><td>The same recordings handed to Autechre, Bill Laswell, Jan Jelinek, Atom™ and four others. Nobody added a field recording — they all subtracted differently</td></tr>
   </table></div>
   <div class="linkrow">
-    <a class="linkout" href="https://journals.sagepub.com/doi/full/10.1177/2057047317719469" target="_blank" rel="noopener">Droumeva</a>
     <a class="linkout" href="https://nime.org/proc/nime20_4/index.html" target="_blank" rel="noopener">Ambulation</a>
-    <a class="linkout" href="https://nime.org/proc/nime2023_33/" target="_blank" rel="noopener">Soundwalking Deep Latent Spaces</a>
+    <a class="linkout" href="https://hildegardwesterkamp.ca/writings/writings-by/?post_id=15&amp;title=linking-soundscape-composition-and-acoustic-ecology" target="_blank" rel="noopener">Westerkamp</a>
+    <a class="linkout" href="https://journals.sagepub.com/doi/full/10.1177/2057047317719469" target="_blank" rel="noopener">Droumeva</a>
+    <a class="linkout" href="https://simonpyke.bandcamp.com" target="_blank" rel="noopener">simonpyke.bandcamp.com</a>
+    <a class="linkout" href="https://freeform1.bandcamp.com" target="_blank" rel="noopener">freeform1.bandcamp.com</a>
   </div>
-  <p class="tiny">Three, deliberately. The course caps additional reading at 100 pages and you will need some of that budget later.</p>
-  <template class="nt">Links are live on this slide, so students can open them from their own copy of the deck.</template>
+  <p class="tiny">Three readings, deliberately — the course caps additional reading at 100 pages and you will need some of that budget later. The listening is not optional homework, it is the clearest picture of what a finished piece can be.</p>
+  <template class="nt">Push the listening harder than the reading. Twenty minutes of Audio Tourism does more to set expectations for the workshop than any of the three texts, because it answers the question they will actually be anxious about: what is this supposed to sound like when it is done. Tell them to listen to a source track and then its reinterpretation back to back — that pairing is the whole argument of the workshop, and we play it live on the day.</template>
 </section>
 
 <section class="slide top" id="next" data-sec="Close">
-  <p class="eyebrow">Next session</p>
-  <h2 class="h1">Four hours indoors, with what you recorded</h2>
-  <ul class="plain">
-    <li>Record before you come. One site, three microphone positions, a few minutes each.</li>
-    <li>Only your own recordings. Nothing from a sample library.</li>
-    <li>Bring a laptop with the files <em>on it</em>, not only in the cloud, and headphones.</li>
-  </ul>
-  <p class="body wide">There is no fieldwork on the day and no time to make good on a missing folder: everyone needs sound loaded within the first fifteen minutes or they work from the fallback pack instead of from a place they chose. Then an hour putting your own takes through the instruments from this lecture, Strudel taught from zero, and a choice between composing sixty seconds from your recordings or sonifying the sensor logs from the Nano boards.</p>
-  <p class="body wide">This deck stays online and every instrument in it takes your files through the picker. Running them on your own material beforehand is the head start.</p>
-  <template class="nt">The recording brief is the only thing on this slide that must land, so say it twice and put it in writing afterwards. If the group is likely to under-deliver, name a Malmö site each — the same place recorded by twelve people three ways is a better workshop than twelve different places.</template>
+  <p class="eyebrow">Next session · four hours, indoors</p>
+  <h2 class="h1">Make something out of the place you recorded</h2>
+  <p class="body wide">The workshop is not about collecting sound. It is about <b>making a sound expression</b> — a short piece, sixty seconds, built only from your own field recordings, that says something about the place they came from. You will be taught Strudel from zero to do it; no prior coding.</p>
+  <div class="cols">
+    <div class="card"><h3>Before you come</h3><p>Record one site, three microphone positions, a few minutes each. Only your own material — nothing from a sample library. Put the files <em>on</em> your laptop, not only in the cloud.</p></div>
+    <div class="card"><h3>On the day</h3><p>An hour running your own takes through the instruments from this lecture. Then Strudel, together, from nothing. Then you build the piece.</p></div>
+    <div class="card"><h3>What you hand over</h3><p>Ninety seconds, played to the room: which place this was, the one transformation that changed it most and what that claims about the place, and what you lost that you wish you had kept.</p></div>
+  </div>
+  <p class="body wide">There is no fieldwork on the day and no time to make good on a missing folder — everyone needs sound loaded within the first fifteen minutes. If the making track is not for you, the alternative is sonifying the sensor logs from the Nano boards, which ends in the same place: something to listen to, and an argument about it.</p>
+  <template class="nt">The recording brief and the third share-out question are the two things that must land. Say the brief twice and put it in writing afterwards. The third question — what did you lose that you wish you had kept — is the assessment rehearsal, and it is the one they will want to skip. If the group is likely to under-deliver on recordings, name a Malmö site each: the same place recorded by twelve people three ways is a better workshop than twelve different places.</template>
 </section>
 
 </div>
