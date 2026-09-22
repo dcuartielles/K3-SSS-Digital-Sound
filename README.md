@@ -103,8 +103,9 @@ the slides are.
 - Shaw & Bowers, *Ambulation* (NIME 2020)
 - Scurto & Postel, *Soundwalking Deep Latent Spaces* (NIME 2023)
 - Gaye, Mazé & Holmquist, *Sonic City* (NIME 2003)
+- Aiello, Schifanella, Quercia & Aletta, *Chatty Maps* (R. Soc. Open Sci. 2016)
+- Quercia, Schifanella, Aiello & McLean, *Smelly Maps* (ICWSM 2015)
 - Tahiroğlu, Kastemaa & Koli, *GANSpaceSynth* (AIMC 2021)
-- Aiello, Schifanella & Quercia, *Chatty Maps* (2016)
 - Engel et al., *GANSynth* (ICLR 2019)
 - Pieretti, Farina & Morri, *Acoustic Complexity Index* (2011)
 - ISO 12913-1:2014, *Acoustics — Soundscape — Part 1: Definition and conceptual framework*

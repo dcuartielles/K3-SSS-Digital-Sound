@@ -289,13 +289,13 @@ canvas.fig.mid{height:calc(clamp(120px,23vh,260px)*var(--fit))}
   <div class="scroll"><table>
     <tr><th>Minutes</th><th>Segment</th><th>Instrument</th></tr>
     <tr><td class="num">0–12</td><td>Two minutes of listening, three ways of seeing it</td><td>01 Live spectrogram</td></tr>
-    <tr><td class="num">12–44</td><td>From air to numbers</td><td>02 Decimation · 03 Bit depth · 04 Aliasing</td></tr>
-    <tr><td class="num">44–62</td><td>The spectrogram as a way of seeing</td><td>07 Two domains · 08 Fourier · 05 The window</td></tr>
+    <tr><td class="num">12–46</td><td>From air to numbers</td><td>02 Decimation · 03 Bit depth · 04 Aliasing</td></tr>
+    <tr><td class="num">46–62</td><td>The spectrogram as a way of seeing</td><td>07 Two domains · 08 Fourier · 05 The window</td></tr>
     <tr><td class="num">62–72</td><td>Break</td><td>—</td></tr>
     <tr><td class="num">72–92</td><td>Measuring versus listening</td><td>06 A-weighting and L(A)eq</td></tr>
-    <tr><td class="num">92–104</td><td>Sound maps, and how to build one</td><td>—</td></tr>
-    <tr><td class="num">104–116</td><td>When the machine generates</td><td>—</td></tr>
-    <tr><td class="num">116–120</td><td>Workshop brief</td><td>—</td></tr>
+    <tr><td class="num">92–107</td><td>Sound maps — five of them, one at a time</td><td>—</td></tr>
+    <tr><td class="num">107–117</td><td>When the machine generates</td><td>—</td></tr>
+    <tr><td class="num">117–120</td><td>Workshop brief</td><td>—</td></tr>
   </table></div>
   <template class="nt">Keep this short. Students do not need the map explained, only shown. If you are running late, the three index slides (ACI, NDSI, BI) and the latent-space genealogy are the ones to skip — everything else carries a demo or a turn in the argument. Instrument numbers are stable handles rather than a running order: 07 and 08 were added later and open the spectrogram segment, while the workshop deck still points students at 02, 03 and 06 by number.</template>
 </section>
@@ -340,7 +340,7 @@ canvas.fig.mid{height:calc(clamp(120px,23vh,260px)*var(--fit))}
 </section>
 
 <section class="slide dark" id="s-air" data-sec="From air to numbers">
-  <p class="eyebrow">Segment one · 12 to 44</p>
+  <p class="eyebrow">Segment one · 12 to 46</p>
   <h2 class="hero" style="font-size:var(--t-h1)">From air to numbers</h2>
   <p class="body">Sampling · quantisation · aliasing · formats</p>
   <template class="nt">Three live instruments carry this segment. Do not lecture the maths.</template>
@@ -432,8 +432,28 @@ canvas.fig.mid{height:calc(clamp(120px,23vh,260px)*var(--fit))}
       <p class="note"><b class="num" data-out="cr-levels">65 536</b> levels. Dither adds triangular noise of about one step before quantising.</p>
     </div>
   </div>
-  <p class="pull">We add noise on purpose, so the error becomes weather instead of lies.</p>
+  <p class="pull">The counter-intuitive one: adding noise makes you hear more.</p>
   <template class="nt">Run it at 4 bit with dither off, then on, on the fading tail of the signal. This is the most counter-intuitive demo of the hour: adding noise makes you hear more.</template>
+</section>
+
+<section class="slide top" id="dither" data-sec="From air to numbers">
+  <p class="eyebrow">What just happened</p>
+  <h2 class="h1">Dither: noise added on purpose</h2>
+  <div class="pair">
+    <div class="kv">
+      <div><b>the problem</b><span>Rounding each sample to the nearest step leaves an error. That error is not random — it is a function of the signal, so it rises and falls <i>with</i> the music. Correlated error is heard as distortion that belongs to the sound: a buzz that follows the melody, a grain that appears only on the quiet parts.</span></div>
+      <div><b>the move</b><span>Add a small amount of random noise — about one step, triangular — <i>before</i> rounding. Now which way a sample rounds is decided partly by a coin toss, so the error stops tracking the signal and becomes plain hiss.</span></div>
+      <div><b>why that helps</b><span>Ears are extraordinarily good at separating a steady noise floor from a signal, and very bad at separating distortion from the signal that caused it. Trading the second for the first is a good trade even though you added energy.</span></div>
+    </div>
+    <div class="kv">
+      <div><b>the surprise</b><span>With dither you can hear detail <b>quieter than one step</b>. Undithered, a fade below the last level collapses into chunks and then into digital silence. Dithered, the noise pushes those tiny values across the rounding boundary often enough that the average carries the information — and averaging is exactly what the ear does.</span></div>
+      <div><b>the cost</b><span>A slightly higher noise floor, permanently. At 16 bit that floor is around −93 dB and nobody has ever complained about it.</span></div>
+      <div><b>where you meet it</b><span>Every time a session in 24-bit or floating point is exported to a 16-bit file. Your editor is doing this already, probably without telling you.</span></div>
+      <div><b>and then</b><span>Noise shaping: filter the dither so most of its energy sits where the ear is least sensitive. Same trick, one step cleverer.</span></div>
+    </div>
+  </div>
+  <p class="pull">We add noise on purpose, so the error becomes weather instead of lies.</p>
+  <template class="nt">The sentence that makes it land is "the error stops being about the signal". Undithered quantisation error is a distorted copy of the music; dithered, it is weather — always there, never about anything. Then the political echo, which is the reason this slide is in an arts course: a system that rounds everything to the nearest permitted value produces errors that look like properties of the thing being measured. Adding a little honest randomness is what stops the instrument from inventing structure.</template>
 </section>
 
 <section class="slide top" id="demo-alias" data-sec="From air to numbers" data-demo="Aliasing">
@@ -535,7 +555,7 @@ canvas.fig.mid{height:calc(clamp(120px,23vh,260px)*var(--fit))}
 </section>
 
 <section class="slide dark" id="s-spectro" data-sec="The spectrogram">
-  <p class="eyebrow">Segment two · 44 to 62</p>
+  <p class="eyebrow">Segment two · 46 to 62</p>
   <h2 class="hero" style="font-size:var(--t-h1)">The spectrogram as a way of seeing</h2>
   <p class="body">Time, frequency, and the choice between them</p>
   <template class="nt">This segment grounds the course's temporal dimensions of place theme in something they can push back and forth with a slider. Two instruments open it: one showing that the two domains are the same object, one building a square wave out of sines. Neither needs the maths said out loud — let the sliders do it.</template>
@@ -574,7 +594,7 @@ canvas.fig.mid{height:calc(clamp(120px,23vh,260px)*var(--fit))}
           <input type="range" id="fo-n" min="1" max="32" step="1" value="1"></div>
         <div class="readout">
           <div><span>Highest harmonic</span><b class="num" data-out="fo-h">1st</b></div>
-          <div><span>At 110 Hz that is</span><b class="num" data-out="fo-hz">110 Hz</b></div>
+          <div><span>At 220 Hz that is</span><b class="num" data-out="fo-hz">220 Hz</b></div>
         </div>
       </div>
       <canvas class="viz pair2" data-canvas="fourier" height="330"></canvas>
@@ -672,6 +692,7 @@ canvas.fig.mid{height:calc(clamp(120px,23vh,260px)*var(--fit))}
 <section class="slide top" id="aweight" data-sec="Measuring vs listening">
   <p class="eyebrow">Step two</p>
   <h2 class="h1">A curve from 1933, still the law</h2>
+  <p class="lead" style="max-width:62ch">A-weighting is one fixed filter laid over a microphone's output, tuned to ignore the frequencies people hear least well — and it is the number written into almost every noise limit, workplace hearing rule and environmental permit in the world.</p>
   <canvas class="fig mid" data-fig="curves" height="240"></canvas>
   <div class="kv">
     <div><b>origin</b><span>Fletcher and Munson, 1933: the first equal-loudness contours — which sound pressure at each frequency is judged <i>as loud as</i> a 1 kHz reference. A-weighting is essentially the inverse of the 40-phon contour, the one measured with <b>quiet pure tones</b>.</span></div>
@@ -877,41 +898,112 @@ canvas.fig.mid{height:calc(clamp(120px,23vh,260px)*var(--fit))}
   <template class="nt">The correlation heatmap in the scikit-maad notebook is the figure to show if you have a projector and thirty spare seconds: forty-odd indices, and great blocks of them almost perfectly correlated with each other. Forty numbers, perhaps four independent facts.</template>
 </section>
 <section class="slide dark" id="s-maps" data-sec="Sound maps">
-  <p class="eyebrow">Segment four · 92 to 104</p>
+  <p class="eyebrow">Segment four · 92 to 107</p>
   <h2 class="hero" style="font-size:var(--t-h1)">Sound maps, and how to build one</h2>
-  <p class="body">The collections, the critique, the stack</p>
+  <p class="body">Five projects, one at a time — then the critique and the stack</p>
   <template class="nt">This is the segment that feeds the compose track of the workshop directly — sixty seconds in Strudel, built only from their own recordings.</template>
 </section>
 
-<section class="slide top" id="collections" data-sec="Sound maps">
-  <h2 class="h1">Three collections, three tenses</h2>
-  <div class="scroll"><table>
-    <tr><th>Project</th><th>Tense</th><th>What it is</th></tr>
-    <tr><td>radio aporee ::: maps</td><td>Past</td><td>An open archive of field recordings pinned worldwide</td></tr>
-    <tr><td>Cities and Memory</td><td>Past and imagined</td><td>Every recording paired with a reimagined version</td></tr>
-    <tr><td>Locus Sonus Locustream</td><td>Present</td><td>Live open microphone streams, always on</td></tr>
-  </table></div>
-  <div class="linkrow">
-    <a class="linkout" href="https://aporee.org/maps/" target="_blank" rel="noopener">Open aporee live</a>
-    <a class="linkout" href="https://citiesandmemory.com/sound-map/" target="_blank" rel="noopener">Cities and Memory</a>
-    <a class="linkout" href="https://locusonus.org/soundmap/" target="_blank" rel="noopener">Locustream</a>
+<section class="slide top" id="aporee" data-sec="Sound maps">
+  <p class="eyebrow">Example one · the archive</p>
+  <h2 class="h1">radio aporee ::: maps</h2>
+  <div class="pair">
+    <div class="kv">
+      <div><b>who</b><span>Udo Noll, alone. The platform has been online since about 2000, the map since late 2006, and the site's own credit line still reads "idea, realisation &amp; housekeeping".</span></div>
+      <div><b>what</b><span>An open archive of field recordings pinned to exact points on a world map. No commission, no curation, no remix layer. Anyone can add a recording; nobody decides whether it is interesting.</span></div>
+      <div><b>scale</b><span>Reported at over 50 000 recordings from nearly 2 000 contributors as of 2022 — the site itself publishes no running total and says only "1000s".</span></div>
+    </div>
+    <div class="kv">
+      <div><b>the licence</b><span>Each uploader picks a Creative Commons licence per recording, and the form warns that it <b>cannot be changed or revoked later</b>. Of everything in this segment, this is the only one that makes a real legal commitment to reuse.</span></div>
+      <div><b>the catch</b><span>Twenty years of public commons resting on one person's continued housekeeping.</span></div>
+      <div><b>and</b><span>Map density is a map of who owns a recorder and travels. It is a picture of field-recording culture that looks like a picture of the world.</span></div>
+    </div>
   </div>
-  <p class="pull">Locustream is the interesting one: a map in the present tense.</p>
-  <template class="nt">Open Locustream live in a second tab and leave a stream playing under the next slide. It never fails to land. Do not screenshot these — show them running.</template>
+  <div class="linkrow"><a class="linkout" href="https://aporee.org/maps/" target="_blank" rel="noopener">Open it live</a>
+    <a class="linkout" href="https://aporee.org/maps/info/" target="_blank" rel="noopener">How to contribute</a></div>
+  <template class="nt">Open it, zoom to Malmö, and play whatever is there. If there is nothing, that is the better slide: the absence is the argument. Then zoom to Berlin and let the density speak for itself.</template>
+</section>
+
+<section class="slide top" id="citiesmemory" data-sec="Sound maps">
+  <p class="eyebrow">Example two · the archive that answers back</p>
+  <h2 class="h1">Cities and Memory</h2>
+  <div class="pair">
+    <div class="kv">
+      <div><b>who</b><span>Stuart Fowkes, from Oxford, since 2015.</span></div>
+      <div><b>the conceit</b><span>Every location carries <b>two</b> sounds: the field recording, and a reimagined composition another artist made out of it. You can listen to the map documentary, or imagined, or flip between them.</span></div>
+      <div><b>scale</b><span>Its own current figures: more than 8 000 sounds, over 140 countries and territories, some 2 500 contributing artists, gathered through thematic open calls.</span></div>
+    </div>
+    <div class="kv">
+      <div><b>projects</b><span>Protest and Politics (2017), Obsolete Sounds (2022), Sonic Heritage (2025) — 270 sounds from World Heritage sites in 50 countries, with a notice on the page that it is <i>not</i> affiliated with UNESCO in any way.</span></div>
+      <div><b>rights</b><span>No site-wide licence is published. Ask before you reuse anything — which is a real difference from aporee, and worth naming.</span></div>
+      <div><b>the question</b><span>Sonic Heritage borrows UNESCO's authority and its list while disclaiming the relationship. Who gets to designate a sound as heritage?</span></div>
+    </div>
+  </div>
+  <div class="linkrow"><a class="linkout" href="https://citiesandmemory.com/sound-map/" target="_blank" rel="noopener">The map</a>
+    <a class="linkout" href="https://citiesandmemory.com/heritage/" target="_blank" rel="noopener">Sonic Heritage</a></div>
+  <p class="pull">aporee says this is what the place sounds like. Cities and Memory says a place is what people make of its sound.</p>
+  <template class="nt">Play one pair — the recording, then its reimagining — and ask which one is the document. The honest answer is that the first is also an interpretation; it just hides the fact better.</template>
+</section>
+
+<section class="slide top" id="locustream" data-sec="Sound maps">
+  <p class="eyebrow">Example three · the present tense</p>
+  <h2 class="h1">Locus Sonus · Locustream</h2>
+  <div class="pair">
+    <div class="kv">
+      <div><b>who</b><span>The Locus Sonus group at the art school in Aix-en-Provence with Aix-Marseille Université and CNRS, led by Peter Sinclair. Running since 2005.</span></div>
+      <div><b>what</b><span>Not an archive. A network of open microphones left permanently streaming their own surroundings, which you listen to <i>now</i>, as it happens, by clicking a point on a map.</span></div>
+      <div><b>the box</b><span>A streambox: originally a small Linux machine and a home-made electret capsule, today a Raspberry Pi image costing about thirty euros, or a phone app. Cheap on purpose, so volunteers can build the network.</span></div>
+    </div>
+    <div class="kv">
+      <div><b>nothing is kept</b><span>No recording is stored, so nothing can later be curated, searched, edited or misquoted. It is the purest version of the sound-map idea — co-presence instead of documentation — and the most fragile.</span></div>
+      <div><b>what it maps</b><span>A stream dies when a volunteer's Pi is unplugged. So the map is partly a map of who is still maintaining something, which is an unusually honest thing for a map to be.</span></div>
+      <div><b>asking</b><span>Use a stream in your own work and they ask you to credit Locus Sonus. An attribution request, not a licence — because how do you license something that does not persist?</span></div>
+    </div>
+  </div>
+  <div class="linkrow"><a class="linkout" href="https://locusonus.org/soundmap/" target="_blank" rel="noopener">Listen live</a>
+    <a class="linkout" href="https://locusonus.org/locustream/" target="_blank" rel="noopener">The project</a></div>
+  <template class="nt">This is the one to leave running under the following slides. Open a microphone somewhere it is the middle of the night and let the room sit with it. It never fails to land, and it costs nothing but a browser tab.</template>
 </section>
 
 <section class="slide top" id="chatty" data-sec="Sound maps">
-  <h2 class="h1">The same method, both senses</h2>
-  <div class="cols">
-    <div class="card"><h3>Chatty Maps</h3><p>Urban sound maps built from what people wrote about streets on social media. Aiello, Schifanella and Quercia, 2016.</p></div>
-    <div class="card"><h3>Smelly Maps</h3><p>The same pipeline, pointed at smell. Same team, same city data, a different sense.</p></div>
+  <p class="eyebrow">Example four · a sound map with no microphone in it</p>
+  <h2 class="h1">Chatty Maps</h2>
+  <div class="pair">
+    <div class="kv">
+      <div><b>who</b><span>Aiello, Schifanella, Quercia and Aletta, <i>Royal Society Open Science</i>, 2016. Open access, open data.</span></div>
+      <div><b>the material</b><span>Seventeen million geo-tagged Flickr photographs from 2005 to 2015, in London and Barcelona — and it is the <b>tags</b> they used, the words people typed about pictures. No sound was ever recorded.</span></div>
+      <div><b>the dictionary</b><span>Built by hand-coding Schafer's classification from <i>The Soundscape</i>, plus Freesound and favouritesounds tags, then letting community detection over word co-occurrence induce six categories: transport, mechanical, human, music, nature, indoor.</span></div>
+    </div>
+    <div class="kv">
+      <div><b>the emotion</b><span>Each street was scored against a word–emotion lexicon on Plutchik's eight emotions. Streets with music tags skew strongly to joy or sadness; human sounds to joy or surprise.</span></div>
+      <div><b>read that again</b><span>The emotion attributed to a street is the emotion of <i>tag words</i>, not of anybody standing in it.</span></div>
+      <div><b>what it maps</b><span>The photographable and the tag-worthy. A street nobody photographs has no sound at all.</span></div>
+    </div>
   </div>
-  <div class="linkrow">
-    <a class="linkout" href="https://royalsocietypublishing.org/doi/10.1098/rsos.150690" target="_blank" rel="noopener">Chatty Maps paper</a>
-    <a class="linkout" href="https://goodcitylife.org/chattymaps/project.php" target="_blank" rel="noopener">Project site</a>
+  <div class="linkrow"><a class="linkout" href="https://royalsocietypublishing.org/doi/10.1098/rsos.150690" target="_blank" rel="noopener">The paper</a>
+    <a class="linkout" href="https://goodcitylife.org/chattymaps/project.php" target="_blank" rel="noopener">Project site</a></div>
+  <template class="nt">The perfect foil to the three that came before: a computational proxy against situated listening. Do not present it as a fraud — the validation against Barcelona's official noise measurements is real and it holds up. Present it as a different claim about where sound lives: in the air, or in what people say about it afterwards.</template>
+</section>
+
+<section class="slide top" id="smelly" data-sec="Sound maps">
+  <p class="eyebrow">Example five · the same method, a different sense</p>
+  <h2 class="h1">Smelly Maps</h2>
+  <div class="pair">
+    <div class="kv">
+      <div><b>who</b><span>Quercia, Schifanella, Aiello and Kate McLean, ICWSM 2015 — the same team, one year earlier, with an artist added.</span></div>
+      <div><b>the dictionary</b><span>McLean led <b>smellwalks</b> in seven cities: 192 participants, 1 267 recorded smell perceptions, coded by three annotators into about 285 terms in ten categories — food, nature, emissions, waste, animals, cleaning, smoking, chemicals, synthetic, metro.</span></div>
+      <div><b>then</b><span>That dictionary was turned loose on Flickr, Instagram and Twitter for London and Barcelona, and the city was mapped by smell.</span></div>
+    </div>
+    <div class="kv">
+      <div><b>it works</b><span>Traffic-emission smells correlate with measured nitrogen dioxide — r ≈ 0.47 in London. Nature categories correlate negatively. The proxy is not nonsense.</span></div>
+      <div><b>the move to watch</b><span>An embodied, artist-led, small-n method is used to <i>bootstrap</i> a vocabulary, which is then applied at city scale by machine. Only the vocabulary survives into the map; the walking does not.</span></div>
+      <div><b>the reach</b><span>Both papers chose London and Barcelona — the cities where the data was densest. The method's reach is the reach of Flickr.</span></div>
+    </div>
   </div>
-  <p class="pull">This is the hinge between the sound half of this course and the scent half.</p>
-  <template class="nt">Neither map involved a microphone or a nose. Both are maps of language about sensation. Worth asking whether that is a cheat or a method.</template>
+  <div class="linkrow"><a class="linkout" href="https://arxiv.org/abs/1505.06851" target="_blank" rel="noopener">The paper</a>
+    <a class="linkout" href="https://goodcitylife.org/smellymaps/project.php" target="_blank" rel="noopener">Project site</a></div>
+  <p class="pull">This is the hinge between the sound half of this course and the scent half. Neither map involved a nose or a microphone.</p>
+  <template class="nt">Kate McLean's own smellwalking practice is on the course reading list through her thesis, so this is the slide that ties the two halves of the module together. The question to leave open: was the smellwalk the research, or the training data?</template>
 </section>
 
 <section class="slide top" id="pin" data-sec="Sound maps">
@@ -985,7 +1077,7 @@ canvas.fig.mid{height:calc(clamp(120px,23vh,260px)*var(--fit))}
 </section>
 
 <section class="slide dark" id="s-gen" data-sec="When the machine generates">
-  <p class="eyebrow">Segment five · 104 to 116</p>
+  <p class="eyebrow">Segment five · 107 to 117</p>
   <h2 class="hero" style="font-size:var(--t-h1)">When the machine generates instead of records</h2>
   <p class="body">Koray Tahiroğlu and the SOPI group, Aalto University</p>
   <template class="nt">Show the AI-terity video early in this segment rather than describing it. Two minutes of footage does more than five of explanation.</template>
@@ -1052,19 +1144,21 @@ canvas.fig.mid{height:calc(clamp(120px,23vh,260px)*var(--fit))}
 <section class="slide top" id="alterity" data-sec="When the machine generates">
   <h2 class="h1">An instrument designed against mastery</h2>
   <div class="assetrow">
-    <figure class="slot"><figcaption><span class="tagref">image / video needed</span><br>Replace this figure, or play the video from the links below</figcaption></figure>
+    <figure class="slot"><figcaption><span class="tagref">still needed</span><br>A frame from the performance, if you want one on the slide — otherwise play the video</figcaption></figure>
     <div class="how">
+      <span><b>Play this —</b> AI-terity in performance, from Koray Tahiroğlu. Open it from the button below and let it run for two minutes before saying anything about it.</span>
       <span><b>Free to use —</b> the NIME papers are CC BY 4.0. The 2020 PDF has the instrument; nime.pubpub.org/pub/9zu49nu5 has Figures 1–5 and a video of <i>Uncertainty Etude #2</i>.</span>
-      <span><b>Best images, ask first —</b> sopi.aalto.fi/aiterity.html has photographs and four videos, no licence stated. Ars Electronica's In Kepler's Gardens page has four high-resolution performance photographs, credited to Koray Tahiroğlu himself.</span>
-      <span><b>Ask —</b> koray.tahiroglu@aalto.fi. Playing the YouTube video in place is ordinary use; downloading and re-cutting it is not.</span>
+      <span><b>Stills, ask first —</b> sopi.aalto.fi/aiterity.html and Ars Electronica's In Kepler's Gardens page have performance photographs credited to Tahiroğlu himself. Write to koray.tahiroglu@aalto.fi — playing the video in place is ordinary use, downloading and re-cutting it is not.</span>
     </div>
   </div>
   <p class="body wide">Al-terity is deformable and 3D-printed, with pressure and bend sensors driving that latent space in real time. When AI-terity 2.0 notices you have settled, it jumps to a new point in the space. The performer is held in continuous uncertainty.</p>
   <div class="linkrow">
+    <a class="linkout" href="https://www.youtube.com/watch?v=OjqkrGq25so" target="_blank" rel="noopener">▶ AI-terity in performance</a>
     <a class="linkout" href="https://www.nime.org/proceedings/2020/nime2020_paper65.pdf" target="_blank" rel="noopener">Al-terity, NIME 2020</a>
     <a class="linkout" href="https://nime.pubpub.org/pub/9zu49nu5/release/1" target="_blank" rel="noopener">AI-terity 2.0, NIME 2021</a>
+    <a class="linkout" href="https://sopi.aalto.fi/aiterity.html" target="_blank" rel="noopener">SOPI project page</a>
   </div>
-  <template class="nt">Tie this back to the opening: the microphone was already a proposition. This instrument is a proposition that argues back. The tool has an agenda.</template>
+  <template class="nt">Open the video first and let it play — two minutes of watching somebody wrestle a squashy object that keeps changing its mind does more than five minutes of description. Then tie it back to the opening: the microphone was already a proposition. This instrument is a proposition that argues back. The tool has an agenda, and the performer is not allowed to settle.</template>
 </section>
 
 <section class="slide stmt" id="axes" data-sec="When the machine generates">
@@ -2564,11 +2658,15 @@ function idleCanvas(cv,msg){
   function F(){return +fS.value}
   function A(){return +aS.value/100}
   function readout(){out(rig,"dm-freq",fmt(F())+" Hz");out(rig,"dm-amp",A().toFixed(2))}
-  function geom(){
-    var g=fit(cv),w=g.w,h=g.h, gap=Math.max(14,w*0.025);
+  function metrics(){
+    var w=cv.clientWidth||600, h=cv.clientHeight||300, gap=Math.max(14,w*0.025);
     var half=(w-gap)/2, padL=38, padB=44, padT=14;
-    return {g:g,c:g.c,w:w,h:h,gap:gap,half:half,padL:padL,padB:padB,padT:padT,
+    return {w:w,h:h,gap:gap,half:half,padL:padL,padB:padB,padT:padT,
             R:half+gap, plotH:h-padT-padB};
+  }
+  function geom(){
+    var g=fit(cv), m=metrics();   /* fit() resizes and therefore CLEARS the canvas */
+    m.g=g; m.c=g.c; return m;
   }
   function spectrum(){
     var f=F(), a=A(), i;
@@ -2634,7 +2732,7 @@ function idleCanvas(cv,msg){
   }
   /* ---- dragging the spectrum rebuilds the signal ---- */
   function fromEvent(e){
-    var r=cv.getBoundingClientRect(), gg=geom();
+    var r=cv.getBoundingClientRect(), gg=metrics();   /* never clears the canvas */
     var x=(e.clientX-r.left)*(cv.clientWidth/r.width);
     var y=(e.clientY-r.top)*(cv.clientHeight/r.height);
     return {x:x,y:y,gg:gg};
@@ -2687,7 +2785,7 @@ function idleCanvas(cv,msg){
 (function(){
   var el=$('[data-rig="fourier"]'); if(!el)return;
   var rig=new Rig("fourier",el), cv=el.querySelector('[data-canvas="fourier"]');
-  var nS=$("#fo-n"), F0=110, live=false, tmr=0;
+  var nS=$("#fo-n"), F0=220, live=false, tmr=0;
   function n(){return +nS.value}
   function partial(ph,terms){
     var sum=0;
@@ -2749,7 +2847,7 @@ function idleCanvas(cv,msg){
   function render(off){
     var a=ctx(); if(!a)return;
     var sr=a.sampleRate, len=Math.floor(sr*1.0), d=new Float32Array(len), terms=n();
-    for(var i=0;i<len;i++)d[i]=partial(2*Math.PI*F0*i/sr,terms)*0.42;
+    for(var i=0;i<len;i++)d[i]=partial(2*Math.PI*F0*i/sr,terms)*0.46;
     rig.bus(a,0.9);
     rig.feed(a,fromFloat(a,d,sr),true,off);
     live=true;
