@@ -19,7 +19,7 @@ discomfort is measurable. FFT window length decides whether a place is a state o
 event. A map pin decides a site has one sound. A training set decides what a machine can
 imagine. None of these are neutral, and all of them are set before anybody listens.
 
-## Six live instruments
+## Eight live instruments
 
 | # | Instrument | What you can do with it |
 |---|---|---|
@@ -27,8 +27,13 @@ imagine. None of these are neutral, and all of them are set before anybody liste
 | 02 | Decimation ladder | Drag the sample rate from 44.1 kHz to 2 kHz and hear who disappears |
 | 03 | Bit depth and dither | 16 down to 2 bits, with dither on or off, on the quiet tail of a tone |
 | 04 | Aliasing | A sweep sampled too slowly, with the fold-back plotted against the Nyquist ceiling |
+| 07 | Two domains | A sine with frequency and amplitude sliders beside its real FFT — drag the marker in the spectrum and the waveform is rebuilt to match |
+| 08 | Fourier series | Add odd harmonics one at a time and watch a sine turn into a square wave, with the Gibbs overshoot that never leaves |
 | 05 | Window, spectrum, spectrogram | A cursor carries the analysis window across the wave while the window's spectrum and the spectrogram are drawn beneath it, column by column, at 256 to 16 384 samples |
 | 06 | A-weighting and L(A)eq | Live level with the weighting curve on or off, and a running equivalent level |
+
+Instrument numbers are stable handles rather than a running order — 07 and 08 open the
+spectrogram segment, and the workshop deck points students at 02, 03 and 06 by number.
 
 Instruments 02, 03, 05 and 06 take **your own field recordings** through the file
 picker, so the deck works as a tool after the lecture is over, not just during it.

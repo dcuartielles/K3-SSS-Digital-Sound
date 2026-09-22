@@ -260,6 +260,7 @@ canvas.fig.mid{height:calc(clamp(120px,23vh,260px)*var(--fit))}
 .dense th{padding:0 12px 6px 0}
 .dense td.num{white-space:nowrap}
 .viz.deep{height:calc(clamp(230px,48vh,540px)*var(--fit))}
+.viz.pair2{height:calc(clamp(180px,33vh,400px)*var(--fit))}
 </style>
 <div class="app">
 <div class="rail"><i id="rail"></i></div>
@@ -273,7 +274,7 @@ canvas.fig.mid{height:calc(clamp(120px,23vh,260px)*var(--fit))}
   <p class="eyebrow">KD343A · Situated and speculative sensing</p>
   <h1 class="hero">Digital<br>Sound Lab</h1>
   <p class="lead">A microphone is a proposition, not a witness.</p>
-  <p class="tiny">Two hours · six live instruments · arrow keys to move · press D for the instruments, I for the index, N for the teaching notes</p>
+  <p class="tiny">Two hours · eight live instruments · arrow keys to move · press D for the instruments, I for the index, N for the teaching notes</p>
   <p class="tiny">Open teaching material for educators — CC BY-NC-SA 4.0 · K3, Malmö University</p>
   <template class="nt">Drop the university logotype in as mau-logo.png beside this file and it appears here and in the bottom bar; without it the typographic lockup stands on its own. Say the subtitle out loud before moving on. It is the whole lecture in seven words. Then tell them the deck is theirs afterwards and every demo runs on their own recordings.</template>
 </section>
@@ -289,14 +290,14 @@ canvas.fig.mid{height:calc(clamp(120px,23vh,260px)*var(--fit))}
     <tr><th>Minutes</th><th>Segment</th><th>Instrument</th></tr>
     <tr><td class="num">0–12</td><td>Two minutes of listening, three ways of seeing it</td><td>01 Live spectrogram</td></tr>
     <tr><td class="num">12–44</td><td>From air to numbers</td><td>02 Decimation · 03 Bit depth · 04 Aliasing</td></tr>
-    <tr><td class="num">44–58</td><td>The spectrogram as a way of seeing</td><td>05 Window, spectrum and build-up</td></tr>
-    <tr><td class="num">58–68</td><td>Break</td><td>—</td></tr>
-    <tr><td class="num">68–90</td><td>Measuring versus listening</td><td>06 A-weighting and L(A)eq</td></tr>
-    <tr><td class="num">90–103</td><td>Sound maps, and how to build one</td><td>—</td></tr>
-    <tr><td class="num">103–116</td><td>When the machine generates</td><td>—</td></tr>
+    <tr><td class="num">44–62</td><td>The spectrogram as a way of seeing</td><td>07 Two domains · 08 Fourier · 05 The window</td></tr>
+    <tr><td class="num">62–72</td><td>Break</td><td>—</td></tr>
+    <tr><td class="num">72–92</td><td>Measuring versus listening</td><td>06 A-weighting and L(A)eq</td></tr>
+    <tr><td class="num">92–104</td><td>Sound maps, and how to build one</td><td>—</td></tr>
+    <tr><td class="num">104–116</td><td>When the machine generates</td><td>—</td></tr>
     <tr><td class="num">116–120</td><td>Workshop brief</td><td>—</td></tr>
   </table></div>
-  <template class="nt">Keep this short. Students do not need the map explained, only shown. If you are running late, the three index slides (ACI, NDSI, BI) and the latent-space genealogy are the ones to skip — everything else carries a demo or a turn in the argument.</template>
+  <template class="nt">Keep this short. Students do not need the map explained, only shown. If you are running late, the three index slides (ACI, NDSI, BI) and the latent-space genealogy are the ones to skip — everything else carries a demo or a turn in the argument. Instrument numbers are stable handles rather than a running order: 07 and 08 were added later and open the spectrogram segment, while the workshop deck still points students at 02, 03 and 06 by number.</template>
 </section>
 
 <section class="slide top" id="listen" data-sec="Opening" data-demo="Live spectrogram">
@@ -339,7 +340,7 @@ canvas.fig.mid{height:calc(clamp(120px,23vh,260px)*var(--fit))}
 </section>
 
 <section class="slide dark" id="s-air" data-sec="From air to numbers">
-  <p class="eyebrow">Segment one · 10 to 40</p>
+  <p class="eyebrow">Segment one · 12 to 44</p>
   <h2 class="hero" style="font-size:var(--t-h1)">From air to numbers</h2>
   <p class="body">Sampling · quantisation · aliasing · formats</p>
   <template class="nt">Three live instruments carry this segment. Do not lecture the maths.</template>
@@ -534,10 +535,56 @@ canvas.fig.mid{height:calc(clamp(120px,23vh,260px)*var(--fit))}
 </section>
 
 <section class="slide dark" id="s-spectro" data-sec="The spectrogram">
-  <p class="eyebrow">Segment two · 40 to 55</p>
+  <p class="eyebrow">Segment two · 44 to 62</p>
   <h2 class="hero" style="font-size:var(--t-h1)">The spectrogram as a way of seeing</h2>
   <p class="body">Time, frequency, and the choice between them</p>
-  <template class="nt">This segment grounds the course's temporal dimensions of place theme in something they can push back and forth with a slider.</template>
+  <template class="nt">This segment grounds the course's temporal dimensions of place theme in something they can push back and forth with a slider. Two instruments open it: one showing that the two domains are the same object, one building a square wave out of sines. Neither needs the maths said out loud — let the sliders do it.</template>
+</section>
+
+<section class="slide top" id="domains" data-sec="The spectrogram" data-demo="Time and frequency">
+  <h2 class="h1">Instrument 07 · The same thing, written twice</h2>
+  <div class="rig" data-rig="domains">
+    <div class="rig-head"><span class="eyebrow">Change either side. The other side follows.</span>
+      <button class="btn" data-act="play">Play</button>
+      <button class="btn ghost" data-act="stop">Stop</button></div>
+    <div class="rig-body">
+      <div class="knobs">
+        <div class="knob"><label for="dm-freq">Frequency <b data-out="dm-freq">440 Hz</b></label>
+          <input type="range" id="dm-freq" min="80" max="1200" step="1" value="440"></div>
+        <div class="knob"><label for="dm-amp">Amplitude <b data-out="dm-amp">0.70</b></label>
+          <input type="range" id="dm-amp" min="4" max="100" step="1" value="70"></div>
+      </div>
+      <canvas class="viz pair2" data-canvas="domains" height="330"></canvas>
+      <p class="note">Left: twenty milliseconds of the wave, against time. Right: the spectrum of exactly that wave — computed with the same FFT the rest of the deck uses, not drawn by hand. <b>Drag the marker on the right</b>: sideways for frequency, up and down for amplitude. There is one signal here and two ways of writing it down.</p>
+    </div>
+  </div>
+  <p class="pull">Neither view is the sound. Either one is enough to rebuild the other.</p>
+  <template class="nt">Drag the marker slowly to the right and ask them to watch the left panel: the cycles crowd together. Then drag it down and the wave flattens without changing its rate. The claim to make explicitly is that nothing is lost going between the two pictures — this is a change of notation, not a summary. That matters, because every lossy thing in this lecture happens somewhere else: in the sampling, in the window, in the weighting. Not here.</template>
+</section>
+
+<section class="slide top" id="fourier" data-sec="The spectrogram" data-demo="Fourier series">
+  <h2 class="h1">Instrument 08 · A square wave is a stack of sines</h2>
+  <div class="rig" data-rig="fourier">
+    <div class="rig-head"><span class="eyebrow">Add harmonics one at a time and listen to the corner arrive</span>
+      <button class="btn" data-act="play">Play</button>
+      <button class="btn ghost" data-act="stop">Stop</button></div>
+    <div class="rig-body">
+      <div class="knobs">
+        <div class="knob"><label for="fo-n">Sines in the sum <b data-out="fo-n">1</b></label>
+          <input type="range" id="fo-n" min="1" max="32" step="1" value="1"></div>
+        <div class="readout">
+          <div><span>Highest harmonic</span><b class="num" data-out="fo-h">1st</b></div>
+          <div><span>At 110 Hz that is</span><b class="num" data-out="fo-hz">110 Hz</b></div>
+        </div>
+      </div>
+      <canvas class="viz pair2" data-canvas="fourier" height="330"></canvas>
+      <p class="note">Left: the sum so far, against the square wave it is trying to be. Right: which harmonics are switched on. At one sine it <i>is</i> a sine — the square wave has not appeared yet because nothing but the fundamental is present.</p>
+    </div>
+  </div>
+  <p class="eq">x(t) = (4/π) · [ sin ωt + ⅓ sin 3ωt + ⅕ sin 5ωt + ⅐ sin 7ωt + … ]</p>
+  <p class="body wide">Odd harmonics only, each quieter than the last in exact proportion. Fourier's claim, from 1807: this works for <i>any</i> repeating signal. A square wave's corners need infinitely many, which is why nothing real has ever produced one.</p>
+  <p class="pull">Every sound in this lecture is a sum of sine waves. The only question is how many you kept.</p>
+  <template class="nt">Fourier's 1807 paper was rejected — Lagrange among others refused to believe that a sum of smooth curves could produce a corner, and the argument ran for the better part of two decades before the convergence conditions were worked out. Worth thirty seconds, because the students' intuition is Lagrange's. Start at one and add slowly. The moment worth waiting for is around three or five sines, when the shape stops looking like a wobble and starts looking like a square with bad edges — and the sound stops being a flute and starts being a buzzer. Then push it to the top and point at the overshoot that refuses to go away at the corners: that is the Gibbs phenomenon, it does not shrink as you add terms, and it is the reason a brick-wall filter rings. Tie it back: the decimation ladder was removing harmonics from the top of real sounds, exactly like running this slider backwards.</template>
 </section>
 
 <section class="slide top" id="fft" data-sec="The spectrogram">
@@ -594,7 +641,7 @@ canvas.fig.mid{height:calc(clamp(120px,23vh,260px)*var(--fit))}
 </section>
 
 <section class="slide dark" id="s-measure" data-sec="Measuring vs listening">
-  <p class="eyebrow">Segment three · 65 to 85</p>
+  <p class="eyebrow">Segment three · 72 to 92</p>
   <h2 class="hero" style="font-size:var(--t-h1)">Measuring versus listening</h2>
   <p class="body">Decibels, weighting, standards, indices</p>
   <template class="nt">David K.'s five minutes on acoustic indices in practice sits at the end of this segment.</template>
@@ -830,7 +877,7 @@ canvas.fig.mid{height:calc(clamp(120px,23vh,260px)*var(--fit))}
   <template class="nt">The correlation heatmap in the scikit-maad notebook is the figure to show if you have a projector and thirty spare seconds: forty-odd indices, and great blocks of them almost perfectly correlated with each other. Forty numbers, perhaps four independent facts.</template>
 </section>
 <section class="slide dark" id="s-maps" data-sec="Sound maps">
-  <p class="eyebrow">Segment four · 85 to 100</p>
+  <p class="eyebrow">Segment four · 92 to 104</p>
   <h2 class="hero" style="font-size:var(--t-h1)">Sound maps, and how to build one</h2>
   <p class="body">The collections, the critique, the stack</p>
   <template class="nt">This is the segment that feeds the compose track of the workshop directly — sixty seconds in Strudel, built only from their own recordings.</template>
@@ -938,7 +985,7 @@ canvas.fig.mid{height:calc(clamp(120px,23vh,260px)*var(--fit))}
 </section>
 
 <section class="slide dark" id="s-gen" data-sec="When the machine generates">
-  <p class="eyebrow">Segment five · 100 to 115</p>
+  <p class="eyebrow">Segment five · 104 to 116</p>
   <h2 class="hero" style="font-size:var(--t-h1)">When the machine generates instead of records</h2>
   <p class="body">Koray Tahiroğlu and the SOPI group, Aalto University</p>
   <template class="nt">Show the AI-terity video early in this segment rather than describing it. Two minutes of footage does more than five of explanation.</template>
@@ -1146,9 +1193,9 @@ function fitSlide(s){
   if(!s||!s.clientHeight)return;
   var f=1, guard=0;
   s.style.setProperty("--fit","1");
-  while(s.scrollHeight>s.clientHeight+1&&f>FIT_MIN&&guard++<12){
+  while(s.scrollHeight>s.clientHeight+1&&f>FIT_MIN&&guard++<18){
     var ratio=s.clientHeight/s.scrollHeight;
-    f=Math.max(FIT_MIN,f*Math.max(0.90,Math.sqrt(ratio)));
+    f=Math.max(FIT_MIN,f*Math.max(0.86,Math.sqrt(ratio)));
     s.style.setProperty("--fit",f.toFixed(3));
   }
   if(f>=0.999)s.style.removeProperty("--fit");
@@ -2499,6 +2546,224 @@ function idleCanvas(cv,msg){
     });
   });
   useA.addEventListener("change",function(){paint(null,null)});
+  el.querySelector('[data-act="stop"]').addEventListener("click",function(){rig.stop()});
+})();
+
+
+/* ============ 07 · TIME AND FREQUENCY, THE SAME OBJECT ============
+   The spectrum on the right is a real FFT of the wave on the left, so the two
+   panels cannot drift apart: drag the marker and the signal is rebuilt, then
+   transformed again to draw what you are looking at. ============ */
+(function(){
+  var el=$('[data-rig="domains"]'); if(!el)return;
+  var rig=new Rig("domains",el), cv=el.querySelector('[data-canvas="domains"]');
+  var fS=$("#dm-freq"), aS=$("#dm-amp");
+  var SR=8000, N=2048, FMAX=1400, WIN=0.020;
+  var osc=null, gn=null, buf=new Float32Array(N), drag=false;
+
+  function F(){return +fS.value}
+  function A(){return +aS.value/100}
+  function readout(){out(rig,"dm-freq",fmt(F())+" Hz");out(rig,"dm-amp",A().toFixed(2))}
+  function geom(){
+    var g=fit(cv),w=g.w,h=g.h, gap=Math.max(14,w*0.025);
+    var half=(w-gap)/2, padL=38, padB=44, padT=14;
+    return {g:g,c:g.c,w:w,h:h,gap:gap,half:half,padL:padL,padB:padB,padT:padT,
+            R:half+gap, plotH:h-padT-padB};
+  }
+  function spectrum(){
+    var f=F(), a=A(), i;
+    for(i=0;i<N;i++)buf[i]=Math.sin(2*Math.PI*f*i/SR)*a;
+    var p=fftPlan(N);
+    return fftMag(p,buf,0);
+  }
+  function draw(){
+    if(!cv.clientWidth)return;
+    var gg=geom(), c=gg.c, w=gg.w, h=gg.h;
+    var f=F(), a=A(), base=h-gg.padB;
+    c.fillStyle="#0B0710";c.fillRect(0,0,w,h);
+
+    /* ---- left: the wave in time ---- */
+    var lw=gg.half-gg.padL-6, x0=gg.padL, midY=gg.padT+gg.plotH/2, amp=gg.plotH*0.42;
+    c.strokeStyle="rgba(255,255,255,0.14)";c.beginPath();c.moveTo(x0,midY);c.lineTo(x0+lw,midY);c.stroke();
+    labelR(c,x0-6,midY+4,"0","rgba(255,255,255,0.45)");
+    labelR(c,x0-6,midY-amp+4,"+1","rgba(255,255,255,0.45)");
+    labelR(c,x0-6,midY+amp+4,"-1","rgba(255,255,255,0.45)");
+    c.strokeStyle=V("--accent");c.lineWidth=2;c.beginPath();
+    for(var px=0;px<=lw;px++){
+      var t=px/lw*WIN, y=midY-Math.sin(2*Math.PI*f*t)*a*amp;
+      px?c.lineTo(x0+px,y):c.moveTo(x0+px,y);
+    }
+    c.stroke();
+    label(c,x0,gg.padT+11,"time domain — 20 ms","rgba(255,255,255,0.72)");
+    label(c,x0,base+15,"0 ms","rgba(255,255,255,0.45)");
+    labelR(c,x0+lw,base+15,"20 ms","rgba(255,255,255,0.45)");
+    var cyc=f*WIN;
+    label(c,x0,base+28,cyc.toFixed(1)+" cycles in the window","rgba(255,255,255,0.45)");
+
+    /* ---- right: the spectrum of exactly that wave ---- */
+    var rx=gg.R+gg.padL, rw=gg.half-gg.padL-6;
+    var mag=spectrum(), binHz=SR/N, topBin=Math.round(FMAX/binHz);
+    function X(hz){return rx+(hz/FMAX)*rw}
+    function Y(v){return base-Math.max(0,Math.min(1,v))*gg.plotH*0.86}
+    c.strokeStyle="rgba(255,255,255,0.14)";c.beginPath();c.moveTo(rx,base);c.lineTo(rx+rw,base);c.stroke();
+    [0.5,1].forEach(function(v){
+      c.strokeStyle="rgba(255,255,255,0.10)";c.beginPath();c.moveTo(rx,Y(v));c.lineTo(rx+rw,Y(v));c.stroke();
+      labelR(c,rx-6,Y(v)+4,v.toFixed(1),"rgba(255,255,255,0.45)");
+    });
+    for(var hz=0;hz<=FMAX-200;hz+=350){
+      c.strokeStyle="rgba(255,255,255,0.08)";c.beginPath();c.moveTo(X(hz),gg.padT);c.lineTo(X(hz),base);c.stroke();
+      label(c,X(hz)+3,base+15,hz?(hz>=1000?(hz/1000)+" kHz":hz+""):"0","rgba(255,255,255,0.45)");
+    }
+    c.fillStyle=V("--accent");c.globalAlpha=.75;c.beginPath();c.moveTo(rx,base);
+    for(var k=0;k<=topBin;k++)c.lineTo(X(k*binHz),Y(mag[k]*2));
+    c.lineTo(X(topBin*binHz),base);c.closePath();c.fill();c.globalAlpha=1;
+    label(c,rx,gg.padT+11,"frequency domain","rgba(255,255,255,0.72)");
+    label(c,rx,base+28,"drag the marker","rgba(255,255,255,0.6)");
+
+    /* the handle */
+    var hx=X(f), hy=Y(a);
+    c.strokeStyle="rgba(255,255,255,0.35)";c.setLineDash([3,3]);
+    c.beginPath();c.moveTo(hx,base);c.lineTo(hx,hy);c.stroke();
+    c.beginPath();c.moveTo(rx,hy);c.lineTo(hx,hy);c.stroke();c.setLineDash([]);
+    c.fillStyle="#FFF";c.beginPath();c.arc(hx,hy,drag?9:7,0,7);c.fill();
+    c.fillStyle=V("--accent");c.beginPath();c.arc(hx,hy,drag?5.5:4,0,7);c.fill();
+    c.fillStyle="rgba(255,255,255,0.92)";c.font="11px 'IBM Plex Mono',monospace";
+    var lbl=fmt(f)+" Hz · "+a.toFixed(2);
+    var tw=c.measureText(lbl).width;
+    c.fillText(lbl,Math.min(hx+12,rx+rw-tw),Math.max(gg.padT+22,hy-12));
+  }
+  /* ---- dragging the spectrum rebuilds the signal ---- */
+  function fromEvent(e){
+    var r=cv.getBoundingClientRect(), gg=geom();
+    var x=(e.clientX-r.left)*(cv.clientWidth/r.width);
+    var y=(e.clientY-r.top)*(cv.clientHeight/r.height);
+    return {x:x,y:y,gg:gg};
+  }
+  function apply(p){
+    var rx=p.gg.R+p.gg.padL, rw=p.gg.half-p.gg.padL-6, base=p.gg.h-p.gg.padB;
+    var hz=Math.round((p.x-rx)/rw*FMAX);
+    var amp=(base-p.y)/(p.gg.plotH*0.86);
+    fS.value=Math.max(+fS.min,Math.min(+fS.max,hz));
+    aS.value=Math.max(+aS.min,Math.min(+aS.max,Math.round(amp*100)));
+    readout(); draw(); tune();
+  }
+  cv.addEventListener("pointerdown",function(e){
+    var p=fromEvent(e);
+    if(p.x<p.gg.R)return;                  /* left panel is the sliders' job */
+    drag=true; cv.setPointerCapture(e.pointerId); apply(p); e.preventDefault();
+  });
+  cv.addEventListener("pointermove",function(e){
+    var p=fromEvent(e);
+    cv.style.cursor=p.x<p.gg.R?"default":(drag?"grabbing":"grab");
+    if(drag)apply(p);
+  });
+  function end(e){if(drag){drag=false;try{cv.releasePointerCapture(e.pointerId)}catch(err){}draw()}}
+  cv.addEventListener("pointerup",end);
+  cv.addEventListener("pointercancel",end);
+
+  function tune(){
+    if(!osc||!AC)return;
+    osc.frequency.setTargetAtTime(F(),AC.currentTime,0.012);
+    gn.gain.setTargetAtTime(A()*0.26,AC.currentTime,0.012);
+  }
+  fS.addEventListener("input",function(){readout();draw();tune()});
+  aS.addEventListener("input",function(){readout();draw();tune()});
+  readout();
+  rig.onshow=draw;
+  rig.onstop=function(){osc=null;gn=null;draw()};
+  el.querySelector('[data-act="play"]').addEventListener("click",function(){
+    var a=ctx(); if(!a)return;
+    if(osc)return;
+    osc=a.createOscillator(); gn=a.createGain();
+    osc.type="sine"; gn.gain.value=0;
+    osc.connect(gn); gn.connect(a.destination);
+    osc.frequency.value=F(); osc.start();
+    rig.src=osc; tune(); draw();
+  });
+  el.querySelector('[data-act="stop"]').addEventListener("click",function(){rig.stop()});
+})();
+
+/* ============ 08 · FOURIER SERIES ============ */
+(function(){
+  var el=$('[data-rig="fourier"]'); if(!el)return;
+  var rig=new Rig("fourier",el), cv=el.querySelector('[data-canvas="fourier"]');
+  var nS=$("#fo-n"), F0=110, live=false, tmr=0;
+  function n(){return +nS.value}
+  function partial(ph,terms){
+    var sum=0;
+    for(var k=0;k<terms;k++){var h=2*k+1;sum+=Math.sin(h*ph)/h}
+    return sum*4/Math.PI;
+  }
+  function readout(){
+    var top=2*n()-1;
+    out(rig,"fo-n",n()+"");
+    out(rig,"fo-h",top+(top===1?"st":(top%10===3&&top!==13?"rd":"th")));
+    out(rig,"fo-hz",fmt(top*F0)+" Hz");
+  }
+  function draw(){
+    if(!cv.clientWidth)return;
+    var g=fit(cv),c=g.c,w=g.w,h=g.h;
+    var gap=Math.max(14,w*0.025), half=(w-gap)/2, padL=34, padB=44, padT=14;
+    var plotH=h-padT-padB, base=h-padB, terms=n();
+    c.fillStyle="#0B0710";c.fillRect(0,0,w,h);
+
+    /* ---- left: the sum against the square it is chasing ---- */
+    var lw=half-padL-6, x0=padL, midY=padT+plotH/2, amp=plotH*0.38;
+    c.strokeStyle="rgba(255,255,255,0.14)";c.beginPath();c.moveTo(x0,midY);c.lineTo(x0+lw,midY);c.stroke();
+    /* the target */
+    c.strokeStyle="rgba(255,255,255,0.5)";c.lineWidth=1.5;c.setLineDash([5,4]);c.beginPath();
+    for(var px=0;px<=lw;px++){
+      var ph=px/lw*Math.PI*4;
+      var sq=Math.sin(ph)>=0?1:-1;
+      var y=midY-sq*amp;
+      px?c.lineTo(x0+px,y):c.moveTo(x0+px,y);
+    }
+    c.stroke();c.setLineDash([]);
+    /* the sum so far */
+    c.strokeStyle=V("--accent");c.lineWidth=2.2;c.beginPath();
+    for(var px2=0;px2<=lw;px2++){
+      var ph2=px2/lw*Math.PI*4, y2=midY-partial(ph2,terms)*amp;
+      px2?c.lineTo(x0+px2,y2):c.moveTo(x0+px2,y2);
+    }
+    c.stroke();
+    label(c,x0,padT+11,"the sum so far","rgba(255,255,255,0.72)");
+    label(c,x0,base+15,"grey = the square wave it is trying to be","rgba(255,255,255,0.45)");
+    if(terms>=6)label(c,x0,base+28,"the overshoot at the corners never goes away — Gibbs","rgba(255,255,255,0.45)");
+
+    /* ---- right: which harmonics are on ---- */
+    var rx=half+gap+padL, rw=half-padL-6, MAXH=63;
+    c.strokeStyle="rgba(255,255,255,0.14)";c.beginPath();c.moveTo(rx,base);c.lineTo(rx+rw,base);c.stroke();
+    var slot=rw/((MAXH+1)/2);
+    for(var k=0;k<(MAXH+1)/2;k++){
+      var hn=2*k+1, on=k<terms;
+      var bh=(4/Math.PI)/hn*plotH*0.80;
+      var bx=rx+k*slot;
+      c.fillStyle=on?V("--accent"):"rgba(255,255,255,0.14)";
+      c.fillRect(bx+1,base-bh,Math.max(2,slot-3),bh);
+      if([1,3,5,9,15,21,31,41,51,61].indexOf(hn)>-1)
+        label(c,bx,base+15,hn+"","rgba(255,255,255,"+(on?0.6:0.3)+")");
+    }
+    label(c,rx,padT+11,"harmonic, and how much of it","rgba(255,255,255,0.72)");
+    label(c,rx,base+28,"odd harmonics only, each 1/n as loud","rgba(255,255,255,0.45)");
+  }
+  function render(off){
+    var a=ctx(); if(!a)return;
+    var sr=a.sampleRate, len=Math.floor(sr*1.0), d=new Float32Array(len), terms=n();
+    for(var i=0;i<len;i++)d[i]=partial(2*Math.PI*F0*i/sr,terms)*0.42;
+    rig.bus(a,0.9);
+    rig.feed(a,fromFloat(a,d,sr),true,off);
+    live=true;
+  }
+  nS.addEventListener("input",function(){
+    readout(); draw();
+    if(!live)return;
+    var off=rig.at(AC);
+    clearTimeout(tmr); tmr=setTimeout(function(){render(off)},70);
+  });
+  readout();
+  rig.onshow=draw;
+  rig.onstop=function(){live=false;draw()};
+  el.querySelector('[data-act="play"]').addEventListener("click",function(){rig.stop();live=false;render(0)});
   el.querySelector('[data-act="stop"]').addEventListener("click",function(){rig.stop()});
 })();
 
