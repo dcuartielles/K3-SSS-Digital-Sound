@@ -30,13 +30,14 @@ imagine. None of these are neutral, and all of them are set before anybody liste
 | 07 | Two domains | A sine with frequency and amplitude sliders beside its real FFT — drag the marker in the spectrum and the waveform is rebuilt to match |
 | 08 | Fourier series | Add odd harmonics one at a time and watch a sine turn into a square wave, with the Gibbs overshoot that never leaves |
 | 05 | Window, spectrum, spectrogram | A cursor carries the analysis window across the wave while the window's spectrum and the spectrogram are drawn beneath it, column by column, at 256 to 16 384 samples |
-| 06 | A-weighting and L(A)eq | Live level with the weighting curve on or off, and a running equivalent level |
+| 06 | A-weighting and L(A)eq | Level with the weighting curve on or off and a running equivalent level, from the microphone or from a file — with a file the clip's own length is the averaging period |
 
 Instrument numbers are stable handles rather than a running order — 07 and 08 open the
 spectrogram segment, and the workshop deck points students at 02, 03 and 06 by number.
 
 Instruments 02, 03, 05 and 06 take **your own field recordings** through the file
 picker, so the deck works as a tool after the lecture is over, not just during it.
+The picker in 02, 03 and 05 keeps the first twelve seconds; 06 measures the whole clip.
 Every slider is live while a sound is playing: changing the sample rate, the bit depth
 or the window size re-renders under the playhead rather than waiting for the next press
 of Play.
