@@ -259,6 +259,15 @@ canvas.fig.mid{height:calc(clamp(120px,23vh,260px)*var(--fit))}
 .dense td{padding:6px 12px 6px 0;line-height:1.42}
 .dense th{padding:0 12px 6px 0}
 .dense td.num{white-space:nowrap}
+.plate{margin:0;display:flex;flex-direction:column;gap:7px;width:100%}
+.plate img{width:100%;max-height:calc(clamp(150px,30vh,340px)*var(--fit));object-fit:contain;
+  display:block;background:#FFFFFF;border:1px solid var(--line);padding:8px}
+.plate .missing{border:1px dashed var(--line-strong);background:var(--sunk);
+  min-height:calc(clamp(140px,26vh,280px)*var(--fit));display:grid;place-items:center;
+  padding:16px;text-align:center}
+.plate .missing p{font-family:var(--mono);font-size:var(--t-label);color:var(--faint);
+  line-height:1.7;max-width:60ch}
+.plate figcaption{font-family:var(--mono);font-size:var(--t-label);color:var(--faint);line-height:1.6}
 .viz.deep{height:calc(clamp(230px,48vh,540px)*var(--fit))}
 .viz.pair2{height:calc(clamp(180px,33vh,400px)*var(--fit))}
 </style>
@@ -293,8 +302,8 @@ canvas.fig.mid{height:calc(clamp(120px,23vh,260px)*var(--fit))}
     <tr><td class="num">46–62</td><td>The spectrogram as a way of seeing</td><td>07 Two domains · 08 Fourier · 05 The window</td></tr>
     <tr><td class="num">62–72</td><td>Break</td><td>—</td></tr>
     <tr><td class="num">72–92</td><td>Measuring versus listening</td><td>06 A-weighting and L(A)eq</td></tr>
-    <tr><td class="num">92–107</td><td>Sound maps — five of them, one at a time</td><td>—</td></tr>
-    <tr><td class="num">107–117</td><td>When the machine generates</td><td>—</td></tr>
+    <tr><td class="num">92–108</td><td>Sound maps — six of them, one at a time</td><td>—</td></tr>
+    <tr><td class="num">108–117</td><td>When the machine generates</td><td>—</td></tr>
     <tr><td class="num">117–120</td><td>Workshop brief</td><td>—</td></tr>
   </table></div>
   <template class="nt">Keep this short. Students do not need the map explained, only shown. If you are running late, the three index slides (ACI, NDSI, BI) and the latent-space genealogy are the ones to skip — everything else carries a demo or a turn in the argument. Instrument numbers are stable handles rather than a running order: 07 and 08 were added later and open the spectrogram segment, while the workshop deck still points students at 02, 03 and 06 by number.</template>
@@ -535,13 +544,35 @@ canvas.fig.mid{height:calc(clamp(120px,23vh,260px)*var(--fit))}
   <template class="nt">A normative pair of ears is baked into every compressed file in the world. Ask whose ears they were, and when they were measured.</template>
 </section>
 
+<section class="slide top" id="cochlea" data-sec="From air to numbers">
+  <p class="eyebrow">Before the encoder, the organ</p>
+  <h2 class="h1">The ear takes a spectrum first</h2>
+  <figure class="plate">
+    <img data-img src="basilar-membrane.png" alt="The cochlea drawn uncoiled, showing the basilar membrane tapering from the narrow, stiff base to the wide, floppy apex, with the frequencies that peak at each position.">
+    <div class="missing" hidden><p><span class="tagref">image needed</span><br>Save the Commons file as <b>basilar-membrane.png</b> beside this deck and it appears here.<br>commons.wikimedia.org/wiki/File:Uncoiled_cochlea_with_basilar_membrane.png</p></div>
+    <figcaption>“Uncoiled cochlea with basilar membrane”, Wikimedia Commons · <span data-credit>author and licence — to be completed from the file page</span></figcaption>
+  </figure>
+  <div class="pair">
+    <div class="kv">
+      <div><b>the shape</b><span>The cochlea is a coiled tube. Drawn uncoiled it is a tapered strip: narrow and stiff at the base where sound enters, wide and slack at the far end.</span></div>
+      <div><b>the motion</b><span>A sound sets a travelling wave moving along it, and that wave peaks at a <i>position</i> that depends on its frequency — high near the stiff base, low at the slack apex. Georg von Békésy worked this out by dissection and stroboscope, and got a Nobel Prize for it in 1961.</span></div>
+    </div>
+    <div class="kv">
+      <div><b>the consequence</b><span>Pitch is place. The organ performs a mechanical frequency analysis before a single nerve has fired — so the spectrogram is not a metaphor for hearing. It is a diagram of something your head is already doing.</span></div>
+      <div><b>and the catch</b><span>A peak on a membrane is a region, not a point, roughly a third of an octave wide. Which is the whole of the next slide.</span></div>
+    </div>
+  </div>
+  <div class="linkrow"><a class="linkout" href="https://en.wikipedia.org/wiki/Basilar_membrane" target="_blank" rel="noopener">Basilar membrane</a></div>
+  <template class="nt">Fill in the credit line under the illustration before this deck goes anywhere public — Wikimedia files are reusable but almost all of them require attribution, and the wording belongs to the file page rather than to me. Teaching-wise, the sentence that earns its place is "pitch is place": frequency analysis in the ear is mechanical and positional, not computational, and it happens before anything you would call perception. Everything in the measuring segment later — weighting curves, one-number summaries — is an attempt to model an organ that had already made its own decisions about resolution.</template>
+</section>
+
 <section class="slide top" id="masking" data-sec="From air to numbers">
   <p class="eyebrow">Why MP3 is allowed to throw things away</p>
   <h2 class="h1">One sound standing in front of another</h2>
   <canvas class="fig tall" data-fig="masking" height="340"></canvas>
   <div class="pair">
     <div class="kv">
-      <div><b>the membrane</b><span>Inside the cochlea, the basilar membrane is a strip that is stiff at one end and slack at the other, so each frequency sets a different <i>place</i> moving hardest. Hearing a pitch means noticing where the ripple peaked.</span></div>
+      <div><b>the membrane</b><span>From the previous slide: each frequency sets a different <i>place</i> on the membrane moving hardest, and hearing a pitch means noticing where the ripple peaked.</span></div>
       <div><b>the consequence</b><span>A peak is not a point. It is a patch. Two tones close in frequency shake overlapping stretches of the same membrane, and the quieter one never gets a region of its own to be heard in.</span></div>
     </div>
     <div class="kv">
@@ -898,9 +929,9 @@ canvas.fig.mid{height:calc(clamp(120px,23vh,260px)*var(--fit))}
   <template class="nt">The correlation heatmap in the scikit-maad notebook is the figure to show if you have a projector and thirty spare seconds: forty-odd indices, and great blocks of them almost perfectly correlated with each other. Forty numbers, perhaps four independent facts.</template>
 </section>
 <section class="slide dark" id="s-maps" data-sec="Sound maps">
-  <p class="eyebrow">Segment four · 92 to 107</p>
+  <p class="eyebrow">Segment four · 92 to 108</p>
   <h2 class="hero" style="font-size:var(--t-h1)">Sound maps, and how to build one</h2>
-  <p class="body">Five projects, one at a time — then the critique and the stack</p>
+  <p class="body">Six projects, one at a time — then the critique and the stack</p>
   <template class="nt">This is the segment that feeds the compose track of the workshop directly — sixty seconds in Strudel, built only from their own recordings.</template>
 </section>
 
@@ -1006,6 +1037,29 @@ canvas.fig.mid{height:calc(clamp(120px,23vh,260px)*var(--fit))}
   <template class="nt">Kate McLean's own smellwalking practice is on the course reading list through her thesis, so this is the slide that ties the two halves of the module together. The question to leave open: was the smellwalk the research, or the training data?</template>
 </section>
 
+<section class="slide top" id="lydenafdanmark" data-sec="Sound maps">
+  <p class="eyebrow">Example six · the one that died</p>
+  <h2 class="h1">Lyden af Danmark</h2>
+  <div class="pair">
+    <div class="kv">
+      <div><b>who</b><span>Launched 2019 by the University of Copenhagen — Carsten Rahbek's centre for macroecology — with DTU, the national broadcaster DR, and Astra, the Danish centre for science education. Serious institutions, serious money, national reach.</span></div>
+      <div><b>the plan</b><span>The whole country records sounds on their phones. A neural network identifies what each one is. Out comes a sound map of Denmark, classified. Target: <b>one hundred thousand recordings</b>.</span></div>
+      <div><b>what happened</b><span>Paused by the start of 2021. The classifier had been trained on clean, high-quality audio and could not tell what it was hearing in a phone recording made in a real street. lydenafdanmark.dk today serves a placeholder page.</span></div>
+    </div>
+    <div class="kv">
+      <div><b>the easy reading</b><span>A technical failure. Better microphones, better training data, try again.</span></div>
+      <div><b>the harder one</b><span>Writing in <i>Seismograf</i>, Jakob Gustav Winckler argued the project was doomed by its premise rather than its engineering: it treated a sound as a thing with one correct label, made the label the meaning, and gave the public the job of feeding a machine that would do the listening for them.</span></div>
+      <div><b>which is this lecture</b><span>Sample rate decided which species officially exist. A classifier's taxonomy decides what a sound is permitted to be. Same move, one layer up, and this time with a public broadcaster attached.</span></div>
+    </div>
+  </div>
+  <div class="linkrow">
+    <a class="linkout" href="https://seismograf.org/artikel/lydprojektet-der-var-doemt-til-mislykkes" target="_blank" rel="noopener">Seismograf: the critique</a>
+    <a class="linkout" href="https://www.dr.dk/nyheder/viden/tema/lyden-af-danmark" target="_blank" rel="noopener">DR's coverage</a>
+  </div>
+  <p class="pull">Nobody in this project was careless. It failed at the level of what it assumed a sound was.</p>
+  <template class="nt">Worth the time because it is Nordic, recent, well funded and unambiguous, and because every student in the room has a phone that could have contributed to it. Ask them what they would have done differently — the first answers will be technical (better mics, more data) and the interesting part is getting past that to the question of who the classifier was for. Note the asymmetry with the five projects before it: aporee, Cities and Memory and Locustream all survive on volunteer labour and modest infrastructure, and the national project with a broadcaster behind it is the one that is gone.</template>
+</section>
+
 <section class="slide top" id="pin" data-sec="Sound maps">
   <h2 class="h1">A pin asserts that a place has a sound</h2>
   <canvas class="fig" data-fig="mics" height="230"></canvas>
@@ -1077,7 +1131,7 @@ canvas.fig.mid{height:calc(clamp(120px,23vh,260px)*var(--fit))}
 </section>
 
 <section class="slide dark" id="s-gen" data-sec="When the machine generates">
-  <p class="eyebrow">Segment five · 107 to 117</p>
+  <p class="eyebrow">Segment five · 108 to 117</p>
   <h2 class="hero" style="font-size:var(--t-h1)">When the machine generates instead of records</h2>
   <p class="body">Koray Tahiroğlu and the SOPI group, Aalto University</p>
   <template class="nt">Show the AI-terity video early in this segment rather than describing it. Two minutes of footage does more than five of explanation.</template>
@@ -2877,6 +2931,14 @@ window.addEventListener("resize",function(){
 $$("img[data-logo]").forEach(function(im){
   im.addEventListener("error",function(){im.style.display="none"});
   if(im.complete&&!im.naturalWidth)im.style.display="none";
+});
+/* plates fall back to a note saying which file to drop in */
+$$("img[data-img]").forEach(function(im){
+  var alt=im.parentNode.querySelector(".missing");
+  function miss(){im.hidden=true;if(alt)alt.hidden=false;fitSlide(slides[cur])}
+  im.addEventListener("error",miss);
+  im.addEventListener("load",function(){fitSlide(slides[cur])});
+  if(im.complete&&!im.naturalWidth)miss();
 });
 flagInsecure();
 go(byHash>-1?byHash:0);
