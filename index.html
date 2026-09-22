@@ -21,12 +21,19 @@ img{max-width:100%}
   --line:#DFDCE2; --line-strong:#C7C2CE;
   --accent:#B4245C; --accent-soft:#F6E4EC; --warm:#C2591A;
   --ok:#1F6B4F; --stage-pad:clamp(20px,4.2vw,72px);
-  --t-hero:clamp(2.4rem,6.6vw,5rem);
-  --t-h1:clamp(1.9rem,4.6vw,3.4rem);
-  --t-h2:clamp(1.35rem,3vw,2.3rem);
-  --t-lead:clamp(1.02rem,1.85vw,1.55rem);
-  --t-body:clamp(0.92rem,1.35vw,1.12rem);
-  --t-label:clamp(0.66rem,0.95vw,0.78rem);
+  --fit:1;
+  --t-hero-b:clamp(2.4rem,6.6vw,5rem);
+  --t-h1-b:clamp(1.9rem,4.6vw,3.4rem);
+  --t-h2-b:clamp(1.35rem,3vw,2.3rem);
+  --t-lead-b:clamp(1.02rem,1.85vw,1.55rem);
+  --t-body-b:clamp(0.92rem,1.35vw,1.12rem);
+  --t-label-b:clamp(0.66rem,0.95vw,0.78rem);
+  --t-hero:var(--t-hero-b);
+  --t-h1:var(--t-h1-b);
+  --t-h2:var(--t-h2-b);
+  --t-lead:var(--t-lead-b);
+  --t-body:var(--t-body-b);
+  --t-label:var(--t-label-b);
   --display:'Familjen Grotesk',"Helvetica Neue",Helvetica,Arial,sans-serif;
   --mono:'IBM Plex Mono',ui-monospace,"SFMono-Regular",Menlo,monospace;
 }
@@ -49,6 +56,9 @@ html,body{height:100%}
 body{margin:0;display:flex;flex-direction:column;background:var(--ground);color:var(--ink);font-family:var(--display);
   font-size:var(--t-body);line-height:1.5;-webkit-font-smoothing:antialiased;overflow:hidden}
 h1,h2,h3{margin:0;text-wrap:balance;font-weight:600;letter-spacing:-0.02em}
+sub,sup{font-size:0.7em;line-height:0;position:relative;vertical-align:baseline}
+sup{top:-0.46em}
+sub{bottom:-0.26em}
 p,ul,ol{margin:0}
 a{color:var(--accent)}
 button{font:inherit;color:inherit}
@@ -59,10 +69,16 @@ button{font:inherit;color:inherit}
 .rail>i{display:block;height:100%;background:var(--accent);width:0;transition:width .25s ease}
 .stage{flex:1;position:relative;overflow:hidden}
 .slide{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;
-  padding:var(--stage-pad) var(--stage-pad) calc(var(--stage-pad) + 8px);
-  display:flex;flex-direction:column;gap:clamp(10px,1.5vw,20px);justify-content:center}
+  --t-hero:calc(var(--t-hero-b)*var(--fit));
+  --t-h1:calc(var(--t-h1-b)*var(--fit));
+  --t-h2:calc(var(--t-h2-b)*var(--fit));
+  --t-lead:calc(var(--t-lead-b)*var(--fit));
+  --t-body:calc(var(--t-body-b)*var(--fit));
+  --t-label:calc(var(--t-label-b)*var(--fit));
+  padding:calc(var(--stage-pad)*var(--fit)) var(--stage-pad) calc(var(--stage-pad)*var(--fit) + 8px);
+  display:flex;flex-direction:column;gap:calc(clamp(10px,1.5vw,20px)*var(--fit));justify-content:center}
 .slide.top{justify-content:flex-start}
-.slide>*{max-width:1180px;width:100%}
+.slide>*{max-width:1180px;width:100%;flex:none}
 .slide[data-demo]{justify-content:flex-start;--stage-pad:clamp(14px,2.2vw,36px)}
 .slide[data-demo] .h1{font-size:clamp(1.2rem,2.4vw,1.85rem)}
 .slide[data-demo] .pull{font-size:calc(var(--t-body)*1.15)}
@@ -136,7 +152,8 @@ ol.steps li::before{content:counter(s);position:absolute;left:0;top:0;font-famil
 .slot figcaption{font-family:var(--mono);font-size:var(--t-label);color:var(--faint);
   letter-spacing:.04em;line-height:1.6;max-width:46ch}
 
-canvas.fig{width:100%;display:block;background:var(--sunk);border:1px solid var(--line);height:clamp(96px,17vh,200px)}
+canvas.fig{width:100%;display:block;background:var(--sunk);border:1px solid var(--line);
+  height:calc(clamp(96px,17vh,200px)*var(--fit))}
 
 /* ---------- instruments ---------- */
 .rig{border:1px solid var(--line-strong);background:var(--surface);display:flex;flex-direction:column}
@@ -144,7 +161,8 @@ canvas.fig{width:100%;display:block;background:var(--sunk);border:1px solid var(
   background:var(--sunk);flex-wrap:wrap}
 .rig-head .eyebrow{margin-right:auto}
 .rig-body{padding:clamp(10px,1.3vw,16px);display:flex;flex-direction:column;gap:10px}
-.viz{width:100%;display:block;background:#0B0710;border:1px solid var(--line);height:clamp(112px,21vh,240px)}
+.viz{width:100%;display:block;background:#0B0710;border:1px solid var(--line);
+  height:calc(clamp(112px,21vh,240px)*var(--fit))}
 .knobs{display:flex;gap:clamp(10px,1.6vw,20px);flex-wrap:wrap;align-items:flex-end}
 .knob{display:flex;flex-direction:column;gap:5px;flex:1 1 180px;min-width:150px}
 .knob label{font-family:var(--mono);font-size:var(--t-label);letter-spacing:.09em;
@@ -197,8 +215,9 @@ input[type=range]{width:100%;accent-color:var(--accent);height:22px}
 .bar img.brandmini{height:18px;width:auto;display:block;opacity:.8;flex:none}
 
 /* ---------- formulae ---------- */
-.eq{font-family:var(--mono);font-size:calc(var(--t-body)*1.22);line-height:1.65;color:var(--accent);
-  background:var(--sunk);border-left:2px solid var(--accent);padding:12px 16px;overflow-x:auto;white-space:nowrap}
+.eq{font-family:var(--mono);font-size:calc(var(--t-body)*1.18);line-height:1.8;color:var(--accent);
+  background:var(--sunk);border-left:2px solid var(--accent);padding:14px 18px 20px;
+  overflow-x:auto;overflow-y:hidden;white-space:nowrap}
 .eq b{color:var(--ink);font-weight:500}
 .eq em{font-style:normal;color:var(--muted)}
 .eqnote{font-family:var(--mono);font-size:var(--t-label);color:var(--faint);line-height:1.7}
@@ -228,13 +247,19 @@ input[type=range]{width:100%;accent-color:var(--accent);height:22px}
 .srow .ceil{position:absolute;top:-2px;bottom:-2px;border-left:1px dashed var(--warm)}
 
 /* ---------- slots ---------- */
-.slot.tall{min-height:190px}
-.slot .how{font-family:var(--mono);font-size:var(--t-label);color:var(--muted);
-  text-align:left;max-width:66ch;line-height:1.75}
-.slot .how b{color:var(--accent);font-weight:500}
-canvas.fig.tall{height:clamp(150px,30vh,340px)}
-canvas.fig.mid{height:clamp(120px,23vh,260px)}
-.viz.deep{height:clamp(230px,48vh,540px)}
+.assetrow{display:flex;gap:clamp(14px,2vw,26px);align-items:stretch;flex-wrap:wrap}
+.assetrow .slot{flex:1 1 240px;min-height:calc(clamp(150px,26vh,260px)*var(--fit));margin:0}
+.assetrow .how{flex:2 1 380px;font-size:var(--t-body);color:var(--muted);
+  line-height:1.5;display:flex;flex-direction:column;gap:7px}
+.assetrow .how b{color:var(--accent);font-weight:500}
+.assetrow .how span{display:block}
+canvas.fig.tall{height:calc(clamp(150px,30vh,340px)*var(--fit))}
+canvas.fig.mid{height:calc(clamp(120px,23vh,260px)*var(--fit))}
+.dense table{font-size:calc(var(--t-body)*0.94)}
+.dense td{padding:6px 12px 6px 0;line-height:1.42}
+.dense th{padding:0 12px 6px 0}
+.dense td.num{white-space:nowrap}
+.viz.deep{height:calc(clamp(230px,48vh,540px)*var(--fit))}
 </style>
 <div class="app">
 <div class="rail"><i id="rail"></i></div>
@@ -263,8 +288,8 @@ canvas.fig.mid{height:clamp(120px,23vh,260px)}
   <div class="scroll"><table>
     <tr><th>Minutes</th><th>Segment</th><th>Instrument</th></tr>
     <tr><td class="num">0–12</td><td>Two minutes of listening, three ways of seeing it</td><td>01 Live spectrogram</td></tr>
-    <tr><td class="num">12–42</td><td>From air to numbers</td><td>02 Decimation · 03 Bit depth · 04 Aliasing</td></tr>
-    <tr><td class="num">42–58</td><td>The spectrogram as a way of seeing</td><td>05 Window, spectrum and build-up</td></tr>
+    <tr><td class="num">12–44</td><td>From air to numbers</td><td>02 Decimation · 03 Bit depth · 04 Aliasing</td></tr>
+    <tr><td class="num">44–58</td><td>The spectrogram as a way of seeing</td><td>05 Window, spectrum and build-up</td></tr>
     <tr><td class="num">58–68</td><td>Break</td><td>—</td></tr>
     <tr><td class="num">68–90</td><td>Measuring versus listening</td><td>06 A-weighting and L(A)eq</td></tr>
     <tr><td class="num">90–103</td><td>Sound maps, and how to build one</td><td>—</td></tr>
@@ -456,6 +481,26 @@ canvas.fig.mid{height:clamp(120px,23vh,260px)}
   <template class="nt">The two rows that do the work are 7 kHz and 9 kHz: two different tones, two kilohertz apart, arriving as the same 1 kHz. Aliasing is not distortion added to a signal — it is two different worlds becoming indistinguishable in the file. Once a recording is made there is no analysis, however clever, that can tell them apart again.</template>
 </section>
 
+<section class="slide top dense" id="wavbytes" data-sec="From air to numbers">
+  <p class="eyebrow">What is actually in the file</p>
+  <h2 class="h1">A WAV is the numbers, written down</h2>
+  <canvas class="fig tall" data-fig="wavbytes" height="330"></canvas>
+  <div class="pair">
+    <div class="kv">
+      <div><b>measure</b><span>At each tick, the voltage as a fraction of full scale — what the converter actually read.</span></div>
+      <div><b>round</b><span>Multiply by 32 767 and round to the nearest whole number. Sixteen bits, signed: −32 768 to +32 767.</span></div>
+      <div><b>store</b><span>Write that integer as two bytes, low byte first. That pair <i>is</i> the sample. Nothing else happens to it.</span></div>
+    </div>
+    <div class="kv">
+      <div><b>header</b><span>44 bytes in front: <span class="num">RIFF</span>, the file size, <span class="num">WAVE</span>, a <span class="num">fmt&nbsp;</span> chunk giving channels, sample rate and bit depth, then <span class="num">data</span> and a length.</span></div>
+      <div><b>then</b><span>Every sample, in order, to the end of the file. No compression, no model of a listener, no cleverness — which is why it is big: 44 100 × 2 bytes × 2 channels ≈ <b>10 MB a minute</b>.</span></div>
+      <div><b>so</b><span>A WAV can be read with a ruler. Open one in a hex editor and the sound is right there, in order, in plain sight.</span></div>
+    </div>
+  </div>
+  <p class="pull">Everything a WAV knows, it knows forty-four thousand times a second — and it never guesses.</p>
+  <template class="nt">The useful demonstration is to open a WAV in a hex editor live — 44 bytes of header and then the sound. Point at a pair of bytes and say "that is one forty-four-thousandth of a second, and it is a number between minus thirty-two thousand and plus thirty-two thousand, and that is the whole idea". It makes the next slide land, because everything after WAV is about deciding which of those numbers you are allowed to not write down.</template>
+</section>
+
 <section class="slide top" id="formats" data-sec="From air to numbers">
   <h2 class="h1">What the file keeps</h2>
   <div class="scroll"><table>
@@ -467,6 +512,25 @@ canvas.fig.mid{height:clamp(120px,23vh,260px)}
   </table></div>
   <p class="pull">MP3 does not model sound. It models a listener.</p>
   <template class="nt">A normative pair of ears is baked into every compressed file in the world. Ask whose ears they were, and when they were measured.</template>
+</section>
+
+<section class="slide top" id="masking" data-sec="From air to numbers">
+  <p class="eyebrow">Why MP3 is allowed to throw things away</p>
+  <h2 class="h1">One sound standing in front of another</h2>
+  <canvas class="fig tall" data-fig="masking" height="340"></canvas>
+  <div class="pair">
+    <div class="kv">
+      <div><b>the membrane</b><span>Inside the cochlea, the basilar membrane is a strip that is stiff at one end and slack at the other, so each frequency sets a different <i>place</i> moving hardest. Hearing a pitch means noticing where the ripple peaked.</span></div>
+      <div><b>the consequence</b><span>A peak is not a point. It is a patch. Two tones close in frequency shake overlapping stretches of the same membrane, and the quieter one never gets a region of its own to be heard in.</span></div>
+    </div>
+    <div class="kv">
+      <div><b>masking</b><span>So a loud tone drags a threshold up around itself — steeply on the low side, gently on the high side. Anything underneath that curve is inaudible while the loud tone lasts. Not quiet. <i>Inaudible.</i></span></div>
+      <div><b>the encoder</b><span>An MP3 encoder computes that curve for every frame and spends its bits only on what pokes above it. What falls beneath is not compressed — it is <b>not written at all</b>.</span></div>
+      <div><b>and</b><span>Masking also reaches forward and backward in time by a few milliseconds, which is why a quiet detail just before a loud transient can vanish too.</span></div>
+    </div>
+  </div>
+  <p class="pull">The file does not contain the sound. It contains what a model of you would have noticed.</p>
+  <template class="nt">Do the demonstration rather than the diagram if you have a moment: play a loud tone and a quiet one a semitone away together, then remove the loud one and let them hear what had been there the whole time. The room reliably reacts, because the second tone does not fade in — it appears. Then the point that matters for this course: the threshold curve is a model, measured on particular ears in particular conditions, and every compressed file in the world is a record of that model's opinion about what a listener would miss. Deciding what nobody will notice is the same move as deciding what counts as environment.</template>
 </section>
 
 <section class="slide dark" id="s-spectro" data-sec="The spectrogram">
@@ -562,12 +626,17 @@ canvas.fig.mid{height:clamp(120px,23vh,260px)}
   <p class="eyebrow">Step two</p>
   <h2 class="h1">A curve from 1933, still the law</h2>
   <canvas class="fig mid" data-fig="curves" height="240"></canvas>
+  <div class="kv">
+    <div><b>origin</b><span>Fletcher and Munson, 1933: the first equal-loudness contours — which sound pressure at each frequency is judged <i>as loud as</i> a 1 kHz reference. A-weighting is essentially the inverse of the 40-phon contour, the one measured with <b>quiet pure tones</b>.</span></div>
+    <div><b>now</b><span>Defined as an analytic filter by IEC 61672-1:2013, with class 1 and class 2 tolerances. C rolls off only at the extremes and is used for peaks. Z is <i>defined</i> flatness, ±1.5 dB from 10 Hz to 20 kHz — before it existed, "unweighted" meant whatever the manufacturer felt like.</span></div>
+    <div><b>since</b><span>ISO 226 revised the contours in 2003 and again in 2023. Awkwardly, A-weighting now matches the updated <b>60</b>-phon contour better than the 40-phon one it was derived from.</span></div>
+  </div>
+  <template class="nt">The shape is the argument: the curve throws away the bottom of the spectrum because, at conversational level, quiet low tones are genuinely hard to hear. It is then applied by law to ventilation plant, compressors, traffic rumble and wind turbines — none of which are quiet, and all of which get complained about.</template>
+</section>
+
+<section class="slide top dense" id="aweight-table" data-sec="Measuring vs listening">
+  <h2 class="h1">What the curve actually does</h2>
   <div class="pair">
-    <div class="kv">
-      <div><b>origin</b><span>Fletcher and Munson, 1933: the first equal-loudness contours — which sound pressure at each frequency is judged <i>as loud as</i> a 1 kHz reference. A-weighting is essentially the inverse of the 40-phon contour, the one measured with <b>quiet pure tones</b>.</span></div>
-      <div><b>now</b><span>Defined as an analytic filter by IEC 61672-1:2013, with class 1 and class 2 tolerances. C rolls off only at the extremes and is used for peaks. Z is <i>defined</i> flatness, ±1.5 dB from 10 Hz to 20 kHz — before it existed, "unweighted" meant whatever the manufacturer felt like.</span></div>
-      <div><b>since</b><span>ISO 226 revised the contours in 2003 and again in 2023. Awkwardly, A-weighting now matches the updated <b>60</b>-phon contour better than the 40-phon one it was derived from.</span></div>
-    </div>
     <div class="scroll"><table>
       <tr><th>Hz</th><th>A</th><th>C</th><th>Z</th></tr>
       <tr><td class="num">31.5</td><td class="num">−39.4</td><td class="num">−3.0</td><td class="num">0</td></tr>
@@ -582,9 +651,15 @@ canvas.fig.mid{height:clamp(120px,23vh,260px)}
       <tr><td class="num">16 000</td><td class="num">−6.6</td><td class="num">−8.5</td><td class="num">0</td></tr>
     </table>
     <p class="tiny">Corrections in dB, added to the measured band level. IEC 61672-1:2013.</p></div>
+    <div class="kv">
+      <p class="pull" style="max-width:26ch">A 31.5 Hz tone at 80 dB is reported as 40.6 dB(A).</p>
+      <div><b>and yet</b><span>you can still feel it in your chest, the building still shakes, and the complaint still gets filed.</span></div>
+      <div><b>be fair</b><span>For ordinary broadband noise — offices, traffic at a distance, a busy room — A-weighting tracks human response about as well as far more elaborate measures. It is not useless.</span></div>
+      <div><b>be precise</b><span>It is wrong about exactly the cases that reach a tribunal: low-frequency plant, tonal hums, impulsive noise. The failure is specific rather than general, which is what makes it hard to dislodge.</span></div>
+      <div><b>in the field</b><span>Measure both and subtract: a large <span class="num">L<sub>C</sub> − L<sub>A</sub></span> difference is the standard screening test for a low-frequency problem the A-weighted number is hiding.</span></div>
+    </div>
   </div>
-  <p class="pull">A 31.5 Hz tone at 80 dB is reported as 40.6 dB(A). You can still feel it in your chest.</p>
-  <template class="nt">Read the 31.5 Hz row out loud and let them do the subtraction. Minus thirty-nine decibels is not a correction, it is a deletion — and it is applied by law to ventilation plant, compressors, traffic rumble and wind turbines, which is exactly where the complaints come from. Then be fair: for ordinary broadband office-type noise, A-weighting correlates with human response about as well as far more elaborate measures. It is not wrong, it is wrong about the specific cases that end up in tribunals.</template>
+  <template class="nt">Read the 31.5 Hz row out loud and let them do the subtraction themselves. Minus thirty-nine decibels is not a correction, it is a deletion. Then the National Academies review, which is the establishment rather than an activist saying it: A-weighting "does not reflect the results of research studies in psychoacoustics over the past 40 years". If anyone is heading for fieldwork, the L(C) minus L(A) trick is the one practical thing on this slide.</template>
 </section>
 
 <section class="slide top" id="weighting" data-sec="Measuring vs listening">
@@ -626,7 +701,7 @@ canvas.fig.mid{height:clamp(120px,23vh,260px)}
   <template class="nt">Toggle A-weighting while someone holds a low hum or scrapes a chair. Low frequencies lose several decibels instantly. Then ask whether the room got quieter.</template>
 </section>
 
-<section class="slide top" id="iso" data-sec="Measuring vs listening">
+<section class="slide top dense" id="iso" data-sec="Measuring vs listening">
   <h2 class="h1">Soundscape is not noise</h2>
   <p class="pull" style="max-width:38ch">“Consequently, the use of the term ‘soundscape’ has become idiosyncratic and ambiguous.”</p>
   <p class="tiny">ISO 12913-1:2014, Introduction — a standards committee opening by admitting the word had gone feral</p>
@@ -634,12 +709,12 @@ canvas.fig.mid{height:clamp(120px,23vh,260px)}
     <div><b>2.3</b><span><b>soundscape</b> — “acoustic environment as perceived or experienced and/or understood by a person or people, in context”</span></div>
     <div><b>2.2</b><span><b>acoustic environment</b> — “sound at the receiver from all sound sources as modified by the environment”</span></div>
   </div>
-  <p class="body wide">Read those two together and the whole move is visible: the acoustic environment is a physical phenomenon, the soundscape is a perceptual construct. Two definitions, one clause apart, and everything measurable sits in the wrong one. The standard exists because measurement alone kept giving the wrong answer — a quiet street can be unpleasant, a loved market can be loud.</p>
+  <p class="body wide">Two definitions, one clause apart: the acoustic environment is a physical phenomenon, the soundscape is a perceptual construct — and everything measurable sits in the wrong one.</p>
   <div class="scroll"><table>
     <tr><th>Part</th><th>Status</th><th>What it covers</th></tr>
-    <tr><td>ISO 12913-1:2014</td><td>Full International Standard · reviewed and confirmed 2025</td><td>Definition and conceptual framework</td></tr>
-    <tr><td>ISO/TS 12913-2:2018</td><td>Technical Specification</td><td>Data collection and reporting: soundwalks, binaural recording, the questionnaire attributes</td></tr>
-    <tr><td>ISO/TS 12913-3:2025</td><td>Technical Specification, 2nd edition — replaced the 2019 edition in May 2025</td><td>Data analysis, including the pleasant–eventful projection</td></tr>
+    <tr><td>12913-1:2014</td><td>Full standard, confirmed 2025</td><td>Definition and conceptual framework</td></tr>
+    <tr><td>TS 12913-2:2018</td><td>Technical Specification</td><td>Soundwalks, binaural recording, the questionnaire attributes</td></tr>
+    <tr><td>TS 12913-3:2025</td><td>Technical Specification, 2nd ed.</td><td>Data analysis and the pleasant–eventful projection. Replaced the 2019 edition in May 2025</td></tr>
   </table></div>
   <template class="nt">Two things to say. First, that the "and/or understood" in the definition is ugly on purpose — it is the visible seam of a committee argument about whether comprehension is part of perception, and it is more honest than a smooth sentence would be. Second, that Parts 2 and 3 are Technical Specifications rather than full standards: the methods are still consensus-in-progress. If you show the pleasant–eventful circumplex anywhere, cite Part 3 as the 2025 edition — most of the literature still cites the withdrawn 2019 one. Verify the clause 2.2 wording against the library's licensed copy before you publish the deck externally; the free preview has two variant readings in circulation.</template>
 </section>
@@ -735,16 +810,16 @@ canvas.fig.mid{height:clamp(120px,23vh,260px)}
   <template class="nt">Put the two numbers up and wait. This is the moment the whole measuring-versus-listening segment pays off: the problem is not that the index is a simplification — everyone knows that — it is that the simplification is not even stable. Then the fair counterpoint: ACI and BI both held up well in heavy rain where NDSI collapsed, so none of this means the indices are useless. It means a number without its pipeline is not a result.</template>
 </section>
 
-<section class="slide top" id="indexdata" data-sec="Measuring vs listening">
+<section class="slide top dense" id="indexdata" data-sec="Measuring vs listening">
   <p class="eyebrow">Where to get real ones</p>
   <h2 class="h1">Open data, indices already computed</h2>
-  <p class="body wide">Every figure in this deck is schematic or computed from the deck's own synthetic soundscape. If you want these indices over actual field recordings, these four are open, citable and currently live.</p>
+  <p class="body wide">Every figure in this deck is schematic, or computed from its own synthetic soundscape. For these indices over real field recordings, these four are open, citable and live.</p>
   <div class="scroll"><table>
     <tr><th>Dataset</th><th>What is in it</th><th>Why it is useful here</th></tr>
-    <tr><td>Silent Cities</td><td>317 sites, 35 countries, March–October 2020, on OSF under CC BY 4.0</td><td>Ships ACI, BI and NDSI already computed, plus manual soundscape descriptions. Plot index against lockdown dates without touching audio.</td></tr>
-    <tr><td>Geukes et al., Zenodo</td><td>257 670 one-minute recordings, 18 sensors, five Dutch sites, nine indices, 560 recordings annotated by hand</td><td>Built specifically to test whether the indices track what is actually in the soundscape. It interrogates this segment's thesis.</td></tr>
-    <tr><td>Australian Acoustic Observatory</td><td>A continental sensor network recording continuously for five years, browsable per site</td><td>What a year of one microphone in one place actually looks like.</td></tr>
-    <tr><td>scikit-maad example gallery</td><td>48 real Song Meter recordings — one full 24-hour cycle at one site</td><td>A downloadable notebook that computes all three indices and draws the correlation heatmap between them.</td></tr>
+    <tr><td>Silent Cities</td><td>317 sites, 35 countries, 2020 lockdowns · CC BY 4.0 on OSF</td><td>ACI, BI and NDSI already computed. Plot them against lockdown dates without touching audio.</td></tr>
+    <tr><td>Geukes et al.</td><td>257 670 one-minute recordings, 18 sensors, nine indices, 560 hand-annotated · Zenodo</td><td>Built to test whether the indices track what is really there. It interrogates this segment's thesis.</td></tr>
+    <tr><td>Acoustic Observatory</td><td>A continental sensor network, five years continuous, browsable per site</td><td>What a year of one microphone in one place actually looks like.</td></tr>
+    <tr><td>scikit-maad gallery</td><td>48 real Song Meter recordings — one 24-hour cycle at one site</td><td>A notebook computing all three, with the correlation heatmap between them.</td></tr>
   </table></div>
   <div class="linkrow">
     <a class="linkout" href="https://www.nature.com/articles/s41597-024-03611-7" target="_blank" rel="noopener">Silent Cities</a>
@@ -808,11 +883,15 @@ canvas.fig.mid{height:clamp(120px,23vh,260px)}
 <section class="slide top" id="sonic-city" data-sec="Sound maps">
   <p class="eyebrow">Two thousand and three</p>
   <h2 class="h1">Sonic City — Gaye, Mazé and Holmquist, Viktoria Institute</h2>
-  <figure class="slot tall"><figcaption class="how"><span class="tagref">image needed</span><br>
-    <b>Safe route, no permission needed —</b> the NIME 2003 paper is on Zenodo under CC BY 4.0, so its figures may be reused with attribution. Screenshot a figure from zenodo.org/records/1176507 and credit Gaye, Mazé &amp; Holmquist 2003.<br>
-    <b>Better images, permission required —</b> ramiamaze.com/02_sonic-city.html has three captioned photographs including the wearable prototype in use, credited to the project team, with no licence stated. lalyagaye.com/sonic-city/ carries video documentation marked All Rights Reserved.<br>
-    <b>Ask —</b> Lalya Gaye via lalyagaye.com or Attaya Projects; Ramia Mazé at London College of Communication. A named university lecture is the kind of request both tend to grant. The original project site lives on at viktoria.se/fal/projects/soniccity via the Wayback Machine.<br>
-    Then replace this figure with an img tag.</figcaption></figure>
+  <div class="assetrow">
+    <figure class="slot"><figcaption><span class="tagref">image needed</span><br>Replace this figure with an img tag</figcaption></figure>
+    <div class="how">
+      <span><b>Free to use —</b> the NIME 2003 paper is CC BY 4.0 on Zenodo (records/1176507). Screenshot a figure and credit Gaye, Mazé &amp; Holmquist 2003.</span>
+      <span><b>Better, but ask first —</b> ramiamaze.com/02_sonic-city.html has three captioned photographs, one of the wearable in use; lalyagaye.com/sonic-city/ has video, All Rights Reserved.</span>
+      <span><b>Ask —</b> Lalya Gaye via Attaya Projects, Ramia Mazé at London College of Communication. A named university lecture is the kind of request both tend to grant.</span>
+      <span>The original project site survives at viktoria.se/fal/projects/soniccity on the Wayback Machine.</span>
+    </div>
+  </div>
   <p class="body wide">A wearable that turned walking through the city into the act of playing it. Sensors on the body, the street as the score. The newest idea in this field is twenty-three years old, and it was Swedish.</p>
   <div class="linkrow"><a class="linkout" href="https://www.nime.org/proceedings/2003/nime2003_109.pdf" target="_blank" rel="noopener">NIME 2003 paper</a></div>
   <template class="nt">Useful corrective to the assumption that anything involving sensors and cities is new. Read the old papers.</template>
@@ -906,18 +985,18 @@ canvas.fig.mid{height:clamp(120px,23vh,260px)}
   <template class="nt">Be explicit that this is not on the workshop menu, or three students will try to install it on the day. The figure is a schematic of random sampling versus a PCA axis you can walk along. Note that PC3 did almost nothing audible — the honest result, and a good reminder that PCA orders axes by variance in the data, not by interest to a musician.</template>
 </section>
 
-<section class="slide top" id="latent-origins" data-sec="When the machine generates">
+<section class="slide top dense" id="latent-origins" data-sec="When the machine generates">
   <p class="eyebrow">Where the idea comes from</p>
   <h2 class="h1">A hundred and twenty years of hidden variables</h2>
-  <p class="body wide">Latent, from Latin <i>latēre</i> — to lie hidden. The word arrives in machine learning already carrying a whole method: something you cannot measure, inferred from the pattern of things you can.</p>
+  <p class="body wide">Latent, from Latin <i>latēre</i> — to lie hidden. It arrives in machine learning already carrying a method: something you cannot measure, inferred from the pattern of what you can.</p>
   <div class="scroll"><table>
     <tr><th>When</th><th>Who</th><th>What “latent” meant there</th></tr>
-    <tr><td class="num">1901 · 1933</td><td>Pearson, then Hotelling</td><td>The subspace of best fit to a cloud of points, and then <i>principal components</i>: derived axes, ordered by how much variance each explains. The direct ancestor of GANSpaceSynth's sliders.</td></tr>
-    <tr><td class="num">1904</td><td>Spearman</td><td>An unobserved common factor behind correlated test scores. Latent means inferred, never measured — the founding move of factor analysis.</td></tr>
-    <tr><td class="num">1990</td><td>Deerwester and others</td><td>Latent semantic analysis: a few hundred dimensions in which words and documents both have coordinates. The first time latent names a <i>space of meaning</i>.</td></tr>
-    <tr><td class="num">2013</td><td>Mikolov and others</td><td>word2vec. The space becomes popular culture, because <i>direction</i> in it turns out to carry meaning.</td></tr>
-    <tr><td class="num">2013–14</td><td>Kingma and Welling</td><td>The variational autoencoder gives the space an explicit prior you can sample from — reconnecting deep learning to Spearman's statistics.</td></tr>
-    <tr><td class="num">2014 · 2015</td><td>Goodfellow and others, then Radford and others</td><td>GANs map a noise vector to data. DCGAN then shows the space is smooth: walk a straight line in it and you get a continuous morph, and arithmetic on vectors edits meaning.</td></tr>
+    <tr><td class="num">1901 · 1933</td><td>Pearson, Hotelling</td><td><i>Principal components</i>: derived axes, ordered by the variance each explains. The direct ancestor of GANSpaceSynth's sliders.</td></tr>
+    <tr><td class="num">1904</td><td>Spearman</td><td>An unobserved common factor behind correlated test scores. Latent means inferred, never measured.</td></tr>
+    <tr><td class="num">1990</td><td>Deerwester et al.</td><td>Latent semantic analysis — the first time latent names a <i>space of meaning</i>, with words and documents both in it.</td></tr>
+    <tr><td class="num">2013</td><td>Mikolov et al.</td><td>word2vec: <i>direction</i> in the space turns out to carry meaning.</td></tr>
+    <tr><td class="num">2013–14</td><td>Kingma, Welling</td><td>The variational autoencoder gives it a prior you can sample from, reconnecting to Spearman's statistics.</td></tr>
+    <tr><td class="num">2014 · 2015</td><td>Goodfellow et al., Radford et al.</td><td>GANs map noise to data; DCGAN shows the space is smooth — walk a line and get a morph.</td></tr>
   </table></div>
   <p class="pull">Hidden cause, then best-fitting axis, then space of meaning, then a space you can walk — and finally one you can play.</p>
   <template class="nt">The load-bearing point is the 1901–1933 row. PCA is not a modern trick bolted onto neural networks; it is a hundred-year-old method for deciding which directions in a cloud of data are worth having names. GANSpaceSynth is Hotelling's paper applied to a guitar. Which is also why the axes belong to the training set and not to the musician — the next slide.</template>
@@ -925,11 +1004,14 @@ canvas.fig.mid{height:clamp(120px,23vh,260px)}
 
 <section class="slide top" id="alterity" data-sec="When the machine generates">
   <h2 class="h1">An instrument designed against mastery</h2>
-  <figure class="slot tall"><figcaption class="how"><span class="tagref">image / video needed</span><br>
-    <b>Safe route —</b> the NIME papers are CC BY 4.0. nime.org/proceedings/2020/nime2020_paper65.pdf has the instrument; the AI-terity 2.0 page at nime.pubpub.org/pub/9zu49nu5 has Figures 1–5 and an embedded video of <i>Uncertainty Etude #2</i>.<br>
-    <b>Best images, permission required —</b> sopi.aalto.fi/aiterity.html carries several photographs and four videos with no licence stated; Ars Electronica's In Kepler's Gardens page has four high-resolution performance photographs, credited to Koray Tahiroğlu himself.<br>
-    <b>Ask —</b> koray.tahiroglu@aalto.fi. For the lecture itself, playing the YouTube video in place is ordinary use; downloading and re-cutting it is not.<br>
-    Then replace this figure with an img tag, or leave it and play the video from the link below.</figcaption></figure>
+  <div class="assetrow">
+    <figure class="slot"><figcaption><span class="tagref">image / video needed</span><br>Replace this figure, or play the video from the links below</figcaption></figure>
+    <div class="how">
+      <span><b>Free to use —</b> the NIME papers are CC BY 4.0. The 2020 PDF has the instrument; nime.pubpub.org/pub/9zu49nu5 has Figures 1–5 and a video of <i>Uncertainty Etude #2</i>.</span>
+      <span><b>Best images, ask first —</b> sopi.aalto.fi/aiterity.html has photographs and four videos, no licence stated. Ars Electronica's In Kepler's Gardens page has four high-resolution performance photographs, credited to Koray Tahiroğlu himself.</span>
+      <span><b>Ask —</b> koray.tahiroglu@aalto.fi. Playing the YouTube video in place is ordinary use; downloading and re-cutting it is not.</span>
+    </div>
+  </div>
   <p class="body wide">Al-terity is deformable and 3D-printed, with pressure and bend sensors driving that latent space in real time. When AI-terity 2.0 notices you have settled, it jumps to a new point in the space. The performer is held in continuous uncertainty.</p>
   <div class="linkrow">
     <a class="linkout" href="https://www.nime.org/proceedings/2020/nime2020_paper65.pdf" target="_blank" rel="noopener">Al-terity, NIME 2020</a>
@@ -1046,12 +1128,30 @@ function go(n){
   /* canvases measure as zero-width while their slide is hidden, so everything
      on a slide has to be drawn again once that slide is actually on screen */
   requestAnimationFrame(function(){
+    fitSlide(slides[cur]);
     drawFigs();
     for(var k in rigs){
       var r=rigs[k];
       if(r.onshow&&slides[cur].contains(r.el))try{r.onshow()}catch(e){}
     }
   });
+}
+
+/* A slide is a fixed rectangle and the content has to live inside it. Rather than
+   cutting material until it fits the smallest projector in the building, each slide
+   scales its own type, spacing and figures down until it does — never below two
+   thirds, at which point it is allowed to scroll. */
+var FIT_MIN=0.66;
+function fitSlide(s){
+  if(!s||!s.clientHeight)return;
+  var f=1, guard=0;
+  s.style.setProperty("--fit","1");
+  while(s.scrollHeight>s.clientHeight+1&&f>FIT_MIN&&guard++<12){
+    var ratio=s.clientHeight/s.scrollHeight;
+    f=Math.max(FIT_MIN,f*Math.max(0.90,Math.sqrt(ratio)));
+    s.style.setProperty("--fit",f.toFixed(3));
+  }
+  if(f>=0.999)s.style.removeProperty("--fit");
 }
 slides.forEach(function(s,i){if(i>0)s.hidden=true});
 
@@ -1075,7 +1175,7 @@ $$("[data-nav]").forEach(function(b){b.addEventListener("click",function(){
   else if(a==="theme"){
     var r=document.documentElement;
     var dark=r.getAttribute("data-theme")==="dark"||(!r.getAttribute("data-theme")&&matchMedia("(prefers-color-scheme:dark)").matches);
-    r.setAttribute("data-theme",dark?"light":"dark"); drawFigs();
+    r.setAttribute("data-theme",dark?"light":"dark"); fitSlide(slides[cur]); drawFigs();
   }
 })});
 function jumpDemo(){
@@ -1565,6 +1665,154 @@ function layoutSpec(){
     }
   });
 }
+
+/* ---------- the wave becoming integers becoming bytes ---------- */
+FIGS.wavbytes=function(cv){
+  var g=fit(cv),c=g.c,w=g.w,h=g.h;
+  var ink=V("--ink"),fa=V("--faint"),ac=V("--accent"),wm=V("--warm"),ln=V("--line-strong");
+  c.clearRect(0,0,w,h);
+  var gut=Math.max(52,Math.min(92,w*0.11)), padR=8;
+  var pw=w-gut-padR, N=13;
+  var rowH=16, rows=3, botH=rows*rowH+10;
+  var topY=12, topH=h-botH-topY-16;
+  var mid=topY+topH/2, amp=topH*0.40;
+  function vAt(t){return Math.sin(t*Math.PI*2.1)*0.78+Math.sin(t*Math.PI*5.3)*0.16}
+  /* the continuous wave */
+  c.strokeStyle=ink;c.globalAlpha=.32;c.lineWidth=1.5;c.beginPath();
+  for(var px=0;px<=pw;px++){var t=px/pw,y=mid-vAt(t)*amp;px?c.lineTo(gut+px,y):c.moveTo(gut+px,y)}
+  c.stroke();c.globalAlpha=1;
+  c.strokeStyle=fa;c.globalAlpha=.45;c.beginPath();c.moveTo(gut,mid);c.lineTo(gut+pw,mid);c.stroke();c.globalAlpha=1;
+  labelR(c,gut-8,mid+4,"0",fa);
+  labelR(c,gut-8,mid-amp+4,"+1.0",fa);
+  labelR(c,gut-8,mid+amp+4,"-1.0",fa);
+  /* the samples, and what each one becomes */
+  var colW=pw/N;
+  c.font="11px 'IBM Plex Mono',monospace";
+  labelR(c,gut-8,h-botH+rowH-4,"float",fa);
+  labelR(c,gut-8,h-botH+2*rowH-4,"int16",fa);
+  labelR(c,gut-8,h-botH+3*rowH-4,"bytes",fa);
+  for(var i=0;i<N;i++){
+    var t2=(i+0.5)/N, cx=gut+t2*pw, v=vAt(t2), y2=mid-v*amp;
+    c.strokeStyle=ac;c.globalAlpha=.55;c.lineWidth=1;
+    c.beginPath();c.moveTo(cx,mid);c.lineTo(cx,y2);c.stroke();c.globalAlpha=1;
+    c.fillStyle=ac;c.beginPath();c.arc(cx,y2,3.2,0,7);c.fill();
+    /* dotted drop from the sample to its number */
+    c.strokeStyle=ac;c.globalAlpha=.22;c.setLineDash([2,3]);
+    c.beginPath();c.moveTo(cx,y2);c.lineTo(cx,h-botH+3);c.stroke();
+    c.setLineDash([]);c.globalAlpha=1;
+    var iv=Math.max(-32768,Math.min(32767,Math.round(v*32767)));
+    var u=iv<0?iv+65536:iv, lo=u&255, hi=(u>>8)&255;
+    function hx(n){return (n<16?"0":"")+n.toString(16).toUpperCase()}
+    c.textAlign="center";
+    c.fillStyle=ink;c.fillText(v.toFixed(2),cx,h-botH+rowH-4);
+    c.fillStyle=ac;c.fillText(iv+"",cx,h-botH+2*rowH-4);
+    c.fillStyle=wm;c.fillText(hx(lo)+" "+hx(hi),cx,h-botH+3*rowH-4);
+    c.textAlign="left";
+  }
+  c.strokeStyle=ln;c.globalAlpha=.4;
+  c.beginPath();c.moveTo(gut,h-botH+4);c.lineTo(gut+pw,h-botH+4);c.stroke();c.globalAlpha=1;
+  label(c,gut,h-3,"one column = one sample = one pair of bytes on disk, low byte first",fa);
+};
+
+/* ---------- the membrane, and one tone hiding another ---------- */
+FIGS.masking=function(cv){
+  var g=fit(cv),c=g.c,w=g.w,h=g.h;
+  var ink=V("--ink"),fa=V("--faint"),ac=V("--accent"),wm=V("--warm"),ok=V("--ok"),ln=V("--line-strong");
+  c.clearRect(0,0,w,h);
+  var gap=Math.max(18,w*0.03), halfW=(w-gap)/2;
+  var padT=26, padB=30;
+
+  /* ---- left: excitation along the basilar membrane ---- */
+  var L=0, lw=halfW, base=h-padB, top=padT+6;
+  c.fillStyle=ink;c.font="600 12px 'Familjen Grotesk',sans-serif";
+  c.fillText("the basilar membrane, unrolled",L,padT-8);
+  c.strokeStyle=ln;c.globalAlpha=.5;
+  c.beginPath();c.moveTo(L+6,base);c.lineTo(L+lw-6,base);c.stroke();c.globalAlpha=1;
+  /* a tapering strip to stand for stiff-to-slack */
+  c.strokeStyle=fa;c.globalAlpha=.35;c.beginPath();
+  c.moveTo(L+6,base-6);c.lineTo(L+lw-6,base-14);c.stroke();c.globalAlpha=1;
+  label(c,L+6,base+13,"base · stiff · high",fa);
+  labelR(c,L+lw-6,base+13,"apex · slack · low",fa);
+  function bump(centre,height,width,col,alpha){
+    c.fillStyle=col;c.globalAlpha=alpha;c.beginPath();
+    c.moveTo(L+6,base);
+    for(var x=0;x<=lw-12;x++){
+      var d=(x-(centre*(lw-12)))/(width*(lw-12));
+      /* asymmetric: spreads further toward the apex */
+      if(d>0)d*=0.55;
+      var y=base-Math.exp(-d*d)*height;
+      c.lineTo(L+6+x,y);
+    }
+    c.lineTo(L+lw-6,base);c.closePath();c.fill();c.globalAlpha=1;
+  }
+  var H=base-top;
+  bump(0.34,H*0.92,0.17,ac,0.55);
+  bump(0.46,H*0.44,0.17,wm,0.55);
+  bump(0.82,H*0.60,0.15,ok,0.5);
+  label(c,L+6+0.34*(lw-12)-16,top-4,"1 kHz",ac);
+  label(c,L+6+0.46*(lw-12)-6,top+H*0.50,"1.1 kHz",wm);
+  label(c,L+6+0.82*(lw-12)-20,top+H*0.34,"far away",ok);
+  label(c,L+6,base+26,"two nearby tones shake the same stretch",fa);
+
+  /* ---- right: the masking threshold ---- */
+  var R=halfW+gap, rw=halfW;
+  c.fillStyle=ink;c.font="600 12px 'Familjen Grotesk',sans-serif";
+  c.fillText("what survives, in dB",R,padT-8);
+  var lo=Math.log10(50), hi=Math.log10(16000);
+  function X(f){return R+8+(Math.log10(f)-lo)/(hi-lo)*(rw-16)}
+  function Y(db){return base-(db/100)*(base-top)}
+  [0,25,50,75,100].forEach(function(db){
+    c.strokeStyle=fa;c.globalAlpha=.16;c.beginPath();c.moveTo(R+8,Y(db));c.lineTo(R+rw-8,Y(db));c.stroke();c.globalAlpha=1;
+  });
+  [100,1000,10000].forEach(function(f){
+    label(c,X(f)-10,base+13,f>=1000?(f/1000)+"k":f+"",fa);
+  });
+  /* absolute threshold of hearing, schematic */
+  c.strokeStyle=fa;c.globalAlpha=.6;c.setLineDash([3,3]);c.lineWidth=1.3;c.beginPath();
+  for(var i=0;i<=120;i++){
+    var f2=Math.pow(10,lo+(hi-lo)*i/120);
+    var q=3.64*Math.pow(f2/1000,-0.8)-6.5*Math.exp(-0.6*Math.pow(f2/1000-3.3,2))+0.001*Math.pow(f2/1000,4);
+    var yq=Y(Math.max(0,Math.min(100,q)));
+    i?c.lineTo(X(f2),yq):c.moveTo(X(f2),yq);
+  }
+  c.stroke();c.setLineDash([]);c.globalAlpha=1;
+  label(c,X(120),Y(30),"threshold of hearing",fa);
+  /* the masker and the curve it drags up around itself */
+  var MF=1000, ML=78;
+  c.fillStyle=ac;c.globalAlpha=.16;c.beginPath();
+  c.moveTo(X(50),Y(0));
+  for(var j=0;j<=160;j++){
+    var f3=Math.pow(10,lo+(hi-lo)*j/160);
+    var oct=Math.log(f3/MF)/Math.LN2;
+    var drop=oct<0?-oct*30:oct*13;   /* steep below, shallow above */
+    c.lineTo(X(f3),Y(Math.max(0,ML-drop)));
+  }
+  c.lineTo(X(16000),Y(0));c.closePath();c.fill();c.globalAlpha=1;
+  c.strokeStyle=ac;c.lineWidth=1.6;c.beginPath();
+  for(var k=0;k<=160;k++){
+    var f4=Math.pow(10,lo+(hi-lo)*k/160);
+    var oc2=Math.log(f4/MF)/Math.LN2;
+    var dr2=oc2<0?-oc2*30:oc2*13;
+    var yv=Y(Math.max(0,ML-dr2));
+    k?c.lineTo(X(f4),yv):c.moveTo(X(f4),yv);
+  }
+  c.stroke();
+  /* the masker itself */
+  c.strokeStyle=ac;c.lineWidth=3;c.beginPath();c.moveTo(X(MF),Y(0));c.lineTo(X(MF),Y(ML));c.stroke();
+  c.fillStyle=ac;c.beginPath();c.arc(X(MF),Y(ML),4,0,7);c.fill();
+  label(c,X(MF)-6,Y(ML)-8,"the loud one",ac);
+  /* a quiet neighbour, well under the curve */
+  c.strokeStyle=wm;c.lineWidth=2.6;c.beginPath();c.moveTo(X(1300),Y(0));c.lineTo(X(1300),Y(40));c.stroke();
+  c.fillStyle=wm;c.beginPath();c.arc(X(1300),Y(40),3.4,0,7);c.fill();
+  label(c,X(1300)+7,Y(40)+3,"masked",wm);
+  label(c,X(1300)+7,Y(40)+16,"never written",wm);
+  /* one far enough away to poke out above it */
+  c.strokeStyle=ok;c.lineWidth=2.6;c.beginPath();c.moveTo(X(6500),Y(0));c.lineTo(X(6500),Y(64));c.stroke();
+  c.fillStyle=ok;c.beginPath();c.arc(X(6500),Y(64),3.4,0,7);c.fill();
+  label(c,X(6500)-12,Y(64)-9,"above the curve — kept",ok);
+  c.strokeStyle=ln;c.globalAlpha=.5;c.beginPath();c.moveTo(R+8,base);c.lineTo(R+rw-8,base);c.stroke();c.globalAlpha=1;
+  label(c,R+8,base+26,"the shaded region is what the encoder is allowed to discard",fa);
+};
 function drawFigs(){
   layoutSpec();
   $$("canvas.fig").forEach(function(cv){var f=FIGS[cv.dataset.fig];if(f&&cv.clientWidth)try{f(cv)}catch(e){}});
@@ -2257,7 +2505,10 @@ function idleCanvas(cv,msg){
 /* ============ BOOT ============ */
 window.addEventListener("hashchange",function(){var i=slides.findIndex(function(x){return x.id===location.hash.slice(1)});if(i>-1&&i!==cur)go(i)});
 var byHash=slides.findIndex(function(s){return s.id===location.hash.slice(1)});
-window.addEventListener("resize",function(){clearTimeout(window.__rz);window.__rz=setTimeout(drawFigs,160)});
+window.addEventListener("resize",function(){
+  clearTimeout(window.__rz);
+  window.__rz=setTimeout(function(){fitSlide(slides[cur]);drawFigs()},160);
+});
 /* the logotype is a file the lecturer drops in beside this one; until then the
    typographic lockup carries it on its own */
 $$("img[data-logo]").forEach(function(im){
@@ -2266,6 +2517,7 @@ $$("img[data-logo]").forEach(function(im){
 });
 flagInsecure();
 go(byHash>-1?byHash:0);
+fitSlide(slides[cur]);
 drawFigs();
 })();
 </script>
