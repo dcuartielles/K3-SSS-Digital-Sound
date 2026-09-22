@@ -209,10 +209,12 @@ input[type=range]{width:100%;accent-color:var(--accent);height:22px}
 /* ---------- branding ---------- */
 :root{--spec-gut:clamp(92px,13vw,172px)}
 .brand{display:flex;align-items:center;gap:clamp(10px,1.4vw,18px);flex-wrap:wrap}
-.brand img{height:clamp(32px,4.2vw,56px);width:auto;display:block}
+.brand img{height:clamp(34px,4.6vw,62px);width:auto;display:block;
+  background:#FFFFFF;padding:7px 11px;border-radius:2px}
 .brand .lock{font-family:var(--mono);font-size:var(--t-label);letter-spacing:.13em;
   text-transform:uppercase;color:var(--muted);line-height:1.6}
-.bar img.brandmini{height:18px;width:auto;display:block;opacity:.8;flex:none}
+.bar img.brandmini{height:20px;width:auto;display:block;flex:none;
+  background:#FFFFFF;padding:3px 5px;border-radius:2px}
 
 /* ---------- formulae ---------- */
 .eq{font-family:var(--mono);font-size:calc(var(--t-body)*1.18);line-height:1.8;color:var(--accent);
@@ -262,6 +264,7 @@ canvas.fig.mid{height:calc(clamp(120px,23vh,260px)*var(--fit))}
 .plate{margin:0;display:flex;flex-direction:column;gap:7px;width:100%}
 .plate img{width:100%;max-height:calc(clamp(150px,30vh,340px)*var(--fit));object-fit:contain;
   display:block;background:#FFFFFF;border:1px solid var(--line);padding:8px}
+.plate.photo img{padding:0;background:var(--sunk);object-fit:cover}
 .plate .missing{border:1px dashed var(--line-strong);background:var(--sunk);
   min-height:calc(clamp(140px,26vh,280px)*var(--fit));display:grid;place-items:center;
   padding:16px;text-align:center}
@@ -277,15 +280,15 @@ canvas.fig.mid{height:calc(clamp(120px,23vh,260px)*var(--fit))}
 
 <section class="slide dark" id="cover" data-sec="Opening">
   <div class="brand">
-    <img data-logo src="mau-logo.png" alt="Malmö University">
-    <span class="lock">Malmö University<br>K3 · School of Arts and Communication</span>
+    <img data-logo src="assets/mau-hori.png" alt="Malmö University">
+    <span class="lock">K3 · School of Arts and Communication</span>
   </div>
   <p class="eyebrow">KD343A · Situated and speculative sensing</p>
   <h1 class="hero">Digital<br>Sound Lab</h1>
   <p class="lead">A microphone is a proposition, not a witness.</p>
   <p class="tiny">Two hours · eight live instruments · arrow keys to move · press D for the instruments, I for the index, N for the teaching notes</p>
   <p class="tiny">Open teaching material for educators — CC BY-NC-SA 4.0 · K3, Malmö University</p>
-  <template class="nt">Drop the university logotype in as mau-logo.png beside this file and it appears here and in the bottom bar; without it the typographic lockup stands on its own. Say the subtitle out loud before moving on. It is the whole lecture in seven words. Then tell them the deck is theirs afterwards and every demo runs on their own recordings.</template>
+  <template class="nt">Say the subtitle out loud before moving on. It is the whole lecture in seven words. Then tell them the deck is theirs afterwards and every demo runs on their own recordings.</template>
 </section>
 
 <section class="slide stmt" id="thesis" data-sec="Opening">
@@ -547,19 +550,23 @@ canvas.fig.mid{height:calc(clamp(120px,23vh,260px)*var(--fit))}
 <section class="slide top" id="cochlea" data-sec="From air to numbers">
   <p class="eyebrow">Before the encoder, the organ</p>
   <h2 class="h1">The ear takes a spectrum first</h2>
-  <figure class="plate">
-    <img data-img src="basilar-membrane.png" alt="The cochlea drawn uncoiled, showing the basilar membrane tapering from the narrow, stiff base to the wide, floppy apex, with the frequencies that peak at each position.">
-    <div class="missing" hidden><p><span class="tagref">image needed</span><br>Save the Commons file as <b>basilar-membrane.png</b> beside this deck and it appears here.<br>commons.wikimedia.org/wiki/File:Uncoiled_cochlea_with_basilar_membrane.png</p></div>
-    <figcaption>“Uncoiled cochlea with basilar membrane”, Wikimedia Commons · <span data-credit>author and licence — to be completed from the file page</span></figcaption>
-  </figure>
+  <div class="assetrow">
+    <figure class="plate" style="flex:1 1 380px">
+      <img data-img src="assets/basilar-membrane.png" alt="The cochlea drawn uncoiled: the basilar membrane tapers from the narrow, stiff base to the wide, slack apex over 30 mm, labelled with the frequency that peaks at each position, from 1600 Hz near the base down to 25 Hz at the apex.">
+      <div class="missing" hidden><p><span class="tagref">image missing</span><br>Expected at <b>assets/basilar-membrane.png</b></p></div>
+      <figcaption>“Uncoiled cochlea with basilar membrane”, Wikimedia Commons · <span data-credit>credit and licence to be completed from the file page</span></figcaption>
+    </figure>
+    <div class="how" style="flex:1 1 320px">
+      <span><b>The shape —</b> the cochlea is a coiled tube. Drawn uncoiled it is a tapered strip: narrow and stiff at the base where sound enters, wide and slack at the far end.</span>
+      <span><b>The motion —</b> a sound sets a travelling wave moving along it, peaking at a <i>position</i> that depends on frequency. Read the labels: 1600 Hz lands near the stiff base, 25 Hz at the slack end, and the whole audible range is spread over about thirty millimetres. Georg von Békésy worked this out by dissection and stroboscope, and won a Nobel Prize for it in 1961.</span>
+    </div>
+  </div>
   <div class="pair">
     <div class="kv">
-      <div><b>the shape</b><span>The cochlea is a coiled tube. Drawn uncoiled it is a tapered strip: narrow and stiff at the base where sound enters, wide and slack at the far end.</span></div>
-      <div><b>the motion</b><span>A sound sets a travelling wave moving along it, and that wave peaks at a <i>position</i> that depends on its frequency — high near the stiff base, low at the slack apex. Georg von Békésy worked this out by dissection and stroboscope, and got a Nobel Prize for it in 1961.</span></div>
+      <div><b>so</b><span>Pitch is place. The organ performs a mechanical frequency analysis before a single nerve has fired — the spectrogram is not a metaphor for hearing, it is a diagram of something your head already does.</span></div>
     </div>
     <div class="kv">
-      <div><b>the consequence</b><span>Pitch is place. The organ performs a mechanical frequency analysis before a single nerve has fired — so the spectrogram is not a metaphor for hearing. It is a diagram of something your head is already doing.</span></div>
-      <div><b>and the catch</b><span>A peak on a membrane is a region, not a point, roughly a third of an octave wide. Which is the whole of the next slide.</span></div>
+      <div><b>and</b><span>A peak on a membrane is a region, not a point, roughly a third of an octave wide. Which is the whole of the next slide.</span></div>
     </div>
   </div>
   <div class="linkrow"><a class="linkout" href="https://en.wikipedia.org/wiki/Basilar_membrane" target="_blank" rel="noopener">Basilar membrane</a></div>
@@ -1077,12 +1084,15 @@ canvas.fig.mid{height:calc(clamp(120px,23vh,260px)*var(--fit))}
   <p class="eyebrow">Two thousand and three</p>
   <h2 class="h1">Sonic City — Gaye, Mazé and Holmquist, Viktoria Institute</h2>
   <div class="assetrow">
-    <figure class="slot"><figcaption><span class="tagref">image needed</span><br>Replace this figure with an img tag</figcaption></figure>
-    <div class="how">
-      <span><b>Free to use —</b> the NIME 2003 paper is CC BY 4.0 on Zenodo (records/1176507). Screenshot a figure and credit Gaye, Mazé &amp; Holmquist 2003.</span>
-      <span><b>Better, but ask first —</b> ramiamaze.com/02_sonic-city.html has three captioned photographs, one of the wearable in use; lalyagaye.com/sonic-city/ has video, All Rights Reserved.</span>
-      <span><b>Ask —</b> Lalya Gaye via Attaya Projects, Ramia Mazé at London College of Communication. A named university lecture is the kind of request both tend to grant.</span>
-      <span>The original project site survives at viktoria.se/fal/projects/soniccity on the Wayback Machine.</span>
+    <figure class="plate photo" style="flex:1 1 320px">
+      <img data-img src="assets/sonic-city-parts.jpg" alt="The Sonic City hardware laid out on a table: a microcontroller with sensor wires, a USB-MIDI converter, a subnotebook laptop, headphones and a microphone, each labelled with an arrow.">
+      <div class="missing" hidden><p><span class="tagref">image missing</span><br>Expected at <b>assets/sonic-city-parts.jpg</b></p></div>
+      <figcaption>Gaye, Mazé &amp; Holmquist, <i>Sonic City</i>, NIME 2003 — CC BY 4.0 via Zenodo</figcaption>
+    </figure>
+    <div class="how" style="flex:1 1 320px">
+      <span><b>What it took in 2003 —</b> a microcontroller, a bag of sensors, a USB-MIDI converter and a subnotebook, worn on the body. Everything in that photograph is now one phone, which is the point: the idea was not waiting on the hardware.</span>
+      <span><b>The body is the cursor.</b> Light, sound, metal, pollution and the wearer's own movement drove the processing. Walking a particular route produced a particular piece, and walking it differently produced a different one.</span>
+      <span>More images, if you want them: ramiamaze.com/02_sonic-city.html has the wearable in use; lalyagaye.com/sonic-city/ has video, All Rights Reserved — ask Lalya Gaye via Attaya Projects.</span>
     </div>
   </div>
   <p class="body wide">A wearable that turned walking through the city into the act of playing it. Sensors on the body, the street as the score. The newest idea in this field is twenty-three years old, and it was Swedish.</p>
@@ -1137,45 +1147,22 @@ canvas.fig.mid{height:calc(clamp(120px,23vh,260px)*var(--fit))}
   <template class="nt">Show the AI-terity video early in this segment rather than describing it. Two minutes of footage does more than five of explanation.</template>
 </section>
 
-<section class="slide top" id="gansynth" data-sec="When the machine generates">
-  <p class="eyebrow">Engel and others, ICLR 2019 · Google Magenta</p>
-  <h2 class="h1">GANSynth, in one slide</h2>
+<section class="slide top" id="machine" data-sec="When the machine generates">
+  <p class="eyebrow">The machinery, briefly</p>
+  <h2 class="h1">From rolling dice to steering</h2>
+  <canvas class="fig mid" data-fig="latent" height="240"></canvas>
   <div class="pair">
     <div class="kv">
-      <div><b>trained on</b><span>NSynth — 305 979 single musical notes from 1 006 instruments, four seconds each at 16 kHz. GANSynth used a filtered subset: 70 379 acoustic notes between MIDI 24 and 84.</span></div>
-      <div><b>does not</b><span>generate waveform samples. It generates a picture: a log-magnitude spectrogram, using a progressive GAN of the kind built for faces.</span></div>
-      <div><b>the trick</b><span>A spectrogram alone cannot be turned back into sound, because the phase is missing — and phase is chaotic to predict. So it also generates the <i>instantaneous frequency</i>: the phase unwrapped and differenced, which for a held harmonic is nearly constant and therefore something a convolutional network can actually produce coherently.</span></div>
+      <div><b>GANSynth</b><span>Engel and others, Google Magenta, 2019. It does not generate sound samples — it generates a <i>picture</i>: a spectrogram, plus the instantaneous frequency that a spectrogram is missing, because phase is the part a network cannot fake. Four seconds of audio in about twenty milliseconds, against roughly eighteen minutes for the model it replaced.</span></div>
+      <div><b>what you get</b><span>A 256-dimensional space of instrument timbres, and no way to ask it for anything. You can roll dice in it, or interpolate blindly between two dice rolls.</span></div>
     </div>
     <div class="kv">
-      <div><b>the space</b><span>z is 256-dimensional, drawn from a Gaussian. Pitch arrives separately as a 61-way one-hot vector, and the discriminator is made to guess the pitch — which is what forces pitch and timbre apart, so you can hold a timbre and walk up five octaves.</span></div>
-      <div><b>speed</b><span>One forward pass, not sample-by-sample. Four seconds of audio in about 20 milliseconds, against roughly 18 minutes for the WaveNet baseline on the same hardware. About fifty thousand times faster.</span></div>
-      <div><b>cannot</b><span>Four-second single notes of pitched acoustic instruments, and nothing else. No environments, no speech, no structure longer than a note. The authors say so themselves.</span></div>
+      <div><b>GANSpaceSynth</b><span>Tahiroğlu, Kastemaa and Koli, Aalto University, 2021. Run PCA over the generator's own inner activations and a handful of directions fall out that do something audible — in their model, one controlled brightness and one controlled loudness. A black box becomes two or three knobs.</span></div>
+      <div><b>why it matters here</b><span>Not because anyone in this room will train one. Because the moment a space has steerable directions, it stops being a slot machine and starts being somewhere you can <i>go</i>.</span></div>
     </div>
   </div>
-  <p class="pull">It learned what an instrument sounds like by learning what a spectrogram looks like.</p>
-  <div class="linkrow">
-    <a class="linkout" href="https://magenta.withgoogle.com/gansynth" target="_blank" rel="noopener">Magenta write-up</a>
-    <a class="linkout" href="https://storage.googleapis.com/magentadata/papers/gansynth/index.html" target="_blank" rel="noopener">Audio examples — play these</a>
-    <a class="linkout" href="https://arxiv.org/abs/1902.08710" target="_blank" rel="noopener">Paper</a>
-  </div>
-  <template class="nt">This is the callback to the spectrum slide: we noted that every spectrogram throws the phase away, and here is what it costs to put it back. Play two timbre interpolations from the examples page rather than talking — thirty seconds each. Do not promise the Colab notebook works; it is TensorFlow 1 era and needs testing before you rely on it live.</template>
-</section>
-
-<section class="slide top" id="ganspace" data-sec="When the machine generates">
-  <h2 class="h1">From sampling a space to navigating one</h2>
-  <canvas class="fig" data-fig="latent" height="240"></canvas>
-  <div class="cols">
-    <div class="card"><h3>The problem</h3><p>256 dimensions with no names. You can roll dice in it, or blindly interpolate between two dice rolls. You cannot ask it to be brighter.</p></div>
-    <div class="card"><h3>GANSpaceSynth</h3><p>Runs PCA over the activations of an early layer of the trained generator, and hands back a few axes that do something audible. In their model PC1 turned out to control brightness and PC2 loudness.</p></div>
-    <div class="card"><h3>What that buys</h3><p>Two or three knobs instead of a black box — so a musician steers rather than samples. It runs inside Pure Data, and ships Hallu for placing points in the space and stitching the results together.</p></div>
-  </div>
-  <p class="body">Tahiroğlu, Kastemaa and Koli, AIMC 2021, Aalto University. Open source under GPL-2.0, last touched in 2021 — it needs training and a GPU, so this is a demo, not a workshop task.</p>
-  <div class="linkrow">
-    <a class="linkout" href="https://aimc2021.iem.at/wp-content/uploads/2021/06/AIMC_2021_Tahiroglu_Kastemaa_Coli.pdf" target="_blank" rel="noopener">GANSpaceSynth paper</a>
-    <a class="linkout" href="https://github.com/SopiMlab/GANSpaceSynth" target="_blank" rel="noopener">Code</a>
-    <a class="linkout" href="https://sopi.aalto.fi/" target="_blank" rel="noopener">SOPI group</a>
-  </div>
-  <template class="nt">Be explicit that this is not on the workshop menu, or three students will try to install it on the day. The figure is a schematic of random sampling versus a PCA axis you can walk along. Note that PC3 did almost nothing audible — the honest result, and a good reminder that PCA orders axes by variance in the data, not by interest to a musician.</template>
+  <p class="tiny">Neither is on the workshop menu — both need training and a GPU. The idea is what travels.</p>
+  <template class="nt">Keep this brisk; it is scaffolding for the two slides after it, not the destination. If you show anything, show thirty seconds of a timbre interpolation from the Magenta examples page. The sentence to land is the last one: steerable directions turn a generator into a place.</template>
 </section>
 
 <section class="slide top dense" id="latent-origins" data-sec="When the machine generates">
@@ -1195,24 +1182,46 @@ canvas.fig.mid{height:calc(clamp(120px,23vh,260px)*var(--fit))}
   <template class="nt">The load-bearing point is the 1901–1933 row. PCA is not a modern trick bolted onto neural networks; it is a hundred-year-old method for deciding which directions in a cloud of data are worth having names. GANSpaceSynth is Hotelling's paper applied to a guitar. Which is also why the axes belong to the training set and not to the musician — the next slide.</template>
 </section>
 
+<section class="slide top dense" id="latentmaps" data-sec="When the machine generates">
+  <p class="eyebrow">The link back</p>
+  <h2 class="h1">Two maps, and what is missing from each</h2>
+  <p class="body wide">The last segment mapped places. This one maps a space with no places in it — and the whole vocabulary transfers without a word changing. Point, neighbour, axis, coverage, navigation. So do the problems.</p>
+  <div class="scroll"><table>
+    <tr><th></th><th>A sound map</th><th>A latent space</th></tr>
+    <tr><td>a point is</td><td>a recording somebody stood somewhere and made</td><td>a vector the model will turn into sound</td></tr>
+    <tr><td>next to it</td><td>somewhere you could walk to</td><td>whatever the model judged similar</td></tr>
+    <tr><td>the axes are</td><td>latitude and longitude — external, agreed, older than the map</td><td>directions PCA found in the training data, unnamed until somebody listens and names them</td></tr>
+    <tr><td>coverage comes from</td><td>who owned a recorder and went there</td><td>what was in the training set</td></tr>
+    <tr><td>moving means</td><td>walking, and arriving somewhere that existed</td><td>interpolating, and arriving at something that never did</td></tr>
+    <tr><td>the blank areas</td><td>places nobody recorded — visibly, honestly empty</td><td>there are none. Ask anywhere and you get an answer</td></tr>
+  </table></div>
+  <p class="pull" style="max-width:40ch">A sound map can admit it does not know. A latent space always has something to say.</p>
+  <div class="linkrow"><a class="linkout" href="https://nime.org/proc/nime2023_33/" target="_blank" rel="noopener">Scurto &amp; Postel — Soundwalking Deep Latent Spaces</a></div>
+  <template class="nt">This is the slide that earns the whole second half of the lecture. Two things to press. First, the axes row: nobody agreed to a latent space's axes and nobody can appeal them, whereas latitude is a convention you can at least argue with. Second, the last row — and take your time here. A blank region on aporee is information: nobody has been there. A generative model has no blank regions at all, so the absence of data looks exactly like the presence of data, and it sounds confident either way. Scurto and Postel took soundwalking methods — the ones from the beginning of this course — and applied them to a latent space on purpose, which is the clearest sign that the field thinks these two things are the same kind of object.</template>
+</section>
+
 <section class="slide top" id="alterity" data-sec="When the machine generates">
-  <h2 class="h1">An instrument designed against mastery</h2>
+  <h2 class="h1">Navigating a latent map with your hands</h2>
   <div class="assetrow">
-    <figure class="slot"><figcaption><span class="tagref">still needed</span><br>A frame from the performance, if you want one on the slide — otherwise play the video</figcaption></figure>
-    <div class="how">
-      <span><b>Play this —</b> AI-terity in performance, from Koray Tahiroğlu. Open it from the button below and let it run for two minutes before saying anything about it.</span>
-      <span><b>Free to use —</b> the NIME papers are CC BY 4.0. The 2020 PDF has the instrument; nime.pubpub.org/pub/9zu49nu5 has Figures 1–5 and a video of <i>Uncertainty Etude #2</i>.</span>
-      <span><b>Stills, ask first —</b> sopi.aalto.fi/aiterity.html and Ars Electronica's In Kepler's Gardens page have performance photographs credited to Tahiroğlu himself. Write to koray.tahiroglu@aalto.fi — playing the video in place is ordinary use, downloading and re-cutting it is not.</span>
+    <figure class="plate photo" style="flex:1 1 340px">
+      <img data-img src="assets/al-terity.jpg" alt="Koray Tahiroğlu standing at a white table between two studio monitors, both hands squeezing and folding a soft dark object — the AI-terity instrument — with its sensor wiring visible at the base.">
+      <div class="missing" hidden><p><span class="tagref">image missing</span><br>Expected at <b>assets/al-terity.jpg</b></p></div>
+      <figcaption>Koray Tahiroğlu performing with AI-terity</figcaption>
+    </figure>
+    <div class="how" style="flex:1 1 340px">
+      <span><b>The instrument —</b> deformable and 3D-printed, with pressure and bend sensors. Squeezing, folding and twisting it moves a point through the latent space in real time. There is no keyboard, no scale, no preset: the gesture <i>is</i> the coordinate.</span>
+      <span><b>Version 2.0 —</b> GANSpaceSynth underneath, so the directions the performer travels in mean something audible rather than nothing. And when the instrument notices you have settled somewhere comfortable, it <b>jumps</b>. You are not permitted to arrive.</span>
+      <span><b>Designed against mastery —</b> an instrument you cannot learn in the usual sense, because it will not hold still long enough to be learned. Tahiroğlu calls the condition continuous uncertainty.</span>
     </div>
   </div>
-  <p class="body wide">Al-terity is deformable and 3D-printed, with pressure and bend sensors driving that latent space in real time. When AI-terity 2.0 notices you have settled, it jumps to a new point in the space. The performer is held in continuous uncertainty.</p>
+  <p class="pull" style="max-width:48ch">Sonic City put the body in a real city to make sound. This puts the body in a generated one. Twenty years apart, and the same gesture: move through a space, and the space answers.</p>
   <div class="linkrow">
     <a class="linkout" href="https://www.youtube.com/watch?v=OjqkrGq25so" target="_blank" rel="noopener">▶ AI-terity in performance</a>
     <a class="linkout" href="https://www.nime.org/proceedings/2020/nime2020_paper65.pdf" target="_blank" rel="noopener">Al-terity, NIME 2020</a>
     <a class="linkout" href="https://nime.pubpub.org/pub/9zu49nu5/release/1" target="_blank" rel="noopener">AI-terity 2.0, NIME 2021</a>
-    <a class="linkout" href="https://sopi.aalto.fi/aiterity.html" target="_blank" rel="noopener">SOPI project page</a>
+    <a class="linkout" href="https://sopi.aalto.fi/aiterity.html" target="_blank" rel="noopener">SOPI</a>
   </div>
-  <template class="nt">Open the video first and let it play — two minutes of watching somebody wrestle a squashy object that keeps changing its mind does more than five minutes of description. Then tie it back to the opening: the microphone was already a proposition. This instrument is a proposition that argues back. The tool has an agenda, and the performer is not allowed to settle.</template>
+  <template class="nt">Play the video first and say nothing for two minutes. Then make the Sonic City link explicit, because it is the spine of the whole afternoon: in 2003 a body walked through a city and the city's sensors made the music; in 2021 a body squeezes an object and a trained model makes the music. Both are navigation. The difference is what is being navigated and who drew it — which is precisely the next slide. Worth adding that the jump-when-you-settle behaviour is a design decision, not a limitation: somebody chose that the performer should never be allowed to master this, and that choice is an argument about what instruments are for.</template>
 </section>
 
 <section class="slide stmt" id="axes" data-sec="When the machine generates">
@@ -1277,7 +1286,7 @@ canvas.fig.mid{height:calc(clamp(120px,23vh,260px)*var(--fit))}
 </div>
 
 <div class="bar">
-  <img class="brandmini" data-logo src="mau-logo.png" alt="">
+  <img class="brandmini" data-logo src="assets/mau-hori.png" alt="">
   <button data-nav="prev">◀ Prev</button>
   <button data-nav="next">Next ▶</button>
   <button data-nav="index">Index</button>
