@@ -1,0 +1,768 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Digital Sound Workshop — KD343A</title>
+<meta name="description" content="Four-hour workshop on manipulating your own field recordings: analysis, clip preparation, and Strudel from zero. K3, Malmo University.">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,300..700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ground:#FAF8F3; --surface:#FFFDF7; --sunk:#EFEBE1;
+  --ink:#132320; --muted:#4A5A56; --faint:#7C8B87;
+  --line:#DED8CB; --line-strong:#C6BEAD;
+  --accent:#17605B; --accent-soft:#E2EFEC; --warm:#B2541F;
+  --ok:#1F6B4F; --stage-pad:clamp(20px,4.2vw,72px);
+  --fit:1;
+  --t-hero-b:clamp(2.4rem,6.6vw,5rem);
+  --t-h1-b:clamp(1.9rem,4.6vw,3.4rem);
+  --t-h2-b:clamp(1.35rem,3vw,2.3rem);
+  --t-lead-b:clamp(1.02rem,1.85vw,1.55rem);
+  --t-body-b:clamp(0.92rem,1.35vw,1.12rem);
+  --t-label-b:clamp(0.66rem,0.95vw,0.78rem);
+  --t-hero:var(--t-hero-b);
+  --t-h1:var(--t-h1-b);
+  --t-h2:var(--t-h2-b);
+  --t-lead:var(--t-lead-b);
+  --t-body:var(--t-body-b);
+  --t-label:var(--t-label-b);
+  --display:'IBM Plex Sans',"Helvetica Neue",Helvetica,Arial,sans-serif;
+  --serif:'Source Serif 4',Georgia,'Times New Roman',serif;
+  --mono:'IBM Plex Mono',ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#132320; --surface:#1C302B; --sunk:#0D1A17;
+  --ink:#EFF3F1; --muted:#B7C4C0; --faint:#8A9894;
+  --line:#28433C; --line-strong:#375A51;
+  --accent:#6FC0B5; --accent-soft:#12302C; --warm:#E8A24D;
+  --ok:#5FD3A3;
+}}
+:root[data-theme="dark"]{
+  --ground:#132320; --surface:#1C302B; --sunk:#0D1A17;
+  --ink:#EFF3F1; --muted:#B7C4C0; --faint:#8A9894;
+  --line:#28433C; --line-strong:#375A51;
+  --accent:#6FC0B5; --accent-soft:#12302C; --warm:#E8A24D;
+  --ok:#5FD3A3;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;display:flex;flex-direction:column;background:var(--ground);color:var(--ink);font-family:var(--display);
+  font-size:var(--t-body);line-height:1.5;-webkit-font-smoothing:antialiased;overflow:hidden}
+h1,h2,h3{margin:0;text-wrap:balance;font-weight:600;letter-spacing:-0.01em}
+.hero,.h1,.h2{font-family:var(--serif);font-weight:400}
+sub,sup{font-size:0.7em;line-height:0;position:relative;vertical-align:baseline}
+sup{top:-0.46em}
+sub{bottom:-0.26em}
+p,ul,ol{margin:0}
+a{color:var(--accent)}
+button{font:inherit;color:inherit}
+
+/* ---------- shell ---------- */
+.app{flex:1 1 auto;min-height:0;display:flex;flex-direction:column}
+.rail{height:3px;background:var(--line);flex:none}
+.rail>i{display:block;height:100%;background:var(--accent);width:0;transition:width .25s ease}
+.stage{flex:1;position:relative;overflow:hidden}
+.slide{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;
+  --t-hero:calc(var(--t-hero-b)*var(--fit));
+  --t-h1:calc(var(--t-h1-b)*var(--fit));
+  --t-h2:calc(var(--t-h2-b)*var(--fit));
+  --t-lead:calc(var(--t-lead-b)*var(--fit));
+  --t-body:calc(var(--t-body-b)*var(--fit));
+  --t-label:calc(var(--t-label-b)*var(--fit));
+  padding:calc(var(--stage-pad)*var(--fit)) var(--stage-pad) calc(var(--stage-pad)*var(--fit) + 8px);
+  display:flex;flex-direction:column;gap:calc(clamp(10px,1.5vw,20px)*var(--fit));justify-content:center}
+.slide.top{justify-content:flex-start}
+.slide>*{max-width:1180px;width:100%;flex:none}
+.slide[data-demo]{justify-content:flex-start;--stage-pad:clamp(14px,2.2vw,36px)}
+.slide[data-demo] .h1{font-size:clamp(1.2rem,2.4vw,1.85rem)}
+.slide[data-demo] .pull{font-size:calc(var(--t-body)*1.15)}
+.slide[data-demo] .note{font-size:calc(var(--t-label)*0.98)}
+.slide[hidden]{display:none!important}
+
+.bar{flex:none;display:flex;align-items:center;gap:10px;padding:8px 14px;
+  padding-bottom:calc(8px + env(safe-area-inset-bottom,0px));
+  background:var(--surface);border-top:1px solid var(--line);flex-wrap:wrap}
+.bar button{background:none;border:1px solid var(--line-strong);border-radius:3px;
+  padding:5px 11px;cursor:pointer;font-size:var(--t-label);letter-spacing:.06em;
+  text-transform:uppercase;font-family:var(--mono)}
+.bar button:hover{border-color:var(--accent);color:var(--accent)}
+.bar .where{font-family:var(--mono);font-size:var(--t-label);color:var(--muted);
+  margin-left:auto;text-align:right;letter-spacing:.04em}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* ---------- type roles ---------- */
+.eyebrow{font-family:var(--mono);font-size:var(--t-label);letter-spacing:.16em;
+  text-transform:uppercase;color:var(--accent)}
+.hero{font-size:var(--t-hero);line-height:1.02;font-weight:400;letter-spacing:-0.02em}
+.h1{font-size:var(--t-h1);line-height:1.06}
+.h2{font-size:var(--t-h2);line-height:1.12}
+.lead{font-size:var(--t-lead);line-height:1.34;max-width:26ch}
+.body{font-size:var(--t-body);color:var(--muted);max-width:62ch;line-height:1.55}
+.body.wide{max-width:76ch}
+.pull{font-family:var(--serif);font-size:var(--t-h2);line-height:1.22;color:var(--accent);max-width:24ch;font-weight:400}
+.tiny{font-family:var(--mono);font-size:var(--t-label);color:var(--faint);letter-spacing:.04em}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+/* ---------- statement slides ---------- */
+.slide.stmt{background:var(--accent);color:#FFF8FA}
+.slide.stmt .body,.slide.stmt .tiny{color:#FBE7EE}
+.slide.stmt .eyebrow{color:#FFD9E5}
+.slide.dark{background:var(--sunk)}
+
+/* ---------- blocks ---------- */
+.cols{display:flex;gap:clamp(12px,1.8vw,22px);flex-wrap:wrap}
+.cols>*{flex:1 1 230px;min-width:0}
+.card{background:var(--surface);border:1px solid var(--line);padding:clamp(14px,1.8vw,22px);
+  display:flex;flex-direction:column;gap:8px}
+.card h3{font-size:calc(var(--t-body) * 1.12);color:var(--accent)}
+.card p{font-size:var(--t-body);color:var(--muted);line-height:1.5}
+
+table{border-collapse:collapse;width:100%;font-size:var(--t-body)}
+.scroll{overflow-x:auto;width:100%;-webkit-overflow-scrolling:touch}
+th{text-align:left;font-family:var(--mono);font-size:var(--t-label);letter-spacing:.1em;
+  text-transform:uppercase;color:var(--faint);font-weight:500;padding:0 14px 8px 0;
+  border-bottom:1px solid var(--line-strong);white-space:nowrap}
+td{padding:9px 14px 9px 0;border-bottom:1px solid var(--line);vertical-align:top;color:var(--muted)}
+td:first-child{color:var(--ink);font-weight:500}
+
+ul.plain{list-style:none;padding:0;display:flex;flex-direction:column;gap:9px}
+ul.plain li{padding-left:22px;position:relative;font-size:var(--t-lead);line-height:1.3}
+ul.plain li::before{content:"";position:absolute;left:0;top:.55em;width:11px;height:2px;background:var(--accent)}
+ol.steps{padding-left:0;list-style:none;counter-reset:s;display:flex;flex-direction:column;gap:10px}
+ol.steps li{counter-increment:s;padding-left:38px;position:relative;color:var(--muted)}
+ol.steps li::before{content:counter(s);position:absolute;left:0;top:0;font-family:var(--mono);
+  font-size:var(--t-label);color:var(--accent);border:1px solid var(--line-strong);
+  width:24px;height:24px;display:grid;place-items:center}
+
+.linkrow{display:flex;gap:8px;flex-wrap:wrap}
+.linkout{display:inline-flex;align-items:center;gap:7px;text-decoration:none;color:var(--ink);
+  border:1px solid var(--line-strong);padding:7px 13px;font-family:var(--mono);
+  font-size:var(--t-label);letter-spacing:.04em}
+.linkout:hover{border-color:var(--accent);color:var(--accent)}
+.linkout::after{content:"↗";color:var(--accent)}
+
+.slot{margin:0;border:1px dashed var(--line-strong);background:var(--sunk);
+  min-height:150px;display:grid;place-items:center;padding:18px;text-align:center;gap:6px}
+.slot figcaption{font-family:var(--mono);font-size:var(--t-label);color:var(--faint);
+  letter-spacing:.04em;line-height:1.6;max-width:46ch}
+
+canvas.fig{width:100%;display:block;background:var(--sunk);border:1px solid var(--line);
+  height:calc(clamp(96px,17vh,200px)*var(--fit))}
+
+/* ---------- overlays ---------- */
+.sheet{position:absolute;inset:0;background:var(--ground);z-index:20;overflow-y:auto;
+  padding:var(--stage-pad);display:flex;flex-direction:column;gap:18px}
+.sheet[hidden]{display:none!important}
+.idx{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:7px}
+.idx button{text-align:left;background:none;border:1px solid var(--line);padding:9px 11px;
+  cursor:pointer;display:flex;gap:9px;align-items:baseline}
+.idx button:hover{border-color:var(--accent)}
+.idx button b{font-family:var(--mono);font-size:var(--t-label);color:var(--faint);font-weight:400}
+.idx button.demo b{color:var(--accent)}
+.notes{position:absolute;left:0;right:0;bottom:0;z-index:15;background:var(--surface);
+  border-top:2px solid var(--accent);padding:14px var(--stage-pad);max-height:42%;overflow-y:auto}
+.notes[hidden]{display:none!important}
+.notes p{font-size:var(--t-body);color:var(--muted);max-width:80ch;line-height:1.55}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media (max-width:640px){.slide{justify-content:flex-start}.bar .where{width:100%;text-align:left;margin-left:0}}
+
+/* ---------- branding ---------- */
+:root{--spec-gut:clamp(92px,13vw,172px)}
+.brand{display:flex;align-items:center;gap:clamp(10px,1.4vw,18px);flex-wrap:wrap}
+.brand img{height:clamp(34px,4.6vw,62px);width:auto;display:block;
+  background:#FFFFFF;padding:7px 11px;border-radius:2px}
+.brand .lock{font-family:var(--mono);font-size:var(--t-label);letter-spacing:.13em;
+  text-transform:uppercase;color:var(--muted);line-height:1.6}
+.bar img.brandmini{height:20px;width:auto;display:block;flex:none;
+  background:#FFFFFF;padding:3px 5px;border-radius:2px}
+
+/* ---------- formulae ---------- */
+.eq{font-family:var(--mono);font-size:calc(var(--t-body)*1.18);line-height:1.8;color:var(--accent);
+  background:var(--sunk);border-left:2px solid var(--accent);padding:14px 18px 20px;
+  overflow-x:auto;overflow-y:hidden;white-space:nowrap}
+.eq b{color:var(--ink);font-weight:500}
+.eq em{font-style:normal;color:var(--muted)}
+.eqnote{font-family:var(--mono);font-size:var(--t-label);color:var(--faint);line-height:1.7}
+
+/* ---------- key/value lists ---------- */
+.kv{display:flex;flex-direction:column;gap:8px}
+.kv>div{display:flex;gap:12px;font-size:var(--t-body);color:var(--muted);line-height:1.5}
+.kv>div>b{font-family:var(--mono);color:var(--accent);font-weight:500;flex:none;min-width:8.5ch}
+.pair{display:flex;gap:clamp(14px,2vw,26px);flex-wrap:wrap}
+.pair>*{flex:1 1 300px;min-width:0}
+.tagref{display:inline-block;font-family:var(--mono);font-size:var(--t-label);letter-spacing:.1em;
+  text-transform:uppercase;color:var(--warm);border:1px solid var(--warm);padding:2px 9px}
+
+/* ---------- slots ---------- */
+.assetrow{display:flex;gap:clamp(14px,2vw,26px);align-items:stretch;flex-wrap:wrap}
+.assetrow .slot{flex:1 1 240px;min-height:calc(clamp(150px,26vh,260px)*var(--fit));margin:0}
+.assetrow .how{flex:2 1 380px;font-size:var(--t-body);color:var(--muted);
+  line-height:1.5;display:flex;flex-direction:column;gap:7px}
+.assetrow .how b{color:var(--accent);font-weight:500}
+.assetrow .how span{display:block}
+canvas.fig.tall{height:calc(clamp(150px,30vh,340px)*var(--fit))}
+canvas.fig.mid{height:calc(clamp(120px,23vh,260px)*var(--fit))}
+.dense table{font-size:calc(var(--t-body)*0.94)}
+.dense td{padding:6px 12px 6px 0;line-height:1.42}
+.dense th{padding:0 12px 6px 0}
+.dense td.num{white-space:nowrap}
+.plate{margin:0;display:flex;flex-direction:column;gap:7px;width:100%}
+.plate img{width:100%;max-height:calc(clamp(150px,30vh,340px)*var(--fit));object-fit:contain;
+  display:block;background:#FFFFFF;border:1px solid var(--line);padding:8px}
+.plate.photo img{padding:0;background:var(--sunk);object-fit:cover}
+.plate .missing{border:1px dashed var(--line-strong);background:var(--sunk);
+  min-height:calc(clamp(140px,26vh,280px)*var(--fit));display:grid;place-items:center;
+  padding:16px;text-align:center}
+.plate .missing p{font-family:var(--mono);font-size:var(--t-label);color:var(--faint);
+  line-height:1.7;max-width:60ch}
+.plate figcaption{font-family:var(--mono);font-size:var(--t-label);color:var(--faint);line-height:1.6}
+.viz.deep{height:calc(clamp(230px,48vh,540px)*var(--fit))}
+.viz.pair2{height:calc(clamp(180px,33vh,400px)*var(--fit))}
+
+/* ---------- workshop blocks ---------- */
+.btn{background:var(--accent);color:var(--ground);border:1px solid var(--accent);padding:8px 16px;
+  cursor:pointer;font-family:var(--mono);font-size:var(--t-label);letter-spacing:.08em;text-transform:uppercase}
+.note{font-family:var(--mono);font-size:var(--t-label);color:var(--faint);line-height:1.6}
+.code{background:#12141A;border:1px solid #2A2D34;border-radius:6px;
+  padding:calc(16px*var(--fit)) calc(20px*var(--fit));overflow-x:auto}
+.code p{font-family:var(--mono);font-size:calc(var(--t-body)*1.06);line-height:1.62;color:#9AA5A1;white-space:pre-wrap}
+.code p+p{margin-top:calc(11px*var(--fit))}
+.code .fn{color:#7DD3C0} .code .st{color:#E8C547} .code .nu{color:#E8944F} .code .cm{color:#6C7B77}
+.tree{background:#12141A;border:1px solid #2A2D34;border-radius:6px;padding:calc(15px*var(--fit)) calc(18px*var(--fit))}
+.tree p{font-family:var(--mono);font-size:var(--t-body);line-height:1.62;color:#9AA5A1;white-space:pre}
+.tree .hi{color:#7DD3C0} .tree .cm{color:#6C7B77}
+.repl{background:#15161A;border:1px solid #2A2D34;border-radius:8px;display:flex;flex-direction:column;
+  font-family:var(--mono);font-size:var(--t-label);overflow:hidden}
+.repl .chrome{background:#0E0F12;padding:calc(9px*var(--fit)) calc(14px*var(--fit));display:flex;
+  align-items:center;gap:calc(13px*var(--fit));border-bottom:1px solid #2A2D34;flex-wrap:wrap}
+.repl .chrome b{color:#EFF3F1;font-weight:600} .repl .chrome i{font-style:normal;color:#6C7B77}
+.repl .chrome u{text-decoration:none;color:#6FC0B5} .repl .chrome s{text-decoration:none;color:#8A9894}
+.repl .panes{display:flex;min-height:0;flex-wrap:wrap}
+.repl .edit{flex:11 1 240px;background:#1B1D22;padding:calc(15px*var(--fit)) calc(17px*var(--fit));min-width:0}
+.repl .edit p{font-family:var(--mono);font-size:calc(var(--t-body)*0.98);line-height:1.6;color:#9AA5A1;
+  word-break:break-word}
+.repl .side{flex:9 1 220px;background:#131419;border-left:1px solid #2A2D34;display:flex;
+  flex-direction:column;min-width:0}
+.repl .tabs{display:flex;gap:calc(13px*var(--fit));padding:calc(10px*var(--fit)) calc(14px*var(--fit));
+  border-bottom:1px solid #2A2D34;flex-wrap:wrap;color:#8A9894}
+.repl .tabs .on{color:#6FC0B5}
+.repl .side .inner{padding:calc(13px*var(--fit)) calc(14px*var(--fit));display:flex;
+  flex-direction:column;gap:calc(9px*var(--fit));color:#6C7B77;line-height:1.6}
+.repl .side .inner .snd{color:#7DD3C0;font-size:calc(var(--t-body)*0.98)}
+.repl .btnfake{background:#22242B;border:1px solid #3A3E47;border-radius:5px;
+  padding:calc(11px*var(--fit)) calc(15px*var(--fit));color:#EFF3F1;font-size:calc(var(--t-body)*0.98)}
+ol.steps li{color:var(--ink)}
+ol.steps li b{color:var(--accent);font-weight:500}
+
+/* The two statement slides and the section dividers keep their colours in both
+   themes: the deep green IS the workshop's identity, and a divider that inverts
+   stops reading as a divider. */
+.slide.stmt{background:#17605B;color:#F6FBF9}
+.slide.stmt .body,.slide.stmt .tiny,.slide.stmt .pull{color:#D3E8E3}
+.slide.stmt .eyebrow{color:#BFE6DE}
+.slide.stmt ul.plain li::before{background:#BFE6DE}
+.slide.dark{background:#132320;color:#EFF3F1}
+.slide.dark .body,.slide.dark .tiny{color:#8A9894}
+.slide.dark .eyebrow,.slide.dark .divnum{color:#6FC0B5}
+.slide.dark .lead{color:#B7C4C0}
+.slide.dark a{color:#6FC0B5}
+.slide.dark .brand .lock{color:#8A9894}
+.divnum{font-family:var(--mono);font-size:calc(var(--t-hero)*0.72);line-height:1;font-weight:500}
+
+</style>
+</head>
+<body>
+<div class="app">
+<div class="rail"><i id="rail"></i></div>
+<div class="stage" id="stage">
+
+<section class="slide dark" id="cover" data-sec="Setup">
+  <div class="brand">
+    <img data-logo src="../lecture/assets/mau-hori.png" alt="Malmö University">
+    <span class="lock">K3 · School of Arts and Communication</span>
+  </div>
+  <p class="eyebrow">KD343A · Workshop</p>
+  <h1 class="hero">What you do<br>to a recording</h1>
+  <p class="lead">You already walked and listened. Today the material is yours, and the question is what happens when you take it apart.</p>
+  <p class="tiny">Four hours · digital sound manipulation · arrow keys to move · I for the index, N for the running notes</p>
+  <p class="tiny">Open teaching material for educators — CC BY-NC-SA 4.0 · K3, Malmö University</p>
+  <template class="nt">Open with the premise change: this is not another soundwalk. They have the recordings; today is about what digitisation lets you do to them, and what that does to the place.</template>
+</section>
+
+<section class="slide top" id="today" data-sec="Setup">
+  <h2 class="h1">Today</h2>
+  <div class="scroll"><table>
+    <tr><th>Time</th><th>Block</th><th>What happens</th></tr>
+    <tr><td class="num">0:00–0:15</td><td>Get your material in</td><td>Arrange the folder. Every take on the laptop and playing. Nobody moves on without sound.</td></tr>
+    <tr><td class="num">0:15–0:45</td><td>Analysis</td><td>Put your own recordings through the lecture instruments. Find out what is in them.</td></tr>
+    <tr><td class="num">0:45–1:05</td><td>Cut your clips</td><td>Trim the takes down to a handful of short clips, then import those into Strudel.</td></tr>
+    <tr><td class="num">1:05–1:20</td><td>Break</td><td></td></tr>
+    <tr><td class="num">1:20–2:30</td><td>Strudel, together</td><td>Taught from zero. One line, then a piece. Everyone follows along.</td></tr>
+    <tr><td class="num">2:30–3:30</td><td>Two tracks</td><td>Compose from your recordings, or sonify sensor data.</td></tr>
+    <tr><td class="num">3:30–4:00</td><td>Share-out</td><td>Ninety seconds each, listened to together.</td></tr>
+  </table></div>
+  <p class="body wide">Indoors, laptops, headphones. No fieldwork today. Nothing to install: everything runs in a browser tab.</p>
+  <template class="nt">Two hard gates. At 0:15 every laptop plays its own files — if somebody has nothing, give them the fallback pack and move on rather than letting it eat the analysis block. At 1:05 every laptop has a folder of clips loaded into Strudel; that is what the whole second half stands on, so protect the last twenty minutes even if the four analysis tasks are unfinished.</template>
+</section>
+
+<section class="slide stmt" id="rules" data-sec="Setup">
+  <h2 class="hero" style="font-size:var(--t-h1)">Three rules for the day</h2>
+  <ul class="plain">
+    <li>Only your own recordings. Nothing from a sample library.</li>
+    <li>Every transformation is a claim about the place. Be able to say what it claims.</li>
+    <li>When the result is more interesting than the original, ask what you lost.</li>
+  </ul>
+  <template class="nt">The third rule is the whole workshop. Manipulation is seductive and the seduction is the object of study, not a failure.</template>
+</section>
+
+<section class="slide top" id="bring" data-sec="Setup · 0:00–0:15">
+  <p class="eyebrow">First fifteen minutes</p>
+  <h2 class="h1">Arrange the folder before you touch anything</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>Like this</h3>
+      <div class="tree"><p>originals/
+  siteA/   three takes
+  siteB/   three takes
+  siteC/   three takes
+soundwalk/  <span class="hi">empty for now</span></p></div>
+      <p>Site names become the names you type later, so pick ones you can spell under pressure. <b>originals</b> is the folder you never edit; <b>soundwalk</b> is the one you will fill with clips at the end of the first block.</p>
+    </div>
+    <div class="card">
+      <h3>No files with you?</h3>
+      <p>There is a shared fallback pack — three sites, three takes each, recorded around campus. Use it and say so in your share-out.</p>
+      <p>Working from someone else's recordings is a legitimate position. It is just a different one.</p>
+    </div>
+  </div>
+  <p class="body wide">WAV or MP3, either is fine. Leave the takes exactly as the recorder made them — long, unedited, untidy. You will cut them down at 0:45, and you will want to go back to the full take more than once.</p>
+  <template class="nt">Have the fallback pack on a USB stick as well as on the drive and the course page. Wifi is the thing that fails.</template>
+</section>
+
+<section class="slide dark" id="div-analysis" data-sec="Analysis · 0:15–1:05">
+  <p class="divnum">01</p>
+  <h2 class="hero" style="font-size:var(--t-h1)">What is actually in your files</h2>
+  <p class="body">Fifty minutes — thirty with the instruments from the lecture, twenty cutting clips</p>
+  <template class="nt">Everything in this block runs in a browser tab. The instruments are the lecture deck, loading their own files; the clip editing is audiomass.co. The block ends with clips in Strudel, and that ending matters more than finishing the four tasks.</template>
+</section>
+
+<section class="slide top" id="analysis-tasks" data-sec="Analysis · 0:15–0:45">
+  <h2 class="h1">Four things to do to your own recordings</h2>
+  <div class="scroll"><table>
+    <tr><th>#</th><th>Do this</th><th>Where</th><th>Write down</th></tr>
+    <tr><td class="num">1</td><td>Look at one take as a spectrogram, and drag the analysis window across it</td><td>Lecture deck · instrument 05</td><td>What is there that you never heard</td></tr>
+    <tr><td class="num">2</td><td>Take it down the decimation ladder to 8 kHz and 4 kHz</td><td>Lecture deck · instrument 02</td><td>What died, and in what order</td></tr>
+    <tr><td class="num">3</td><td>Crush it to 4 bit, then switch dither on</td><td>Lecture deck · instrument 03</td><td>What dither gave back</td></tr>
+    <tr><td class="num">4</td><td>Measure L(A)eq on one take per site, then read your own notes from that site</td><td>Lecture deck · instrument 06</td><td>Where the number and your memory disagree</td></tr>
+  </table></div>
+  <p class="body wide">Instruments 02, 03, 05 and 06 take your own files through the picker. <b>02, 03 and 05 keep the first twelve seconds</b> of whatever you load; <b>06 measures the whole clip</b>. Load whole takes here, not clips — the cutting comes after. Nothing in this block needs installing: Sonic Visualiser does task 1 with far more control if you already have it, and that is the only reason to open it.</p>
+  <div class="linkrow"><a class="linkout" href="../lecture/" target="_blank" rel="noopener">The lecture deck and its instruments</a></div>
+  <template class="nt">Thirty minutes for four tasks is deliberately not enough, and say so: they pick the two that interest them and task 4 is not optional. Task 4 is the one they will skip and the one the next slide is built on.</template>
+</section>
+
+<section class="slide" id="laeq" data-sec="Analysis · 0:15–0:45">
+  <h2 class="h1">One number against your own ears</h2>
+  <p class="lead" style="max-width:40ch">Load one take per site into instrument 06 and let it run to the end. Then read what you wrote in your notebook while you were standing there.</p>
+  <p class="pull">Where they disagree is your finding. Not an error — a result.</p>
+  <p class="body wide">A quiet site you disliked. A loud site you wanted to stay in. Both happen, and both are the reason the soundscape standard exists.</p>
+  <template class="nt">Collect two or three of these disagreements out loud before you move on to cutting clips. They set up the share-out, and they are the last thing said before the room stops listening and starts editing. The clip length is the averaging period, which is worth one sentence: L(A)eq over eight seconds and over eight minutes are different claims with the same name.</template>
+</section>
+
+<section class="slide top" id="prep-why" data-sec="Analysis · 0:45–1:05">
+  <p class="eyebrow">Last twenty minutes of the block</p>
+  <h2 class="h1">Cut clips before you write a line of code</h2>
+  <div class="cols">
+    <div class="card"><h3>A browser tab is not a studio</h3><p>Every file you import is decoded and held in memory. A three-minute stereo take is about 63 MB once decoded; a ten-second mono clip is under 2 MB.</p></div>
+    <div class="card"><h3>You cannot point at anything</h3><p><b>begin</b> and <b>end</b> are fractions of the whole file. On a four-minute take, 0.001 is a quarter of a second — the bird is somewhere you cannot type. On an eight-second clip, 0.1 lands where you meant.</p></div>
+    <div class="card"><h3>Loops click</h3><p>An untrimmed edge is a step in the waveform, and a step is a click once per cycle. Ten milliseconds of fade at each end is the whole fix.</p></div>
+  </div>
+  <div class="scroll"><table>
+    <tr><th>Use</th><th>Why</th></tr>
+    <tr><td>audiomass.co</td><td>Open the page and it runs — no install, no account, no admin rights, and it keeps working if the wifi drops. Free and open source. This is the one we use today.</td></tr>
+    <tr><td>Wavacity</td><td>Audacity compiled to run in a browser. Same layout, if you already think in Audacity.</td></tr>
+    <tr><td>ocenaudio</td><td>A real install, free, quick with long files. Worth it if you already have it.</td></tr>
+    <tr><td>Audacity</td><td>Version 4 shipped in September 2026 with a rebuilt interface, so every tutorial you find shows a program you do not have. Not today.</td></tr>
+  </table></div>
+  <div class="linkrow">
+    <a class="linkout" href="https://audiomass.co" target="_blank" rel="noopener">audiomass.co</a>
+    <a class="linkout" href="https://wavacity.com" target="_blank" rel="noopener">Wavacity</a>
+    <a class="linkout" href="https://www.ocenaudio.com" target="_blank" rel="noopener">ocenaudio</a>
+  </div>
+  <template class="nt">Twenty minutes, and the point is not the software. Say the third rule again here: choosing which eight seconds of a marsh to keep is already a claim about the marsh, made before Strudel is even open. Nobody thinks of trimming as an interpretation and it is the largest one they will make today.</template>
+</section>
+
+<section class="slide top" id="prep-how" data-sec="Analysis · 0:45–1:05">
+  <h2 class="h1">Six moves per clip, then import the folder</h2>
+  <div class="pair">
+    <div class="card">
+      <h3>In audiomass.co</h3>
+      <ol class="steps">
+        <li>Drag one take onto the page.</li>
+        <li>Drag across the waveform to select the seconds you want.</li>
+        <li>Crop to the selection.</li>
+        <li>Fade in, then fade out — a sliver at each end, not a swell.</li>
+        <li>Normalise, so your clips sit at the same level as each other.</li>
+        <li>Export as WAV into the right site folder.</li>
+      </ol>
+      <p class="note">Nothing you do here touches the original. If a clip still clicks when Strudel loops it, the fade did not reach the edge — go back to step 4. It is always step 4.</p>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:12px">
+        <h3>What to aim for</h3>
+        <p>Two to four clips per site, each between <b>2 and 12 seconds</b>. One short event, one texture, one longer bed — all of them inside twelve seconds. Mono is fine and halves everything.</p>
+        <p>Twelve is the ceiling because the lecture instruments keep the first twelve seconds of whatever you load. One number to remember instead of two.</p>
+      </div>
+      <div class="tree"><p><span class="cm">originals/   never edit these</span>
+soundwalk/   <span class="hi">import this one</span>
+  siteA/
+    01_event.wav
+    02_texture.wav
+    03_bed.wav</p></div>
+    </div>
+  </div>
+  <p class="body wide">Number the files. Strudel indexes them in alphabetical order, so <b>01_</b>, <b>02_</b>, <b>03_</b> is what makes <b>siteA:0</b> mean the clip you think it means. Then import <b>soundwalk</b> — sounds, import-sounds, import sounds folder — and stop there. The next block starts with it already loaded.</p>
+  <template class="nt">Cut the first clip on the projector, start to finish, in about ninety seconds. The menu names are one word each and they will find the rest. Then walk the room — the two failures are selecting nothing before cropping, and exporting on top of the original. Anyone who finishes early should cut one more clip rather than start writing code; the break is next and the room needs to arrive at Strudel together.</template>
+</section>
+
+<section class="slide dark" id="div-strudel" data-sec="Strudel · 1:20–2:30">
+  <p class="divnum">02</p>
+  <h2 class="hero" style="font-size:var(--t-h1)">Strudel, from zero</h2>
+  <p class="body">Seventy minutes, everyone following along</p>
+  <template class="nt">Everyone has a laptop open at strudel.cc. Go slowly. The rule for this block: nobody moves to the next slide until the person beside them has sound too.</template>
+</section>
+
+<section class="slide" id="strudel-what" data-sec="Strudel · 1:20–2:30">
+  <p class="eyebrow">strudel.cc</p>
+  <h2 class="h1">A live-coding instrument that lives in a browser tab</h2>
+  <div class="cols">
+    <div class="card"><h3>Nothing to install</h3><p>Open the page and you are running. No account, no admin rights. It caches itself, so it keeps working if the wifi drops.</p></div>
+    <div class="card"><h3>You edit while it plays</h3><p>The code is the instrument. Change a number, press update, and the next cycle is different. Nothing stops.</p></div>
+    <div class="card"><h3>It thinks in cycles</h3><p>Everything repeats on a loop of a fixed length. That is its strength, and the thing you will fight today.</p></div>
+  </div>
+  <p class="body wide">Strudel is a JavaScript version of TidalCycles, the Haskell live-coding language. Free and open source under the AGPL, built by a community rather than a company.</p>
+  <div class="linkrow"><a class="linkout" href="https://strudel.cc" target="_blank" rel="noopener">strudel.cc</a></div>
+  <template class="nt">The cycles point lands better if you demo it: play the default pattern, change one number, press update, and let them hear the change arrive on the beat rather than immediately.</template>
+</section>
+
+<section class="slide" id="strudel-tour" data-sec="Strudel · 1:20–2:30">
+  <h2 class="h1">What you are looking at</h2>
+  <div class="repl">
+    <div class="chrome"><b>strudel</b><i>REPL</i><span style="flex:1"></span><u>▶ play</u><s>update</s><s>share</s><s>learn</s></div>
+    <div class="panes">
+      <div class="edit"><p>1 <span class="fn">$:</span> <span class="fn">s</span>(<span class="st">"siteA"</span>).<span class="fn">slow</span>(<span class="nu">4</span>).<span class="fn">speed</span>(<span class="nu">0.25</span>)</p></div>
+      <div class="side">
+        <div class="tabs"><span>welcome</span><span>patterns</span><span class="on">sounds</span><span>reference</span><span>console</span></div>
+        <div class="inner">
+          <span>samples · drum-machines · synths · user · import-sounds</span>
+          <span class="snd">siteA(3)&nbsp;&nbsp;siteB(3)&nbsp;&nbsp;siteC(3)</span>
+          <span>your recordings, once imported</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="cols">
+    <div class="card"><p>The dark pane on the left is where you write. One line is enough.</p></div>
+    <div class="card"><p><b>play</b> starts it and <b>update</b> applies your edits. Ctrl+Enter does both; Ctrl+. stops.</p></div>
+    <div class="card"><p>The right panel is reference and settings. The <b>sounds</b> tab is where your recordings appear.</p></div>
+  </div>
+  <template class="nt">This is a redrawing of the interface, not a screenshot, so it will not drift when Strudel updates. Have the real page open beside it on the projector.</template>
+</section>
+
+<section class="slide" id="strudel-first" data-sec="Strudel · 1:20–2:30">
+  <h2 class="h1">Your first line</h2>
+  <div class="code"><p><span class="fn">s</span>(<span class="st">"siteA"</span>)</p></div>
+  <p class="lead" style="max-width:44ch">Type it. Press <b>Ctrl+Enter</b>. You should hear one of your own recordings, looping once per cycle.</p>
+  <p class="body wide">Now change <b>siteA</b> to <b>siteB</b> and press Ctrl+Enter again. Notice that the change waits for the cycle to come round. That waiting is the whole design.</p>
+  <template class="nt">Do not move on until every screen in the room has made a sound. This is the moment the mixed-ability problem either gets solved or spreads through the next hour.</template>
+</section>
+
+<section class="slide" id="strudel-import" data-sec="Strudel · 1:20–2:30">
+  <h2 class="h1">Getting your own recordings in</h2>
+  <div class="pair">
+    <div class="repl">
+      <div class="tabs" style="border-bottom:1px solid #2A2D34;padding:10px 14px;display:flex;gap:16px;color:#8A9894;flex-wrap:wrap"><span>samples</span><span>synths</span><span>user</span><span style="color:#6FC0B5">import-sounds</span></div>
+      <div style="padding:18px 16px;display:flex;flex-direction:column;gap:14px">
+        <div class="btnfake">⇧&nbsp;&nbsp;import sounds folder</div>
+        <div class="tree" style="border:0;background:none;padding:0"><p>soundwalk  <span class="hi">&lt;-- import this folder</span>
+  ├─ siteA
+  │   ├─ 01_close.wav
+  │   ├─ 02_mid.wav
+  │   └─ 03_far.wav
+  └─ siteB …</p></div>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:12px"><h3>Four clicks</h3><p>Open <b>sounds</b> in the right panel, then <b>import-sounds</b>, then press <b>import sounds folder</b>, then choose <b>soundwalk</b>.</p></div>
+      <div class="card"><h3>The naming rule</h3><p>Each subfolder becomes one sound name. The files inside it are indexed from zero <i>in alphabetical order</i>, and you pick between them with <b>siteA:0</b>, <b>siteA:1</b> and so on. This is why you numbered them.</p></div>
+    </div>
+  </div>
+  <p class="note">Nothing is uploaded. The folder is read on your own machine and kept in the browser, which is also why a fresh tab may ask for it again.</p>
+  <template class="nt">They did this at the end of the analysis block, with the clips they had just cut. This slide is the reminder for anyone whose browser lost the folder over the break — re-importing is normal and takes four clicks. If someone imported the originals folder by mistake, that is the moment to catch it: the tab will be slow and nothing will loop cleanly.</template>
+</section>
+
+<section class="slide top" id="strudel-moves" data-sec="Strudel · 1:20–2:30">
+  <h2 class="h1">Seven moves. That is the whole language you need.</h2>
+  <div class="scroll"><table>
+    <tr><th>Write this</th><th>It does this</th></tr>
+    <tr><td>s("siteA")</td><td>Plays a take from your siteA folder</td></tr>
+    <tr><td>s("siteA:0 siteA:2")</td><td>Chooses which take — files are numbered from zero</td></tr>
+    <tr><td>.speed(0.25)</td><td>Quarter speed, two octaves down. Where the texture lives</td></tr>
+    <tr><td>.begin(0.2).end(0.3)</td><td>Only part of the file, as a fraction of its length — which is why you cut short clips</td></tr>
+    <tr><td>.loopAt(8)</td><td>Stretches the whole recording across eight cycles</td></tr>
+    <tr><td>.chop(16)</td><td>Cuts it into pieces and plays them in order</td></tr>
+    <tr><td>.slow(4) · .room(0.6) · .lpf(800)</td><td>Slower · more space around it · darker</td></tr>
+  </table></div>
+  <p class="body wide">Everything chains onto everything. There is no order to memorise — add one move at a time and listen after each.</p>
+  <template class="nt">This is the printed handout. Do not read the table out. Instead build the next slide live and let them see these arrive one at a time.</template>
+</section>
+
+<section class="slide top" id="strudel-build" data-sec="Strudel · 1:20–2:30">
+  <h2 class="h1">Build it in front of them, one line at a time</h2>
+  <div class="code">
+    <p><span class="cm">// 1 · a sound</span>
+<span class="fn">s</span>(<span class="st">"siteA"</span>)</p>
+    <p><span class="cm">// 2 · slower, deeper — now it is a place, not a clip</span>
+<span class="fn">s</span>(<span class="st">"siteA"</span>).<span class="fn">slow</span>(<span class="nu">4</span>).<span class="fn">speed</span>(<span class="nu">0.25</span>)</p>
+    <p><span class="cm">// 3 · give it room, take the top off</span>
+<span class="fn">s</span>(<span class="st">"siteA"</span>).<span class="fn">slow</span>(<span class="nu">4</span>).<span class="fn">speed</span>(<span class="nu">0.25</span>).<span class="fn">room</span>(<span class="nu">0.6</span>).<span class="fn">lpf</span>(<span class="nu">900</span>)</p>
+    <p><span class="cm">// 4 · two places at once, the comma stacks them</span>
+<span class="fn">s</span>(<span class="st">"siteA"</span>).<span class="fn">loopAt</span>(<span class="nu">8</span>).<span class="fn">speed</span>(<span class="nu">0.5</span>),
+<span class="fn">s</span>(<span class="st">"siteC:1"</span>).<span class="fn">chop</span>(<span class="nu">16</span>).<span class="fn">slow</span>(<span class="nu">2</span>).<span class="fn">room</span>(<span class="nu">0.4</span>)</p>
+  </div>
+  <p class="pull">Four steps, four minutes, and they have a piece. Then hand it over and let them wreck it.</p>
+  <template class="nt">Type this live rather than pasting. The typos are useful — they show the error panel is survivable. Pause after step 2; that is where most of the room will hear their site become strange for the first time.</template>
+</section>
+
+<section class="slide top" id="audio-tourism" data-sec="Strudel · 1:20–2:30">
+  <p class="eyebrow">How far this goes</p>
+  <h2 class="h1">One trip. Eight machines. Eight different countries.</h2>
+  <div class="pair">
+    <div class="card">
+      <h3>The source</h3>
+      <p><b>Freeform</b> — Simon Pyke — <i>Audio Tourism: Vietnam and China</i>, 2001.</p>
+      <p>Two months travelling with a MiniDisc recorder, collecting sounds and instruments. Eight tracks, every one built from what he carried home and, in his words, "sampled and reshaped through machines".</p>
+    </div>
+    <div class="card">
+      <h3>The reinterpretations</h3>
+      <p>The same material, handed to eight other people.</p>
+      <p>Autechre · Bill Laswell · Jan Jelinek · Atom™ · Shudo · Mash'ta · Colongib · Tal. Eight tracks, no two of them agreeing about what those recordings were of.</p>
+    </div>
+  </div>
+  <p class="pull" style="max-width:40ch">Nobody added a field recording. They all subtracted differently.</p>
+  <div class="linkrow">
+    <a class="linkout" href="https://simonpyke.bandcamp.com" target="_blank" rel="noopener">simonpyke.bandcamp.com</a>
+    <a class="linkout" href="https://freeform1.bandcamp.com" target="_blank" rel="noopener">freeform1.bandcamp.com</a>
+  </div>
+  <template class="nt">Play thirty seconds of a source track, then thirty seconds of the Autechre reinterpretation of it. Do not discuss between them. The room will hear the point before anyone says it: the recording did not carry a meaning that processing revealed — each artist made a different claim and the source went along with all of them. That is the argument the share-out asks them to make about their own piece.</template>
+</section>
+
+<section class="slide stmt" id="strudel-trap" data-sec="Strudel · 1:20–2:30">
+  <h2 class="hero" style="font-size:var(--t-h1);max-width:24ch">Strudel wants everything to have a beat. Your recordings did not.</h2>
+  <p class="lead" style="max-width:46ch">It is a pattern language built on repeating cycles. Left alone it will turn a marsh into a drum machine.</p>
+  <p class="body wide"><b>slow</b>, <b>loopAt</b> and low <b>speed</b> values are how you resist. If your piece has a pulse you did not choose, slow it by a factor of four and listen again.</p>
+  <template class="nt">This is the critical content of the block, not a technical tip. The tool has a grain, the grain is an argument about what sound is, and noticing it is the same move as noticing what A-weighting does. Say that.</template>
+</section>
+
+<section class="slide dark" id="div-make" data-sec="Make · 2:30–3:30">
+  <p class="divnum">03</p>
+  <h2 class="hero" style="font-size:var(--t-h1)">Two tracks</h2>
+  <p class="body">Choose one, sixty minutes</p>
+  <template class="nt">Sixty minutes is short. Say out loud that finishing beats polishing, and that a rough piece with a clear argument wins.</template>
+</section>
+
+<section class="slide" id="tracks" data-sec="Make · 2:30–3:30">
+  <h2 class="h1">Pick one. Both end with something we listen to.</h2>
+  <div class="pair">
+    <div class="card">
+      <h3>Track 1 · Compose</h3>
+      <p>Sixty seconds in Strudel, built only from your own recordings. One argument about one place, made out of that place.</p>
+      <p>You have everything you need from the last hour.</p>
+    </div>
+    <div class="card">
+      <h3>Track 2 · Sonify</h3>
+      <p>Take the Nano 33 sensor log — level, temperature, humidity, light — and turn the numbers into sound you can hear the shape of.</p>
+      <p>More technical, fewer people, a board each.</p>
+    </div>
+  </div>
+  <p class="body wide">Track 2 still ends in Strudel if you want it to — a column of numbers becomes a sequence of speeds, filters or gains.</p>
+  <template class="nt">Expect the split to be roughly three to one toward composing. That is fine. Two or three pairs on the boards is the right number.</template>
+</section>
+
+<section class="slide top" id="track-sonify" data-sec="Make · 2:30–3:30">
+  <p class="eyebrow">Track 2 · Sonify</p>
+  <h2 class="h1">The board cannot record sound, so it has to decide what counts</h2>
+  <p class="body wide">The Nano 33 BLE Sense has a microphone, plus temperature, humidity, pressure and light. It has no card slot and little memory, so it computes features and logs those — which is exactly how every acoustic sensor network works. They ship numbers, never sound.</p>
+  <div class="scroll"><table>
+    <tr><th>Log at 1 Hz</th><th>Why it is in this course</th></tr>
+    <tr><td>Level, in dB</td><td>Relative, not SPL. Calibrate against a phone app and admit the guess</td></tr>
+    <tr><td>Temperature · humidity</td><td>The two variables that most govern how an odour travels — the smell half of the course lives here</td></tr>
+    <tr><td>Light</td><td>Cheap proxy for shade, time of day and enclosure</td></tr>
+  </table></div>
+  <p class="body wide">Then map a column onto <b>speed</b>, <b>lpf</b> or <b>gain</b> and listen to the day go past.</p>
+  <template class="nt">Boards are pre-flashed and the serial logger is on the drive. If a pair has a recording from a site plus a log from the same site, the pairing of the two is the strongest possible outcome of this track.</template>
+</section>
+
+<section class="slide" id="station-c-rate" data-sec="Make · 2:30–3:30">
+  <p class="eyebrow">Track 2 · Sonify</p>
+  <h2 class="h1">Two numbers, and no others</h2>
+  <p class="eq">PDM.begin(1, 16000)<br>PDM.begin(1, 41667)</p>
+  <p class="body wide">Anything else and the library returns zero and gives you nothing. At 16 kHz your ceiling is 8 kHz: most birdsong harmonics, most insects and most sibilance do not exist. At 41 667 Hz they come back.</p>
+  <p class="pull" style="max-width:40ch">Run both at the same spot. Then choose one, and say who you left out.</p>
+  <template class="nt">This is the decimation ladder from the lecture, except now they are the ones setting the number and living with it.</template>
+</section>
+
+<section class="slide dark" id="div-share" data-sec="Share-out · 3:30–4:00">
+  <p class="divnum">04</p>
+  <h2 class="hero" style="font-size:var(--t-h1)">Ninety seconds each</h2>
+  <p class="body">Listened to together, no slides</p>
+  <template class="nt">Time it strictly. Twenty pairs at ninety seconds is thirty minutes with no slack.</template>
+</section>
+
+<section class="slide" id="shareout" data-sec="Share-out · 3:30–4:00">
+  <h2 class="h1">Say three things, then play it</h2>
+  <ol class="steps">
+    <li>Which place this was, and what you remember hearing there.</li>
+    <li>The one transformation that changed it most — and <b>what it claims about the place</b>.</li>
+    <li>What you lost that you wish you had kept.</li>
+  </ol>
+  <p class="body wide">Ninety seconds each. No apologising for it being unfinished — everything here is unfinished.</p>
+  <template class="nt">Question three is the assessment rehearsal. It forces the critical reflection the exhibition presentation will need, and it is the one they will want to skip.</template>
+</section>
+
+<section class="slide dark" id="close" data-sec="Close">
+  <p class="eyebrow">What today was</p>
+  <h2 class="hero" style="font-size:var(--t-h1);max-width:22ch">A rehearsal for your own site project</h2>
+  <ul class="plain">
+    <li>An interactive piece or a poster, plus an oral reflection. That is the assessment.</li>
+    <li>Strudel and AudioMass stay free and in your browser. Everything you made is yours to reuse or abandon.</li>
+    <li>The lecture deck and all eight instruments are online — bring your own files back to them.</li>
+  </ul>
+  <div class="linkrow"><a class="linkout" href="../" target="_blank" rel="noopener">dcuartielles.github.io/K3-SSS-Digital-Sound</a></div>
+  <template class="nt">End on the URL. It is the thing that keeps working after today.</template>
+</section>
+
+
+</div>
+
+<div class="sheet" id="index" hidden>
+  <p class="eyebrow">Index — press I or Escape to close</p>
+  <div class="idx" id="idxlist"></div>
+</div>
+
+<div class="notes" id="notes" hidden>
+  <p class="eyebrow" style="margin-bottom:8px">Running notes — written for whoever is leading the workshop, not shown on the slides</p>
+  <p id="notetext"></p>
+</div>
+
+<div class="bar">
+  <img class="brandmini" data-logo src="../lecture/assets/mau-hori.png" alt="">
+  <button data-nav="prev">&#9664; Prev</button>
+  <button data-nav="next">Next &#9654;</button>
+  <button data-nav="index">Index</button>
+  <button data-nav="notes">Notes</button>
+  <button data-nav="theme">Theme</button>
+  <span class="where"><b id="where-sec">Setup</b> · <span class="num" id="where-n">1/25</span></span>
+</div>
+</div>
+<script>
+
+(function(){
+"use strict";
+var $=function(s,r){return (r||document).querySelector(s)};
+var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+
+var slides=$$(".slide"), cur=0, booted=false;
+var idxList=$("#idxlist"), sheet=$("#index"), notes=$("#notes"), noteText=$("#notetext");
+
+slides.forEach(function(s,i){
+  var b=document.createElement("button");
+  var t=s.querySelector(".h1,.hero");
+  b.innerHTML='<b>'+String(i+1).padStart(2,"0")+'</b><span>'+(t?t.textContent:s.id)+'</span>';
+  b.addEventListener("click",function(){go(i);sheet.hidden=true});
+  idxList.appendChild(b);
+});
+
+function go(n){
+  n=Math.max(0,Math.min(slides.length-1,n));
+  if(booted && n===cur) return;
+  slides[cur].hidden=true; cur=n; slides[cur].hidden=false; booted=true;
+  slides[cur].scrollTop=0;
+  $("#rail").style.width=((cur+1)/slides.length*100)+"%";
+  $("#where-sec").textContent=slides[cur].dataset.sec||"";
+  $("#where-n").textContent=(cur+1)+"/"+slides.length;
+  var nt=slides[cur].querySelector(".nt");
+  noteText.textContent=nt?nt.innerHTML.trim():"No notes on this slide.";
+  if(location.hash.slice(1)!==slides[cur].id) history.replaceState(null,"","#"+slides[cur].id);
+  requestAnimationFrame(function(){fitSlide(slides[cur])});
+}
+
+/* A slide is a fixed rectangle and the content has to live inside it. Rather than
+   cutting material until it fits the smallest projector in the building, each slide
+   scales its own type and spacing down until it does — never below two thirds, at
+   which point it is allowed to scroll. */
+var FIT_MIN=0.66;
+function fitSlide(s){
+  if(!s||!s.clientHeight)return;
+  var f=1, guard=0;
+  s.style.setProperty("--fit","1");
+  while(s.scrollHeight>s.clientHeight+1&&f>FIT_MIN&&guard++<18){
+    var ratio=s.clientHeight/s.scrollHeight;
+    f=Math.max(FIT_MIN,f*Math.max(0.86,Math.sqrt(ratio)));
+    s.style.setProperty("--fit",f.toFixed(3));
+  }
+  if(f>=0.999)s.style.removeProperty("--fit");
+}
+slides.forEach(function(s,i){if(i>0)s.hidden=true});
+
+document.addEventListener("keydown",function(e){
+  if(/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) return;
+  var k=e.key;
+  if(k==="ArrowRight"||k==="PageDown"||k===" "){e.preventDefault();go(cur+1)}
+  else if(k==="ArrowLeft"||k==="PageUp"){e.preventDefault();go(cur-1)}
+  else if(k==="Home"){go(0)} else if(k==="End"){go(slides.length-1)}
+  else if(k==="i"||k==="I"){sheet.hidden=!sheet.hidden}
+  else if(k==="n"||k==="N"){notes.hidden=!notes.hidden}
+  else if(k==="Escape"){sheet.hidden=true;notes.hidden=true}
+});
+$$("[data-nav]").forEach(function(b){b.addEventListener("click",function(){
+  var a=b.dataset.nav;
+  if(a==="prev")go(cur-1); else if(a==="next")go(cur+1);
+  else if(a==="index")sheet.hidden=!sheet.hidden;
+  else if(a==="notes")notes.hidden=!notes.hidden;
+  else if(a==="theme"){
+    var r=document.documentElement;
+    var dark=r.getAttribute("data-theme")==="dark"||(!r.getAttribute("data-theme")&&matchMedia("(prefers-color-scheme:dark)").matches);
+    r.setAttribute("data-theme",dark?"light":"dark"); fitSlide(slides[cur]);
+  }
+})});
+
+var rt;
+window.addEventListener("resize",function(){clearTimeout(rt);rt=setTimeout(function(){fitSlide(slides[cur])},120)});
+
+/* swipe, for anyone reading this on a phone after the day */
+(function(){
+  var x0=null,y0=null;
+  document.addEventListener("touchstart",function(e){var t=e.changedTouches[0];x0=t.clientX;y0=t.clientY},{passive:true});
+  document.addEventListener("touchend",function(e){
+    if(x0===null)return; var t=e.changedTouches[0], dx=t.clientX-x0, dy=t.clientY-y0;
+    if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.6) go(cur+(dx<0?1:-1));
+    x0=y0=null;
+  },{passive:true});
+})();
+
+/* the logo is a white plate on a dark bar; if it is missing, drop it rather
+   than leaving a broken-image box on the cover */
+$$("[data-logo]").forEach(function(im){im.addEventListener("error",function(){im.remove()})});
+
+var start=location.hash.slice(1);
+var si=0; slides.forEach(function(s,i){if(s.id===start)si=i});
+go(si);
+window.addEventListener("hashchange",function(){
+  var h=location.hash.slice(1);
+  slides.forEach(function(s,i){if(s.id===h&&i!==cur)go(i)});
+});
+})();
+
+</script>
+</body>
+</html>

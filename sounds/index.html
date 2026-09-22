@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fallback sound pack — KD343A</title>
+<meta name="description" content="Three sites, three takes each, recorded around Malmo University campus. For students who arrive at the digital sound workshop without their own field recordings.">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,300..700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  color-scheme:light dark;
+  --ground:#FAF8F3; --surface:#FFFDF7; --sunk:#EFEBE1;
+  --ink:#132320; --muted:#4A5A56; --faint:#7C8B87;
+  --line:#DED8CB; --line-strong:#C6BEAD; --accent:#17605B;
+  --sans:'IBM Plex Sans',Helvetica,Arial,sans-serif;
+  --serif:'Source Serif 4',Georgia,serif;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root{
+  --ground:#0F1C19; --surface:#172A26; --sunk:#0A1513;
+  --ink:#EFF3F1; --muted:#B7C4C0; --faint:#8A9894;
+  --line:#28433C; --line-strong:#375A51; --accent:#6FC0B5;
+}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);
+  font-size:1rem;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:720px;margin:0 auto;padding:clamp(28px,6vw,72px) clamp(20px,5vw,40px) 80px}
+h1{font-family:var(--serif);font-weight:400;font-size:clamp(2rem,5vw,3rem);line-height:1.06;margin:0 0 14px}
+h2{font-family:var(--serif);font-weight:400;font-size:1.3rem;margin:34px 0 10px}
+p,ul{margin:0 0 14px} ul{padding-left:1.2em}
+a{color:var(--accent)}
+.eyebrow{font-family:var(--mono);font-size:0.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+.muted{color:var(--muted)}
+.tiny{font-family:var(--mono);font-size:0.74rem;color:var(--faint);line-height:1.7}
+.get{display:inline-flex;align-items:center;gap:10px;background:var(--accent);color:var(--ground);
+  text-decoration:none;border-radius:8px;padding:14px 22px;font-weight:600;margin:6px 0 10px}
+.get:hover{opacity:.9}
+.pending{border:1px dashed var(--line-strong);background:var(--sunk);border-radius:8px;
+  padding:16px 20px;color:var(--muted);font-size:0.95rem;margin:6px 0 10px}
+.tree{background:#12141A;border-radius:8px;padding:16px 20px;overflow-x:auto}
+.tree pre{font-family:var(--mono);font-size:0.85rem;line-height:1.65;color:#9AA5A1;margin:0}
+.tree .hi{color:#7DD3C0}
+footer{margin-top:44px;padding-top:22px;border-top:1px solid var(--line)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<p class="eyebrow">KD343A · Workshop</p>
+<h1>Fallback sound pack</h1>
+<p class="muted">Three sites around campus, three takes at each — close to the ground, at waist height, held up and away. Recorded for students who arrive at the workshop without their own material.</p>
+
+<a class="get" id="get" href="soundwalk-fallback.zip" download hidden>Download the pack (zip)</a>
+<div class="pending" id="pending">The pack is not on this page yet. Ask for it on the day — it is also on the shared drive and on a USB stick in the room.</div>
+
+<h2>What is in it</h2>
+<div class="tree"><pre>soundwalk/
+  siteA/   <span class="hi">01_event.wav  02_texture.wav  03_bed.wav</span>
+  siteB/   <span class="hi">01_event.wav  02_texture.wav  03_bed.wav</span>
+  siteC/   <span class="hi">01_event.wav  02_texture.wav  03_bed.wav</span></pre></div>
+<p class="muted" style="margin-top:14px">Already cut to clips: mono, 2 to 12 seconds, faded at both ends and level-matched. Unzip it and import the <b>soundwalk</b> folder straight into Strudel — sounds, import-sounds, import sounds folder.</p>
+
+<h2>Using it honestly</h2>
+<p class="muted">Working from someone else's recordings is a legitimate position. It is just a different one, so say so in your share-out — and when you get to the third question, <i>what did you lose that you wish you had kept</i>, notice that you were not the one who decided what to keep in the first place.</p>
+
+<footer>
+<p class="tiny"><a href="../">Back to the course page</a> · <a href="../workshop/">the workshop deck</a><br>
+Open teaching material for educators — <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> · K3, Malmö University</p>
+</footer>
+</div>
+<script>
+/* Show the download only if the file is actually published, so nobody meets a 404. */
+fetch("soundwalk-fallback.zip",{method:"HEAD"}).then(function(r){
+  if(r.ok){document.getElementById("get").hidden=false;document.getElementById("pending").hidden=true}
+}).catch(function(){});
+</script>
+</body>
+</html>

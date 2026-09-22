@@ -1,14 +1,20 @@
 # K3-SSS-Digital-Sound
 
-An interactive lecture on digital sound, built for **KD343A — Situated and speculative
-sensing: multisensory exploration of environments** at K3, the School of Arts and
-Communication, Malmö University.
+A two-hour interactive lecture and a four-hour workshop on digital sound, built for
+**KD343A — Situated and speculative sensing: multisensory exploration of environments**
+at K3, the School of Arts and Communication, Malmö University.
 
-**→ [Open the lecture](https://dcuartielles.github.io/K3-SSS-Digital-Sound/)**
+**→ [Open the course page](https://dcuartielles.github.io/K3-SSS-Digital-Sound/)**
 
-The whole thing is one self-contained HTML file. No build step, no dependencies, no
-tracking. Everything it draws and every sound it makes is generated in the browser
-with the Web Audio API and a canvas.
+| | | |
+|---|---|---|
+| [`/lecture/`](https://dcuartielles.github.io/K3-SSS-Digital-Sound/lecture/) | Digital Sound Lab | 62 slides, eight live instruments, two hours |
+| [`/workshop/`](https://dcuartielles.github.io/K3-SSS-Digital-Sound/workshop/) | What you do to a recording | 25 slides, four hours, students working on their own field recordings |
+| [`/sounds/`](https://dcuartielles.github.io/K3-SSS-Digital-Sound/sounds/) | Fallback sound pack | For students who arrive without recordings |
+
+Each deck is one self-contained HTML file. No build step, no dependencies, no tracking.
+Everything the lecture draws and every sound it makes is generated in the browser with
+the Web Audio API and a canvas.
 
 ## The argument
 
@@ -47,11 +53,24 @@ of Play.
 Open the link above, or clone and open `index.html`.
 
 - **Arrow keys** or space move between slides
-- **`D`** jumps to the next instrument
+- **`D`** jumps to the next instrument (lecture only)
 - **`I`** opens the slide index
 - **`N`** shows the speaker notes
 - **`Theme`** switches light and dark
 - Every slide has its own `#anchor`, so you can link straight to a demo
+- Both decks read on a phone; the workshop deck also answers to swipes
+
+### Layout of this repository
+
+```
+index.html        the course page students land on
+lecture/          the lecture deck and its images
+workshop/         the workshop deck
+sounds/           the fallback sound pack page
+```
+
+The lecture's images live in `lecture/assets/` and the other two pages borrow the
+logotype from there, so there is exactly one copy of each file in the repo.
 
 ### Putting your own institution on it
 
@@ -79,16 +98,30 @@ Safari. The microphone instruments require permission; the rest run without one.
 
 ## Teaching with it
 
-The deck is one half of a pair. The other is a four-hour workshop, held indoors.
-Students arrive with recordings they made beforehand — one site, three microphone
-positions — and spend the first hour putting their own takes through the instruments
-from this deck. Then Strudel, taught from zero, and a choice of two tracks: compose
-sixty seconds out of your own recordings, or sonify a sensor log from an Arduino Nano
-33 BLE Sense, which offers exactly two sample rates and so forces the choice instrument
-02 is about.
+The two decks are a pair. Students arrive at the workshop with recordings they made
+beforehand — one site, three microphone positions — and the day runs:
+
+| | |
+|---|---|
+| 0:00–0:15 | Folder arranged, every take on the laptop and playing |
+| 0:15–0:45 | Their own takes through instruments 02, 03, 05 and 06 |
+| 0:45–1:05 | Cutting clips in [AudioMass](https://audiomass.co), then importing them into Strudel |
+| 1:20–2:30 | Strudel taught from zero |
+| 2:30–3:30 | Compose sixty seconds, or sonify a sensor log from an Arduino Nano 33 BLE Sense — which offers exactly two sample rates and so forces the choice instrument 02 is about |
+| 3:30–4:00 | Ninety seconds each, played to the room |
+
+The clip-cutting block at 0:45 is the hinge. A three-minute stereo take decodes to
+about 63 MB in a browser tab, and `.begin`/`.end` are fractions of the whole file, so on
+a four-minute take 0.001 is a quarter of a second — you cannot point at anything.
+Everything after the break assumes a folder of 2-to-12-second clips.
+
+Nothing in the workshop needs installing: AudioMass and Strudel both run in a tab, with
+no account and no admin rights. Audacity is deliberately not used — version 4.0.0 landed
+three weeks before the course with a rebuilt interface, so every tutorial online shows a
+program the students will not have.
 
 Because there is no fieldwork on the day, the recording brief has to land in the
-lecture. The closing slides carry it.
+lecture. Its closing slides carry it.
 
 ### The teaching notes are part of the material
 
@@ -116,7 +149,8 @@ Live links to all of these are on the relevant slides.
 ## Credits
 
 Written by David Cuartielles for K3, Malmö University, 2026.
-Typefaces: Familjen Grotesk and IBM Plex Mono, via Google Fonts.
+Typefaces: Familjen Grotesk and IBM Plex Mono in the lecture, Source Serif 4 and
+IBM Plex Sans in the workshop and the course page — all via Google Fonts.
 
 ## License
 
