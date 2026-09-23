@@ -36,6 +36,8 @@ a{color:var(--accent)}
 .get{display:inline-flex;align-items:center;gap:10px;background:var(--accent);color:var(--ground);
   text-decoration:none;border-radius:8px;padding:14px 22px;font-weight:600;margin:6px 0 10px}
 .get:hover{opacity:.9}
+.get.off{background:var(--sunk);color:var(--faint);border:1px solid var(--line-strong);cursor:not-allowed;font-weight:500}
+.get.off:hover{opacity:1}
 .pending{border:1px dashed var(--line-strong);background:var(--sunk);border-radius:8px;
   padding:16px 20px;color:var(--muted);font-size:0.95rem;margin:6px 0 10px}
 .tree{background:#12141A;border-radius:8px;padding:16px 20px;overflow-x:auto}
@@ -51,15 +53,15 @@ footer{margin-top:44px;padding-top:22px;border-top:1px solid var(--line)}
 <p class="muted">Three sites around campus, three takes at each — close to the ground, at waist height, held up and away. Recorded for students who arrive at the workshop without their own material.</p>
 
 <a class="get" href="https://drive.google.com/drive/folders/1eg6OYTpXGe6btqHKgS8VECk-wsWh9qRK?usp=sharing" target="_blank" rel="noopener">Open the sound pack on Google Drive</a>
-<a class="get" id="get" href="soundwalk-fallback.zip" download hidden>Download the pack (zip)</a>
-<p class="tiny">No account needed — use Download at the top of the Drive folder. There is also a copy on a USB stick in the room.</p>
+<span class="get off" aria-disabled="true" title="Not offered online">Download the whole pack (zip)</span>
+<p class="tiny">The whole pack as one zip is about 2 GB, so it is not offered online. Open the Drive folder and download only the site folders or clips you need — no account required. The complete pack is on a USB stick in the room.</p>
 
 <h2>What is in it</h2>
 <div class="tree"><pre>soundwalk/
   siteA/   <span class="hi">01_event.wav  02_texture.wav  03_bed.wav</span>
   siteB/   <span class="hi">01_event.wav  02_texture.wav  03_bed.wav</span>
   siteC/   <span class="hi">01_event.wav  02_texture.wav  03_bed.wav</span></pre></div>
-<p class="muted" style="margin-top:14px">Already cut to clips: mono, 2 to 12 seconds, faded at both ends and level-matched. Download it, unzip it and import the <b>soundwalk</b> folder straight into Strudel — sounds, import-sounds, import sounds folder.</p>
+<p class="muted" style="margin-top:14px">Already cut to clips: mono, 2 to 12 seconds, faded at both ends and level-matched. Put the clips in a <b>soundwalk</b> folder on your laptop and import that folder straight into Strudel — sounds, import-sounds, import sounds folder.</p>
 
 <h2>Using it honestly</h2>
 <p class="muted">Working from someone else's recordings is a legitimate position. It is just a different one, so say so in your share-out — and when you get to the third question, <i>what did you lose that you wish you had kept</i>, notice that you were not the one who decided what to keep in the first place.</p>
@@ -69,11 +71,5 @@ footer{margin-top:44px;padding-top:22px;border-top:1px solid var(--line)}
 Open teaching material for educators — <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener">CC BY-NC-SA 4.0</a> · K3, Malmö University</p>
 </footer>
 </div>
-<script>
-/* Show the download only if the file is actually published, so nobody meets a 404. */
-fetch("soundwalk-fallback.zip",{method:"HEAD"}).then(function(r){
-  if(r.ok){document.getElementById("get").hidden=false}
-}).catch(function(){});
-</script>
 </body>
 </html>
